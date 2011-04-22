@@ -31,7 +31,7 @@ p a:hover, h6 a:hover {
 
 h1 {
 	color: white;
-	background-image: url(../images/star_logo2.png);
+	background-image: url(images/star_logo2.png);
 	text-indent: -9999px;
 	overflow: hidden;
 	height: 80px; 
@@ -47,7 +47,7 @@ h1 {
 }
 
 #logoStar {
-	background-image: url(../images/star_logo.png);
+	background-image: url(images/star_logo.png);
 	width: 60px;
 	height: 60px;
 	display: block;
@@ -102,7 +102,7 @@ h1 {
 }
 
 #header ul li.active, ul.mockMenu li {
-	background-image: url(../images/arrow.png);
+	background-image: url(images/arrow.png);
 	background-position: 0px 80px;
 	background-repeat: no-repeat;
 }
@@ -229,7 +229,7 @@ li.item:hover span.cover {
 	border-bottom-left-radius: 30px; /* Opera 10.5, IE 9 */	
 
     background-color: #333;
-    background-image: url("../images/white_logo.png");
+    background-image: url("images/white_logo.png");
     background-position: 8px 6px;
     background-repeat: no-repeat;
     clear: both;
@@ -296,7 +296,7 @@ a. nextItem {
 }
 
 a .backToGrid {
-	background-image: url(../images/back-to-grid.png);
+	background-image: url(images/back-to-grid.png);
 }
 
 a .nextItem span {
@@ -363,7 +363,7 @@ a .nextItem:hover span.point {
 }
 
 .imageNav span {
- 	background-image: url(../images/pointer.png);
+ 	background-image: url(images/pointer.png);
 	width: 18px;
 	height: 18px;
 	display: block;
@@ -375,26 +375,26 @@ a .nextItem:hover span.point {
 
 .lightGrey {
 	background-color: #ddd;
-	/* background-image: url(../images/tire_pile_9c.jpg); */
+	/* background-image: url(images/tire_pile_9c.jpg); */
 	background-position: 100px 100px;
 	width: 210px;
 }
 .midGrey {
 	background-color: #555;
-	/* background-image: url(../images/tire_pile_9c.jpg); */
+	/* background-image: url(images/tire_pile_9c.jpg); */
 	background-position: 200px 200px;
 	width: 280px;
 }
 .darkGrey {
 	background-color: #333;
-	/* background-image: url(../images/tire_pile_9c.jpg);*/ 
+	/* background-image: url(images/tire_pile_9c.jpg);*/ 
 	background-position: 300px 300px;
 	width: 275px;
 }
 
 .black {
 	background-color: #000;
-	/* background-image: url(../images/tire_pile_9c.jpg);*/
+	/* background-image: url(images/tire_pile_9c.jpg);*/
 }
 
 .js .portfolioItem {
