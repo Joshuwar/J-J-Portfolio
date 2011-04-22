@@ -29,6 +29,9 @@
 		<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
 		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 		<link rel="shortcut icon" href="<?php bloginfo('template_directory'); ?>/images/favicon.ico" />
+		<script type="text/javascript">
+			document.documentElement.className = "js";
+		</script>
 		<?php wp_head(); ?>
 	</head>
 	<body>
@@ -38,11 +41,9 @@
 			<div id="header">
 				<h1>J&amp;J</h1>
 				<?php wp_nav_menu( array(
+					'container'		 => 'false',
 					'theme_location' => 'main_menu', 
-					'container_id' => '',
-					'container_class' => '',
-					'menu_class' => '' 
 					)
 				); ?>
 			</div>
-			<div class="jbasewrap">
+			<div class="jbasewrap" id="portfolio">
