@@ -1,4 +1,5 @@
 /* BUGS:
+	clicking a menu item, then clicking back on J&J doesn't show all the thumbnails again (I thought it did)
 	using indexOf to match topics causes "how we work" items to match for "work"
 	fix the image scrolling so it puts the top of the image in the right place
 	make the thumbnail gallery extend vertically whilst it fades

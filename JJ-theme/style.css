@@ -8,4 +8,4 @@ Template:       scaffolding
 Version:        0.1
 */
 
-@import('css/styles.css');
+@import url(css/styles.css);
