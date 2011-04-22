@@ -3,7 +3,7 @@
 				<?php $firstitem = 1; // var to do the first post differently ?>
 				
 				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-<div class="portfolioItem" <?php if ($firstitem == 1) : echo 'id="firstItem"'; endif;?>>
+<div <?php if ($firstitem == 1) : echo 'class=""'; else: echo 'class="portfolioItem"'; endif;?> <?php if ($firstitem == 1) : echo 'id="firstItem"'; endif;?>>
 				
 					<div class="textPane margintopsmall" <?php if ($firstitem == 1) : echo 'id="mainTextPane"'; endif;?>>	
 						<h2 id="<?php echo $post->post_name; ?>"><?php the_title(); ?></h2>
