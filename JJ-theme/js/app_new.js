@@ -1,7 +1,10 @@
-/* TO-DO:
+/* BUGS:
+	using indexOf to match topics causes "how we work" items to match for "work"
 	fix the image scrolling so it puts the top of the image in the right place
 	make the thumbnail gallery extend vertically whilst it fades
 	make the imageNav not 1px out of vertical-line
+
+	TO-DO:
 */
 
 var animationDuration = 500,
@@ -10,6 +13,7 @@ var animationDuration = 500,
 	createThumbnailGallery = function(callback) {
 		var $thumbGalList,
 			$portImg,
+			$topics,
 			top,
 			left;
 		$thumbGal = $('#thumbnailGallery').css({
@@ -21,12 +25,13 @@ var animationDuration = 500,
 		$thumbGalList = $('<ul></ul>').appendTo($thumbGal);
 		$('.portfolioItem').each(function() {
 			$portImg = $(this).find('img').eq(0);
+			$topics = $(this).find('.topics').clone();
 			$('<li></li>')
 				.addClass('item')
 				.appendTo($thumbGalList)
-				.append(
-					$('<img src="'+$portImg.attr('src')+'" alt="'+$portImg.attr('alt')+'" title="'+$portImg.attr('title')+'" />')
-				).find('img')
+				.append($topics)
+				.append('<img src="'+$portImg.attr('src')+'" alt="'+$portImg.attr('alt')+'" title="'+$portImg.attr('title')+'" />')
+				.find('img')
 				.each(function() {
 					top = $(this).css('top');
 					if(top!=='auto') {
@@ -94,18 +99,26 @@ var animationDuration = 500,
 	},
 	backToGrid = function() {
 		$('.backToGrid').live('click', function() {
-			$('.portfolioItem:visible').fadeOut(animationDuration, function() {
-				$(document).trigger('itemDeselected');
-			});
+			$('.portfolioItem:visible').fadeOut(animationDuration);
+			$(document).trigger('itemDeselected');
 			return false;
 		});
 	},
-	itemDeselected = function() {
+	backToGridClick = function(topic) {
+		var eventData = {};
+		if(topic) {
+			eventData.topic = topic;
+		}
+		$('.portfolioItem:visible').fadeOut(animationDuration);
+		$(document).trigger('itemDeselected', eventData);
+	},
+	itemDeselected = function(e, data) {
 		var $item = $('#thumbnailGallery .item.selected'),
 			$img,
 			animateProperties,
 			top,
-			left;
+			left,
+			topic = data ? data.topic : "";
 		$('#thumbnailGallery').fadeIn(animationDuration);
 		$item
 			.removeClass('selected')
@@ -124,7 +137,13 @@ var animationDuration = 500,
 					animateProperties.left = parseInt(left,10);
 				}
 				$img.animate(animateProperties, animationDuration);
-				$item.siblings().animate({
+				$item.siblings().filter(function() {
+					if(topic) {
+						return $(this).find('.topics').text().indexOf(topic)!==-1;
+					} else {
+						return true;
+					}
+				}).animate({
 					width: baseItemWidth
 				}, animationDuration);
 				$item.animate({
@@ -134,14 +153,38 @@ var animationDuration = 500,
 					$(document).trigger('galRestored');
 				});
 			});
-	};
+	},
+	minimiseItems = function(topic) {
+		$('#thumbnailGallery .item').each(function() {
+			if($(this).find('.topics').text().indexOf(topic)===-1) {
+				$(this).animate({
+					width: 0
+				}, animationDuration);
+			} else {
+				if($(this).css('width')!==baseItemWidth) {
+					$(this).animate({
+						width: baseItemWidth
+					}, animationDuration);
+				}
+			}
+		});
+	},
+	restoreItems = function() {
+		$('#thumbnailGallery').find('.item').filter(function() {
+			return $(this).css('width')==='0px';
+		}).animate({
+			width: baseItemWidth
+		}, animationDuration);
+	}
 
 $(document).ready(function() {
 	
 	/* set up the nav menu */
 	if($('#header').length) {
 		var $mockMenu = $('<ul class="mockMenu"><li><a href="#"></a></li></ul>')
-			.insertAfter('ul.menu');
+			.insertAfter('ul.menu'),
+			$visiblePortfolio,
+			topic;
 		$('ul.menu a').click(function(e) {
 			e.preventDefault();
 			$mockMenu.animate({
@@ -149,6 +192,13 @@ $(document).ready(function() {
 			});
 			$(this).css('color', 'inherit');
 			$(this).closest('li').siblings().children('a').css('color','');
+			$visiblePortfolio = $('.portfolioItem:visible');
+			if($visiblePortfolio.length) {
+				topic = $visiblePortfolio.find('.topics').text();
+				backToGridClick(topic);
+			} else {
+				minimiseItems($(this).text());
+			}
 			return false;
 		});
 		$('h1').click(function(e) {
@@ -157,6 +207,10 @@ $(document).ready(function() {
 				left: 0
 			});
 			$(this).siblings('ul').find('a').css('color','');
+			$visiblePortfolio = $('.portfolioItem:visible');
+			if($visiblePortfolio.length) {
+				backToGridClick();
+			}
 			return false;
 		});
 	}
