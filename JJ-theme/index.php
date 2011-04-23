@@ -1,5 +1,5 @@
 				<?php get_header(); ?>
-				
+
 				<?php $firstitem = 1; // var to do the first post differently ?>
 				
 				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
@@ -24,7 +24,7 @@
 							</div>
 							<div class="marginleft">
 								<h6>Testimonial</h6>
-								<p><em>J&J were fantastic chaps to work with because they were simply incredible.</em></p>
+								<p><em>It's been a true delight to work with J&J. They are professional, fun, skilful and creative - a winning combination.</em></p>
 								<span>- Chris Lloyd</span>
 							</div>
 						</div>
