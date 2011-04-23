@@ -62,6 +62,18 @@ $(document).ready(function() {
 			}
 		});
 	});
+	test("each li should contain any element with class 'topics' that is present in the .portfolioItem", function() {
+		createThumbnailGallery();
+		var $topics = $('.portfolioItem').find('.topics'),
+			i,
+			$items = $thumbGal.find('.item');
+		$topics.each(function() {
+			i = $topics.index(this);
+			ok($items.eq(i).find('.topics'));
+		});
+		// check there are the correct number of created elements
+		equals($topics.length,$thumbGal.find('.topics').length);
+	});
 	test("it should call the callback parameter at the end", function() {
 		var callback = function() {
 			called = true;
@@ -152,6 +164,15 @@ $(document).ready(function() {
 		});
 		$toClick.click();
 	});
+	asyncTest("if there is only one item in the thumbnailGallery, it should increase that item's width to 100%", function() {
+		var $toClick = $thumbGal.find('.item').eq(0);
+		$thumbGal.find('.item').not(':eq(0)').remove();
+		$(document).bind('itemSelected', function() {
+			ok($toClick.css('width')==='100%',"width is 100%");
+			start();
+		});
+		$toClick.click();
+	});
 	
 	module("createImageNav");
 	
@@ -212,8 +233,9 @@ $(document).ready(function() {
 	*/
 	module("scrollPortfolioItem", {
 		setup: function() {
-			createImageNav();
-			$('.imageNav li').live('click', scrollPortfolioItem);
+			createImageNav(function() {
+				$('.imageNav li').live('click', scrollPortfolioItem);
+			});
 			this.$imageNav = $('.portfolioItem:eq(0)').show().find('.imageNav');
 		},
 		teardown: function() {
@@ -227,7 +249,7 @@ $(document).ready(function() {
 			$matchingImg = $('.portfolioItem:eq(0)').find('img').eq(clickIndex),
 			toScrollTo = $matchingImg.offset().top;
 		$toClick.click();
-		equals($(window).scrollTop(),toScrollTo);
+		equals($(window).scrollTop(),Math.round(toScrollTo));
 		$.scrollTo(0);
 	});
 	test("it should scroll the visible nav menu's arrow to the clicked link", function() {
@@ -284,6 +306,25 @@ $(document).ready(function() {
 			start();
 		});
 		$('.backToGrid:visible').click();
+	});
+	
+	module("backToGridClick", {
+		setup: function() {
+			$thumbGal = $('#thumbnailGallery').hide();
+			$('.portfolioItem:eq(0)').show();
+		},
+		teardown: function() {
+			$(document).unbind('itemDeselected');
+		}
+	});
+	
+	asyncTest("it should pass a provided topic paramter to the itemDeselected event", function() {
+		var topic = "sampleTopic";
+		$(document).bind('itemDeselected', function(e, data) {
+			ok(data.topic);
+			start();
+		});
+		backToGridClick(topic);
 	});
 	
 	/*
@@ -350,6 +391,21 @@ $(document).ready(function() {
 		});
 		$(document).trigger('itemDeselected');
 	});
+	test("it should not restore thumbnails that don't match a provided topic", function() {
+		var topic = "sampleTopic",
+			$toOmit = $thumbGal.find('.item').filter(function() {
+				return $(this).find('.topics').text().indexOf(topic)===-1;
+			});
+		ok($toOmit.length,"there are items that shouldn't be restored");
+		$(document).bind('galRestored', function() {
+			$toOmit.each(function() {
+				equals($(this).css('width'),'0px');
+			});
+		});
+		$(document).trigger('itemDeselected', {
+			topic: topic
+		});
+	});
 	asyncTest("after the height animation, the selected thumbnail should return to its default position", function() {
 		var $img = $('.item.selected img');
 		$img.css({
@@ -382,6 +438,65 @@ $(document).ready(function() {
 			start();
 		});
 		$(document).trigger('itemDeselected');
+	});
+	
+	module("minimiseItems", {
+		setup: function() {
+			$thumbGal = $('#thumbnailGallery');
+			createThumbnailGallery();
+		}
+	});
+	
+	test("it should shrink all the items that don't have .topics elements containing a match for the provided topic to width 0", function() {
+		var topic = "sampleTopic",
+			toValidate = false;
+		ok($thumbGal.find('.item .topics').length,'there are .topics elements');
+		minimiseItems(topic);
+		$thumbGal.find('.item').filter(function() {
+			return $(this).find('.topics').text().indexOf(topic)===-1;
+		}).each(function() {
+			ok($(this).css('width')==='0px','shrunk');
+		});
+	});
+	
+	test("it should not shrink an item that has a .topics element containing a match for the provided topic", function() {
+		var topic = "sampleTopic";
+		minimiseItems(topic);
+		$thumbGal.find('.item').filter(function() {
+			return $(this).find('.topics').text().indexOf(topic)!==-1;
+		}).each(function() {
+			ok($(this).css('width')!=='0px','not shrunk');
+		});
+	});
+	
+	test("it should restore any matching items that are not at their default width", function() {
+		var topic = "sampleTopic",
+			$items = $thumbGal.find('.item').filter(function() {
+				return $(this).find('.topics').text().indexOf(topic)!==-1;
+			});
+		$items.css('width','0px');
+		minimiseItems(topic);
+		$items.each(function() {
+			ok($(this).css('width')!=='0px','not shrunk');
+		});
+	});
+
+	module("restoreItems", {
+		setup: function() {
+			$thumbGal = $('#thumbnailGallery');
+			createThumbnailGallery();
+		}
+	});
+	
+	test("it should animate all items back to their default width if they are not already that wide", function() {
+		minimiseItems("sampleTopic");
+		ok($thumbGal.find('.item').filter(function() {
+			return $(this).css('width')==='0px';
+		}).length, "there are items to restore");
+		restoreItems();
+		equals($thumbGal.find('.item').filter(function() {
+			return $(this).css('width')==='0px';
+		}).length,0);
 	});
 
 });

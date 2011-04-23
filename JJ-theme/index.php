@@ -3,12 +3,12 @@
 				<?php $firstitem = 1; // var to do the first post differently ?>
 				
 				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-					<div <?php if ($firstitem == 1) : 
-						echo 'id="firstItem"';
-					else:
-						echo 'class="portfolioItem"';
-					endif;?>>
-				
+				<div <?php if ($firstitem == 1) : 
+					echo 'id="firstItem"';
+				else:
+					echo 'class="portfolioItem"';
+				endif;?>>
+					<?php if($firstitem == 0) : ?><span class="topics">hello</span><?php endif; ?>
 					<div class="textPane margintopsmall" <?php if ($firstitem == 1) : echo 'id="mainTextPane"'; endif;?>>	
 						<h2 id="<?php echo $post->post_name; ?>"><?php the_title(); ?></h2>
 						<?php // the_category(); ?>

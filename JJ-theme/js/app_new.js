@@ -51,24 +51,31 @@ var animationDuration = 500,
 	},
 	addThumbnailClick = function() {
 		$('.item').click(function() {
-			var $item = $(this).addClass('selected');
+			var $item = $(this).addClass('selected'),
+				$toAnimate = $item.find('img'),
+				animationCallback = function() {
+					$item.animate({
+						width: '100%'
+					}, animationDuration, function() {
+						$(document).trigger('itemSelected', $('.item').index($item));
+						$thumbGal.fadeOut(animationDuration, function() {
+							$(document).trigger('galFaded');
+						});				
+					});
+				};
 			$('#mainTextPane').fadeOut(animationDuration);
-			$item.find('img').animate({
+			$toAnimate.animate({
 				top: 0,
 				left: 0
 			}, animationDuration);
-			$item.siblings().animate({
-				width: 0
-			}, animationDuration, function() {
-				$item.animate({
-					width: '100%'
-				}, animationDuration, function() {
-					$(document).trigger('itemSelected', $('.item').index(this));
-					$thumbGal.fadeOut(animationDuration, function() {
-						$(document).trigger('galFaded');
-					});				
-				});
-			});
+			$toAnimate = $item.siblings();
+			if($toAnimate.length) {
+				$toAnimate.animate({
+					width: 0
+				}, animationDuration, animationCallback);
+			} else {
+				animationCallback();
+			}
 		});
 	},
 	createImageNav = function(callback) {
