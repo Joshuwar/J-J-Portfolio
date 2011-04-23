@@ -1,4 +1,4 @@
- 				<?php $work_loop = new WP_query( 'category_name=work' ); ?>
+ 				<?php $work_loop = new WP_query( 'category_name=work&post_type=any' ); ?>
 				<?php if ( $work_loop->have_posts() ) : while ( $work_loop->have_posts() ) : $work_loop->the_post(); ?>
 				<div class="portfolioItem">
 					<div class="textPane margintopsmall">	
@@ -8,20 +8,20 @@
 						
 						<div class="meta">
 							<div>
-								<h6><a href="#">Launch Site</a></h6>
+								<h6><a href="http://<?php get_custom_field('_url'); ?>">Launch Site</a></h6>
 								<br/>
 								<h6>J&amp;J worked with:</h6>
-								<p>Illustrator Dude</p>
+								<p><?php get_custom_field('_collaborators'); ?></p>
 							</div>
 							<div class="marginleft">
 								<h6>Testimonial</h6>
-								<p><em>It's been a true delight to work with J&J. They are professional, fun, skilful and creative - a winning combination.</em></p>
-								<span>- Chris Lloyd</span>
+								<p><em><?php get_custom_field('_testimonial'); ?></em></p>
+								<span>- <?php get_custom_field('_testimonial_name'); ?></span>
 							</div>
 						</div>
 						<a href="#">
 							<div class="hireUs">
-								<?php the_excerpt(); ?>
+								<?php get_custom_field('_hireus'); ?>
 								<span></span>
 							</div>
 						</a>
@@ -36,11 +36,9 @@
 							</a>
 						</div>
 					</div>
-					<div class="gallery">
-						<img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/woe.gif" class="portfolioImage" alt="main page" />
-						<img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/woe.gif" class="portfolioImage" alt="article page" />
-						<img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/woe.gif" class="portfolioImage" alt="book landing page" />
-					</div>
+					
+						<?php attachment_toolbox('portfolio-image', "Bongo bongo bongo"); ?>
+					
 					<div class="imageNav"></div>
 				</div>
 				<?php 
