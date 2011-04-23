@@ -42,7 +42,7 @@
 				<h1>J&amp;J</h1>
 				<?php wp_nav_menu( array(
 					'container'		 => 'false',
-					'theme_location' => 'main_menu', 
+					'theme_location' => 'top_menu', 
 					)
 				); ?>
 			</div>

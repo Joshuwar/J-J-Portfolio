@@ -1,17 +1,9 @@
-				<?php get_header(); ?>
-				
-				<?php $firstitem = 1; // var to do the first post differently ?>
-				
-				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-				<div <?php if ($firstitem == 1) : 
-					echo 'id="firstItem"';
-				else:
-					echo 'class="portfolioItem"';
-				endif;?>>
-					<div class="textPane margintopsmall" <?php if ($firstitem == 1) : echo 'id="mainTextPane"'; endif;?>>	
+ 				<?php $work_loop = new WP_query( 'category_name=work' ); ?>
+				<?php if ( $work_loop->have_posts() ) : while ( $work_loop->have_posts() ) : $work_loop->the_post(); ?>
+				<div class="portfolioItem">
+					<div class="textPane margintopsmall">	
 						<h2 id="<?php echo $post->post_name; ?>"><?php the_title(); ?></h2>
-						<?php // the_category(); ?>
-						<?php // the_tags(); ?>
+
 						<?php the_content(); ?>
 						
 						<div class="meta">
@@ -44,20 +36,13 @@
 							</a>
 						</div>
 					</div>
-					<?php if ($firstitem == 1) : ?>
-					<div class="gallery" id="thumbnailGallery"></div>
-					<?php else : ?>	
 					<div class="gallery">
 						<img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/woe.gif" class="portfolioImage" alt="main page" />
 						<img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/woe.gif" class="portfolioImage" alt="article page" />
 						<img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/woe.gif" class="portfolioImage" alt="book landing page" />
 					</div>
-					<?php endif; ?>
 					<div class="imageNav"></div>
 				</div>
-				<?php $firstitem = 0; ?>
 				<?php 
 				endwhile;
 				endif; ?>
-				
-				<?php get_footer(); ?>
