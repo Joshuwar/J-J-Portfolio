@@ -21,7 +21,7 @@
 						</div>
 						<a href="#">
 							<div class="hireUs">
-								<?php get_custom_field('_hireus'); ?>
+								<p><?php get_custom_field('_hireus'); ?></p>
 								<span></span>
 							</div>
 						</a>
