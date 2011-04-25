@@ -93,6 +93,7 @@ function init_metaboxes_emails() {
 }
 
 // Adds a custom section to the "advanced" Post and Page edit screens
+if ( ! function_exists( 'sp_add_custom_box' ) ) :
 function sp_add_custom_box() {
 	global $sp_boxes;
 	if ( function_exists( 'add_meta_box' ) ) {
@@ -101,6 +102,7 @@ function sp_add_custom_box() {
 		}
 	}
 }
+endif;
 
 // this handles the nonces for the meta boxes
 if ( ! function_exists( 'sp_post_custom_box' ) ) :
