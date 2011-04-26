@@ -40,8 +40,7 @@ function attachment_toolbox($size = 'portfolio-image', $emptyMsg = 'EMPTY') {
 		$atttitle = apply_filters('the_title',$image->post_title);
 		$attcontent = $image->post_content;
 		$imglink	= $image->guid;
-		$attimgalt	= 'BLAH BLAH BLAH'; // JB TO-DO: Fix this!
-
+		$attimgalt	= get_post_meta($image->ID, '_wp_attachment_image_alt', true);
 		$out .= '<img class="portfolioImage" src="'.$attimgurl.'" alt="'.$attimgalt.'"/>';
 		$count++;
 		
@@ -49,6 +48,7 @@ function attachment_toolbox($size = 'portfolio-image', $emptyMsg = 'EMPTY') {
 	$out .= '</div>';
 	if($count>0) {	
 		echo $out;
+
 	} else {
 		echo $emptyMsg;
 	}
