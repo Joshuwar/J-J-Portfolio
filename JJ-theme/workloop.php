@@ -1,6 +1,7 @@
- 				<?php $work_loop = new WP_query( 'category_name=work&post_type=any' ); ?>
+ 				<?php $work_loop = new WP_query( 'post_type=any' ); ?>
 				<?php if ( $work_loop->have_posts() ) : while ( $work_loop->have_posts() ) : $work_loop->the_post(); ?>
 				<div class="portfolioItem">
+					<span class="topics"><?php the_category(',',''); ?></span>
 					<div class="textPane margintopsmall">	
 						<h2 id="<?php echo $post->post_name; ?>"><?php the_title(); ?></h2>
 
@@ -14,7 +15,6 @@
 								<p><?php get_custom_field('_collaborators'); ?></p>
 							</div>
 							<div class="marginleft">
-								<h6>Testimonial</h6>
 								<p><em><?php get_custom_field('_testimonial'); ?></em></p>
 								<span>- <?php get_custom_field('_testimonial_name'); ?></span>
 							</div>
