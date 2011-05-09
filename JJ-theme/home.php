@@ -20,5 +20,5 @@
 				?>
 				<?php get_template_part( 'workloop' ); ?>
 
-				
+			
 				<?php get_footer(); ?>
