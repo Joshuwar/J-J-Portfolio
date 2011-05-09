@@ -159,10 +159,21 @@ $(document).ready(function() {
 			// JRL: choosing not to test the height increase, as I'm not sure at the moment what I want it to go to
 		});
 		$(document).bind('galFaded', function() {
+			$(document).unbind('galFaded');
 			ok($thumbGal.css('display')==='none');
 			start();
 		});
 		$toClick.click();
+	});
+	asyncTest("after the itemSelected event is fired, the galFaded event should only fire once", function() {
+		var $toClick = $thumbGal.find('.item').eq(1);
+		$(document).bind('galFaded', function() {
+			$(document).unbind('galFaded');
+			ok($thumbGal.css('display')==='none');
+			start();
+		});
+		expect(1);
+		$toClick.click();		
 	});
 	asyncTest("if there is only one item in the thumbnailGallery, it should increase that item's width to 100%", function() {
 		var $toClick = $thumbGal.find('.item').eq(0);
@@ -286,6 +297,7 @@ $(document).ready(function() {
 		teardown: function() {
 			$(document).unbind('itemDeselected');
 			$('.backToGrid').die('click');
+			animating = false;
 		}
 	});
 	
@@ -305,6 +317,7 @@ $(document).ready(function() {
 			ok(1);
 			start();
 		});
+		ok($('.backToGrid:visible').length);
 		$('.backToGrid:visible').click();
 	});
 	

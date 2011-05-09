@@ -1,4 +1,5 @@
 /* BUGS:
+	clicking on a 'backToGrid' too early after load doesn't work - need some way of saying "still loading!"
 	using indexOf to match topics causes "how we work" items to match for "work"
 	fix the image scrolling so it puts the top of the image in the right place
 	make the thumbnail gallery extend vertically whilst it fades
@@ -13,6 +14,7 @@ Or how about the next button? We can squirt the relevant url via wp."
 var animationDuration = 500,
 	$thumbGal,
 	baseItemWidth,
+	animating = false,
 	createThumbnailGallery = function(callback) {
 		var $thumbGalList,
 			$portImg,
@@ -53,14 +55,20 @@ var animationDuration = 500,
 	},
 	addThumbnailClick = function() {
 		$('.item').click(function() {
+			if(animating) {
+				return false;
+			}
+			animating = true;
 			var $item = $(this).addClass('selected'),
 				$toAnimate = $item.find('img'),
+				animateLimit,
 				animationCallback = function() {
 					$item.animate({
 						width: '100%'
 					}, animationDuration, function() {
 						$(document).trigger('itemSelected', $('.item').index($item));
 						$thumbGal.fadeOut(animationDuration, function() {
+							animating = false;
 							$(document).trigger('galFaded');
 						});				
 					});
@@ -71,10 +79,16 @@ var animationDuration = 500,
 				left: 0
 			}, animationDuration);
 			$toAnimate = $item.siblings();
+			animateLimit = $toAnimate.length;
 			if($toAnimate.length) {
 				$toAnimate.animate({
 					width: 0
-				}, animationDuration, animationCallback);
+				}, animationDuration, function() {
+					animateLimit--;
+					if(animateLimit===0) {
+						animationCallback();
+					}
+				});
 			} else {
 				animationCallback();
 			}
@@ -109,13 +123,18 @@ var animationDuration = 500,
 	},
 	backToGrid = function() {
 		$('.backToGrid').live('click', function() {
+			if(animating) {
+				return false;
+			}
+			animating = true;
 			$('.portfolioItem:visible').fadeOut(animationDuration);
-			$(document).trigger('itemDeselected');
+			$(document).trigger('itemDeselected'); // I'm beginning to think this event is not useful
 			return false;
 		});
 	},
 	backToGridClick = function(topic) {
 		var eventData = {};
+		animating = true;
 		if(topic) {
 			eventData.topic = topic;
 		}
@@ -131,8 +150,10 @@ var animationDuration = 500,
 			left,
 			topic = data ? data.topic : "",
 			secondAnimationCallback = function() {
-				$('#mainTextPane').fadeIn(animationDuration);
-				$(document).trigger('galRestored');
+				$('#mainTextPane').fadeIn(animationDuration, function() {
+					animating = false;
+					$(document).trigger('galRestored');
+				});
 			},
 			firstAnimationCallback = function() {
 				$(document).trigger('galShown');
@@ -169,7 +190,7 @@ var animationDuration = 500,
 			$item
 				.removeClass('selected')
 				.animate({
-					height: $item.siblings().eq(0).css('height')
+					height: $itemSiblings.eq(0).css('height')
 				}, animationDuration, firstAnimationCallback);
 		} else {
 			window.setTimeout(firstAnimationCallback,animationDuration);
@@ -209,6 +230,10 @@ $(document).ready(function() {
 			topic;
 		$('ul.menu a').click(function(e) {
 			e.preventDefault();
+			if(animating) {
+				return false;
+			}
+			animating = true;
 			$mockMenu.animate({
 				left: parseInt($(this).offset().left,10)
 			});
@@ -225,6 +250,10 @@ $(document).ready(function() {
 		});
 		$('h1').click(function(e) {
 			e.preventDefault();
+			if(animating) {
+				return false;
+			}
+			animating = true;
 			$mockMenu.animate({
 				left: 0
 			});
@@ -269,7 +298,13 @@ $(document).ready(function() {
 			backToGrid();
 		});
 		createImageNav(function() {
-			$('.imageNav').find('li').live('click', scrollPortfolioItem);
+			$('.imageNav').find('li').live('click', function(e) {
+				if(animating) {
+					return false;
+				}
+				animating = true;
+				scrollPortfolioItem.apply(this,arguments);
+			});
 		});
 		$('img').hide().imagesLoaded(function() {
 			$(this).fadeIn(animationDuration);
