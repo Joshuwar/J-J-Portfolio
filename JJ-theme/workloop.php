@@ -7,34 +7,7 @@
 
 						<?php the_content(); ?>
 						
-						<div class="meta">
-							<div>
-								<h6><a href="http://<?php get_custom_field('_url'); ?>">Launch Site</a></h6>
-								<br/>
-								<h6>J&amp;J worked with:</h6>
-								<p><?php get_custom_field('_collaborators'); ?></p>
-							</div>
-							<div class="marginleft">
-								<p><em><?php get_custom_field('_testimonial'); ?></em></p>
-								<span>- <?php get_custom_field('_testimonial_name'); ?></span>
-							</div>
-						</div>
-						<a href="#">
-							<div class="hireUs">
-								<p><?php get_custom_field('_hireus'); ?></p>
-								<span></span>
-							</div>
-						</a>
-						<div class="margintop itemNav">
-							<a class="left" href="#"><span class="backToGrid">Back to Grid</span></a>
-							
-							<a class="left marginleft" href="#">
-								<span class="nextItem">Next: 
-									<span><em>Bell Pottinger Sans Frontiers</em></span>
-									<span class="point"></span>
-								</span>
-							</a>
-						</div>
+						<?php  get_template_part( 'meta' ); ?>
 					</div>
 					
 						<?php attachment_toolbox('portfolio-image', "Bongo bongo bongo"); ?>
