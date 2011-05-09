@@ -6,6 +6,13 @@
 	make the imageNav not 1px out of vertical-line
 
 	TO-DO:
+	page detail views should move the ribbon to the correct position
+	If there is only one item within a category, it should just open it straight away
+	Hire us link should open hire us page (and move ribbon to hire us)
+	Next button should load next item in chosen category
+	'back to grid' should go back to the filtered grid you were looking at (eg. work / how etc)
+	auto-open the most recent item if nothing happens on landing
+	frag-id nav babies
 	"Re: next bit of JS, perhaps it would be good to sort out the block hover state? A fast fade to black or dark grey with the excerpt in white? 
 
 Or how about the next button? We can squirt the relevant url via wp."
