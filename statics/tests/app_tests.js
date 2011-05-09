@@ -345,7 +345,7 @@ $(document).ready(function() {
 				.css('width','100%')
 				.addClass('selected')
 				.siblings()
-				.css('width', 0);
+				.css('width', 0);baseItemWidth
 		},
 		teardown: function() {
 			$(document).unbind('itemDeselected');
@@ -353,7 +353,7 @@ $(document).ready(function() {
 			$(document).unbind('galRestored');
 		}
 	});
-	
+
 	asyncTest("when itemDeselected is fired, thumbnailGallery should fade in", 1, function() {
 		$(document).bind('galShown', function() {
 			equals($thumbGal.css('display'),'block');
@@ -405,6 +405,28 @@ $(document).ready(function() {
 		$(document).trigger('itemDeselected', {
 			topic: topic
 		});
+	});
+	test("it should restore all thumbnails if no topic is provided", function() {
+		var startingItemsCount = $thumbGal.find('.item').length;
+		$(document).bind('galRestored', function() {
+			equals($thumbGal.find('.item:visible').length,startingItemsCount);
+		});
+		$(document).trigger('itemDeselected');
+	});
+	asyncTest("if should not require a thumbnail to be selected to restore all thumbnails", function() {
+		var startingItemsCount = $thumbGal.find('.item').length;
+		$thumbGal.find('.item:eq(0)')
+			.css('width',baseItemWidth)
+			.removeClass('selected')
+			.siblings()
+			.css('width',baseItemWidth);
+		$(document).bind('galRestored', function() {
+			expect(1);
+			equals($thumbGal.find('.item:visible').length,startingItemsCount);
+			start();
+		});
+		$(document).trigger('itemDeselected');
+		
 	});
 	asyncTest("after the height animation, the selected thumbnail should return to its default position", function() {
 		var $img = $('.item.selected img');

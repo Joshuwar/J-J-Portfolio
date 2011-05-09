@@ -1,5 +1,4 @@
 /* BUGS:
-	clicking a menu item, then clicking back on J&J doesn't show all the thumbnails again (I thought it did)
 	using indexOf to match topics causes "how we work" items to match for "work"
 	fix the image scrolling so it puts the top of the image in the right place
 	make the thumbnail gallery extend vertically whilst it fades
@@ -125,17 +124,17 @@ var animationDuration = 500,
 	},
 	itemDeselected = function(e, data) {
 		var $item = $('#thumbnailGallery .item.selected'),
+			$itemSiblings = $item.length ? $item.siblings() : $('#thumbnailGallery .item'),
 			$img,
 			animateProperties,
 			top,
 			left,
-			topic = data ? data.topic : "";
-		$('#thumbnailGallery').fadeIn(animationDuration);
-		$item
-			.removeClass('selected')
-			.animate({
-				height: $item.siblings().eq(0).css('height')
-			}, animationDuration, function() {
+			topic = data ? data.topic : "",
+			secondAnimationCallback = function() {
+				$('#mainTextPane').fadeIn(animationDuration);
+				$(document).trigger('galRestored');
+			},
+			firstAnimationCallback = function() {
 				$(document).trigger('galShown');
 				animateProperties = {};
 				$img = $item.find('img');
@@ -148,7 +147,7 @@ var animationDuration = 500,
 					animateProperties.left = parseInt(left,10);
 				}
 				$img.animate(animateProperties, animationDuration);
-				$item.siblings().filter(function() {
+				$itemSiblings.filter(function() {
 					if(topic) {
 						return $(this).find('.topics').text().indexOf(topic)!==-1;
 					} else {
@@ -157,13 +156,25 @@ var animationDuration = 500,
 				}).animate({
 					width: baseItemWidth
 				}, animationDuration);
-				$item.animate({
-					width: baseItemWidth
-				}, animationDuration, function() {
-					$('#mainTextPane').fadeIn(animationDuration);
-					$(document).trigger('galRestored');
-				});
-			});
+				if($item.length) {
+					$item.animate({
+						width: baseItemWidth
+					}, animationDuration, secondAnimationCallback);
+				} else {
+					window.setTimeout(secondAnimationCallback,animationDuration);
+				}
+			};
+		$('#thumbnailGallery').fadeIn(animationDuration);
+		if($item.length) {
+			$item
+				.removeClass('selected')
+				.animate({
+					height: $item.siblings().eq(0).css('height')
+				}, animationDuration, firstAnimationCallback);
+		} else {
+			window.setTimeout(firstAnimationCallback,animationDuration);
+		}
+		
 	},
 	minimiseItems = function(topic) {
 		$('#thumbnailGallery .item').each(function() {
@@ -218,10 +229,7 @@ $(document).ready(function() {
 				left: 0
 			});
 			$(this).siblings('ul').find('a').css('color','');
-			$visiblePortfolio = $('.portfolioItem:visible');
-			if($visiblePortfolio.length) {
-				backToGridClick();
-			}
+			backToGridClick();
 			return false;
 		});
 	}
