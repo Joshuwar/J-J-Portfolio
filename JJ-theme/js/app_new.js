@@ -6,6 +6,9 @@
 	make the imageNav not 1px out of vertical-line
 
 	TO-DO:
+	"Re: next bit of JS, perhaps it would be good to sort out the block hover state? A fast fade to black or dark grey with the excerpt in white? 
+
+Or how about the next button? We can squirt the relevant url via wp."
 */
 
 var animationDuration = 500,
