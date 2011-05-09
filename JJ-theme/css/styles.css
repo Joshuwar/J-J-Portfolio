@@ -231,12 +231,12 @@ li.item:hover span.cover {
 	-webkit-border-bottom-left-radius: 30px; /* Saf3+, Chrome */
 	border-bottom-left-radius: 30px; /* Opera 10.5, IE 9 */	
 
-    background-color: #333;
+    background-color: #ebebeb;
     background-image: url(../images/white_logo.png);
     background-position: 8px 6px;
     background-repeat: no-repeat;
     clear: both;
-    color: white;
+    color: #565656;
     height: 40px;
     margin: 20px 0;
     padding: 8px 10px 12px; 
@@ -245,12 +245,12 @@ li.item:hover span.cover {
 }
 
 .hireUs:hover {
-	background-color: #555;
+	background-color: #ccc;
 	/* text-shadow: 1px 1px 1px #ffb800; */
 }
 
 a .hireUs:hover span {
-	border-left-color: #555;
+	border-left-color: #ccc;
 }
 
 
@@ -270,7 +270,7 @@ a .hireUs:hover span {
 	right: -20px;
 	border-style: solid;
 	border-width: 30px 20px;
-	border-color: white white white #333;
+	border-color: white white white #ebebeb;
 }
 
 .itemNav a {
