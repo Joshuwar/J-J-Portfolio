@@ -318,20 +318,29 @@ $(document).ready(function() {
 			return false;
 		});
 		$('a').click(function(e) {
-			e.preventDefault();
-			var href = $(this).attr('href');
+			var href = $(this).attr('href'),
+				$matchingPortfolioItem,
+				$matchingThumbnail;
 			if(!href || href==='#') {
 				return true;
 			}
-			var $matchingThumbnail = $('.item').eq(1);
-			if($('.portfolioItem:visible').length) {
-				// hide the visible portfolio
-				backToGridClick();
-				$(document).one('galRestored', function() {
+			$matchingPortfolioItem = $('.portfolioItem h3 a').filter(function() {
+				return $(this).attr('href')===href;
+			}).closest('.portfolioItem');
+			$matchingThumbnail = $('.item').eq($('.portfolioItem').index($matchingPortfolioItem));
+			if($matchingThumbnail.length) {
+				e.preventDefault();
+				if($('.portfolioItem:visible').length) {
+					// hide the visible portfolio
+					backToGridClick();
+					$(document).one('galRestored', function() {
+						$matchingThumbnail.click();
+					});
+				} else {
 					$matchingThumbnail.click();
-				});
+				}
 			} else {
-				$matchingThumbnail.click();
+				// no match for this href
 			}
 		});
 		$(document).bind('galFaded', function(e, data) {
