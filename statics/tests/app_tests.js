@@ -495,6 +495,16 @@ $(document).ready(function() {
 		}
 	});
 	
+	test("it should restore all items to their default width if no topic is provided", function() {
+		var $firstItem = $thumbGal.find('.item').eq(0);
+			startingWidth = $firstItem.css('width');
+		$firstItem.css('width',0);
+		minimiseItems();
+		$thumbGal.find('.item').each(function() {
+			equals($(this).css('width'),startingWidth);
+		});
+	});
+	
 	test("it should shrink all the items that don't have .topics elements containing a match for the provided topic to width 0", function() {
 		var topic = "sampleTopic",
 			toValidate = false;

@@ -235,7 +235,7 @@ var animationDuration = 500,
 			};
 		$toAnimate.each(function() {
 			var topics = $(this).find('.topics').text().split(',');
-			if(topics.length && $.inArray(topic,topics)===-1) {
+			if(topic && topics.length && $.inArray(topic,topics)===-1) {
 				$(this).animate({
 					width: 0
 				}, animationDuration, animationCallback);
@@ -313,7 +313,6 @@ $(document).ready(function() {
 			return false;
 		});
 		$(document).bind('galFaded', function(e, data) {
-			console.log('galFaded',data.$item);
 			var $item = data.$item,
 				topic = $item.find('.topics').text().split(',')[0];
 			$('ul.menu a').each(function() {
