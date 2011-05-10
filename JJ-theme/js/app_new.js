@@ -1,5 +1,5 @@
-/* BUGS:
-	refreshing doesn't load the images! (But this is only sometimes a problem...)
+/*
+	Note: all portfolio items need their first image to have a valid src, otherwise this will cause problems (at least in Chrome and Firefox) - the images won't fire their load event. In Chrome, this is a problem straight away; in Firefox, it happens when you refresh the page.
 
 	TO-DO:
 	page detail views should move the ribbon to the correct position
@@ -252,7 +252,7 @@ var animationDuration = 500,
 	}
 
 $(document).ready(function() {
-	
+
 	/* set up the nav menu */
 	if($('#header').length) {
 		var $mockMenu = $('<ul class="mockMenu"><li><a href="#"></a></li></ul>')
