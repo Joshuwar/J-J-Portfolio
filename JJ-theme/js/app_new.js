@@ -1,6 +1,5 @@
 /* BUGS:
-	refreshing doesn't load the images!
-	make the imageNav not 1px out of vertical-line
+	refreshing doesn't load the images! (But this is only sometimes a problem...)
 	make the thumbnail gallery extend vertically whilst it fades
 
 	TO-DO:
@@ -21,6 +20,7 @@ var animationDuration = 500,
 	baseItemWidth,
 	animating = false,
 	portfolioImageOffset,
+	navSpanTopOffset,
 	createThumbnailGallery = function(callback) {
 		var $thumbGalList,
 			$portImg,
@@ -56,7 +56,6 @@ var animationDuration = 500,
 		});
 		baseItemWidth = $thumbGalList.find('li').eq(0).css('width');
 		portfolioImageOffset = $thumbGal.offset().top;
-		console.log(portfolioImageOffset);
 		if(callback) {
 			callback();
 		}
@@ -117,15 +116,19 @@ var animationDuration = 500,
 	scrollPortfolioItem = function(e) {
 		// move to the matching image
 		var $imageNav = $('.imageNav:visible'),
+			$navSpan = $imageNav.find('span'),
 			index = $imageNav.find('li').index(e.target),
 			$targetImg = $('.portfolioItem:visible img').eq(index),
 			toScrollTo = $targetImg.offset().top-portfolioImageOffset;
+		if(!navSpanTopOffset) {
+			navSpanTopOffset = parseInt($navSpan.css('top'),10);
+		}
 		$.scrollTo(toScrollTo, animationDuration, function() {
 			animating = false;
 		});
 		// move the imageNav arrow to the selected link
-		$imageNav.find('span').animate({
-			top: $(e.target).position().top
+		$navSpan.animate({
+			top: $(e.target).position().top+navSpanTopOffset
 		});
 	},
 	itemSelected = function(e, index) {

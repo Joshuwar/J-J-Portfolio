@@ -254,21 +254,22 @@ $(document).ready(function() {
 		}
 	});
 	
-	test("it should scroll the document to the position of the visible portfolio item's image that corresponds to the clicked link", function() {
+	test("it should scroll the document to the position of the visible portfolio item's image that corresponds to the clicked link (taking into account the original position of the gallery)", function() {
 		var clickIndex = 1,
 			$toClick = this.$imageNav.find('li:eq('+clickIndex+')'),
 			$matchingImg = $('.portfolioItem:eq(0)').find('img').eq(clickIndex),
-			toScrollTo = $matchingImg.offset().top;
+			toScrollTo = $matchingImg.offset().top-$('#thumbnailGallery').offset().top;
 		$toClick.click();
 		equals($(window).scrollTop(),Math.round(toScrollTo));
 		$.scrollTo(0);
 	});
-	test("it should scroll the visible nav menu's arrow to the clicked link", function() {
+	test("it should scroll the visible nav menu's arrow to the clicked link (taking into account any top offset the arrow already has)", function() {
 		var clickIndex = 1,
 			$toClick = this.$imageNav.find('li:eq('+clickIndex+')'),
-			$matchingSpan = this.$imageNav.find('span');
+			$matchingSpan = this.$imageNav.find('span'),
+			originalTopOffset = parseInt($matchingSpan.css('top'),10);
 		$toClick.click();
-		equals($matchingSpan.offset().top, $toClick.offset().top);
+		equals($matchingSpan.offset().top, $toClick.offset().top+originalTopOffset);
 	});
 	
 	/*
