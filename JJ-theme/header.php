@@ -27,8 +27,8 @@
 		<link rel="stylesheet" type="text/css" href="<?php bloginfo( 'template_url' ); ?>/css/grid.css" />
 		<link rel="stylesheet" type="text/css" href="<?php bloginfo( 'stylesheet_directory' ); ?>/css/stickyfooter.css" />
 		<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
-		<!--<link href='http://fonts.googleapis.com/css?family=Crimson+Text:regular,regularitalic,600,600italic,bolditalic' rel='stylesheet' type='text/css' />
-		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css' />-->
+		<link href='http://fonts.googleapis.com/css?family=Crimson+Text:regular,regularitalic,600,600italic,bolditalic' rel='stylesheet' type='text/css' />
+		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css' />
 		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 		<link rel="shortcut icon" href="<?php bloginfo('template_directory'); ?>/images/favicon.ico" />
 		<script type="text/javascript">
