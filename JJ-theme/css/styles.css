@@ -436,16 +436,18 @@ a .nextItem:hover span.point {
 
 .footer a {
 	border-bottom: none;
+	text-decoration: none;
 	color: white;
-	padding: 0px 4px;
+	padding: 0px 3px;
 	background-color: #333;
-	-moz-border-radius: 4px; /* FF1+ */
+/*	-moz-border-radius: 4px; /* FF1+ */
 	-webkit-border-radius: 4px; /* Saf3+, Chrome */
 	border-radius: 4px; /* Opera 10.5, IE 9 */	
 }
 
 .footer a:hover {
 	border-bottom: none;
+	text-decoration: none;
 	background-color: #fee7b1;
 	color: #151515;
 	
@@ -545,6 +547,50 @@ a .nextItem:hover span.point {
 	
 }
 
+/*-------------------------------- 		<tweet blender overides> */
+
+.footer #middleColumn div.tb_tweet, 
+.footer #middleColumn div.tb_tweetlist { border: none;}
+
+div.tb_msg { display: none; }
+
+div.tb_tweet { padding: 0px; }
+
+.footer #middleColumn a:hover { text-decoration: none; }
+
+.footer a.tb_photo { background-color: transparent; }
+
+/*-------------------------------- 		</tweet blender overides> */
+
+#friendfeed.widget,
+div#friendfeed.widget div,
+div#friendfeed.widget span,
+div#friendfeed.widget img,
+div#friendfeed.widget table,
+div#friendfeed.widget tr,
+div#friendfeed.widget a,
+div#friendfeed.widget td {
+  position: relative;
+  background-color: inherit !important;
+  color: inherit !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  text-align: left;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  width: auto;
+  float: none;
+}
+
+#friendfeed.widget {
+  color: inherit !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  position: relative;
+  border: 0px !important;
+  overflow: hidden;
+}
 
 
 /*-------------------------------- </footer> */
