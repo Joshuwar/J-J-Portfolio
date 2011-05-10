@@ -1,7 +1,7 @@
 /* BUGS:
-	fix the image scrolling so it puts the top of the image in the right place
-	make the thumbnail gallery extend vertically whilst it fades
+	refreshing doesn't load the images!
 	make the imageNav not 1px out of vertical-line
+	make the thumbnail gallery extend vertically whilst it fades
 
 	TO-DO:
 	page detail views should move the ribbon to the correct position
@@ -20,6 +20,7 @@ var animationDuration = 500,
 	$thumbGal,
 	baseItemWidth,
 	animating = false,
+	portfolioImageOffset,
 	createThumbnailGallery = function(callback) {
 		var $thumbGalList,
 			$portImg,
@@ -54,6 +55,8 @@ var animationDuration = 500,
 				});
 		});
 		baseItemWidth = $thumbGalList.find('li').eq(0).css('width');
+		portfolioImageOffset = $thumbGal.offset().top;
+		console.log(portfolioImageOffset);
 		if(callback) {
 			callback();
 		}
@@ -116,8 +119,10 @@ var animationDuration = 500,
 		var $imageNav = $('.imageNav:visible'),
 			index = $imageNav.find('li').index(e.target),
 			$targetImg = $('.portfolioItem:visible img').eq(index),
-			toScrollTo = $targetImg.offset().top;
-		$.scrollTo(toScrollTo, animationDuration);
+			toScrollTo = $targetImg.offset().top-portfolioImageOffset;
+		$.scrollTo(toScrollTo, animationDuration, function() {
+			animating = false;
+		});
 		// move the imageNav arrow to the selected link
 		$imageNav.find('span').animate({
 			top: $(e.target).position().top
