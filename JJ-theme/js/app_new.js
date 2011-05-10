@@ -5,10 +5,11 @@
 	
 	Note: minimiseItems and backToGridClick (itemDeselected) do similar things - they shrink or grow gallery items
 
+	Need testing:
+	Next button should load next item in chosen category (means I need to handle links) - the PHP needs to put <a> tags inside the <h3>'s of portfolio items
+	Hire us link should open hire us page (and move ribbon to hire us) - it will do if the PHP spits out the Hire Us permalink
+	
 	TO-DO:
-	Next button should load next item in chosen category (means I need to handle links)
-	Hire us link should open hire us page (and move ribbon to hire us)
-	'back to grid' should go back to the filtered grid you were looking at (eg. work / how etc)
 	header should stop being position:fixed when there is 1px gap between it and the footer
 	block hover state - a fast fade to black or dark grey with the excerpt in white?
 	frag-id nav babies
@@ -147,8 +148,13 @@ var animationDuration = 500,
 				return false;
 			}
 			animating = true;
+			var eventData = {};
 			$('.portfolioItem:visible').fadeOut(animationDuration);
-			$(document).trigger('itemDeselected'); // I'm beginning to think this event is not useful
+			topic = $('ul.menu a.selected').text(); // JRL: oh-oh, I've introduced an element from the menu bar into the core portfolio functions! Bad!
+			if(topic) {
+				eventData.topic = topic;
+			}
+			$(document).trigger('itemDeselected', eventData); // I'm beginning to think this event is not useful
 			return false;
 		});
 	},
@@ -273,10 +279,12 @@ $(document).ready(function() {
 				$mockMenu.animate({
 					left: parseInt($elem.offset().left,10)
 				}, animationDuration, function() {
-					$elem.css('color', 'inherit');
-					$elem.closest('li')
+					$elem.css('color', 'inherit')
+						.addClass('selected')
+						.closest('li')
 						.siblings()
 						.children('a')
+						.removeClass('selected')
 						.css('color','');
 				});				
 			};
