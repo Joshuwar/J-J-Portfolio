@@ -1,18 +1,14 @@
-/* BUGS:
-	clicking on a 'backToGrid' too early after load doesn't work - need some way of saying "still loading!"
-	using indexOf to match topics causes "how we work" items to match for "work"
-	fix the image scrolling so it puts the top of the image in the right place
-	make the thumbnail gallery extend vertically whilst it fades
-	make the imageNav not 1px out of vertical-line
+/*
+	Note: all portfolio items need their first image to have a valid src, otherwise this will cause problems (at least in Chrome and Firefox) - the images won't fire their load event. In Chrome, this is a problem straight away; in Firefox, it happens when you refresh the page.
 
 	TO-DO:
 	page detail views should move the ribbon to the correct position
-	If there is only one item within a category, it should just open it straight away
 	Hire us link should open hire us page (and move ribbon to hire us)
 	Next button should load next item in chosen category
 	'back to grid' should go back to the filtered grid you were looking at (eg. work / how etc)
 	auto-open the most recent item if nothing happens on landing
 	frag-id nav babies
+	make the thumbnail gallery extend vertically whilst it fades?
 	"Re: next bit of JS, perhaps it would be good to sort out the block hover state? A fast fade to black or dark grey with the excerpt in white? 
 
 Or how about the next button? We can squirt the relevant url via wp."
@@ -22,6 +18,8 @@ var animationDuration = 500,
 	$thumbGal,
 	baseItemWidth,
 	animating = false,
+	portfolioImageOffset,
+	navSpanTopOffset,
 	createThumbnailGallery = function(callback) {
 		var $thumbGalList,
 			$portImg,
@@ -56,6 +54,7 @@ var animationDuration = 500,
 				});
 		});
 		baseItemWidth = $thumbGalList.find('li').eq(0).css('width');
+		portfolioImageOffset = $thumbGal.offset().top;
 		if(callback) {
 			callback();
 		}
@@ -116,13 +115,19 @@ var animationDuration = 500,
 	scrollPortfolioItem = function(e) {
 		// move to the matching image
 		var $imageNav = $('.imageNav:visible'),
+			$navSpan = $imageNav.find('span'),
 			index = $imageNav.find('li').index(e.target),
 			$targetImg = $('.portfolioItem:visible img').eq(index),
-			toScrollTo = $targetImg.offset().top;
-		$.scrollTo(toScrollTo, animationDuration);
+			toScrollTo = $targetImg.offset().top-portfolioImageOffset;
+		if(!navSpanTopOffset) {
+			navSpanTopOffset = parseInt($navSpan.css('top'),10);
+		}
+		$.scrollTo(toScrollTo, animationDuration, function() {
+			animating = false;
+		});
 		// move the imageNav arrow to the selected link
-		$imageNav.find('span').animate({
-			top: $(e.target).position().top
+		$navSpan.animate({
+			top: $(e.target).position().top+navSpanTopOffset
 		});
 	},
 	itemSelected = function(e, index) {
@@ -177,7 +182,7 @@ var animationDuration = 500,
 				$img.animate(animateProperties, animationDuration);
 				$itemSiblings.filter(function() {
 					if(topic) {
-						return $(this).find('.topics').text().indexOf(topic)!==-1;
+						return $(this).find('.topics').text()===topic;
 					} else {
 						return true;
 					}
@@ -205,16 +210,25 @@ var animationDuration = 500,
 		
 	},
 	minimiseItems = function(topic) {
-		var $toAnimate = $('#thumbnailGallery .item'),
+		var $thumbGal = $('#thumbnailGallery'),
+			$toAnimate =  $thumbGal.find('.item'),
+			$notMinimised,
 			animateLimit = $toAnimate.length,
 			animationCallback = function() {
 				animateLimit--;
 				if(animateLimit===0) {
 					animating = false;
+					$notMinimised = $thumbGal.find('.item').filter(function() {
+						return parseInt($(this).css('width'),10)!==0;
+					});
+					if($notMinimised.length==1) {
+						$notMinimised.click();
+					}
 				}
 			};
 		$toAnimate.each(function() {
-			if(topic && $(this).find('.topics').text().indexOf(topic)===-1) {
+			var topics = $(this).find('.topics').text().split(',');
+			if(topics.length && $.inArray(topic,topics)===-1) {
 				$(this).animate({
 					width: 0
 				}, animationDuration, animationCallback);
@@ -238,7 +252,7 @@ var animationDuration = 500,
 	}
 
 $(document).ready(function() {
-	
+
 	/* set up the nav menu */
 	if($('#header').length) {
 		var $mockMenu = $('<ul class="mockMenu"><li><a href="#"></a></li></ul>')

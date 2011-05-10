@@ -254,21 +254,22 @@ $(document).ready(function() {
 		}
 	});
 	
-	test("it should scroll the document to the position of the visible portfolio item's image that corresponds to the clicked link", function() {
+	test("it should scroll the document to the position of the visible portfolio item's image that corresponds to the clicked link (taking into account the original position of the gallery)", function() {
 		var clickIndex = 1,
 			$toClick = this.$imageNav.find('li:eq('+clickIndex+')'),
 			$matchingImg = $('.portfolioItem:eq(0)').find('img').eq(clickIndex),
-			toScrollTo = $matchingImg.offset().top;
+			toScrollTo = $matchingImg.offset().top-$('#thumbnailGallery').offset().top;
 		$toClick.click();
 		equals($(window).scrollTop(),Math.round(toScrollTo));
 		$.scrollTo(0);
 	});
-	test("it should scroll the visible nav menu's arrow to the clicked link", function() {
+	test("it should scroll the visible nav menu's arrow to the clicked link (taking into account any top offset the arrow already has)", function() {
 		var clickIndex = 1,
 			$toClick = this.$imageNav.find('li:eq('+clickIndex+')'),
-			$matchingSpan = this.$imageNav.find('span');
+			$matchingSpan = this.$imageNav.find('span'),
+			originalTopOffset = parseInt($matchingSpan.css('top'),10);
 		$toClick.click();
-		equals($matchingSpan.offset().top, $toClick.offset().top);
+		equals($matchingSpan.offset().top, $toClick.offset().top+originalTopOffset);
 	});
 	
 	/*
@@ -407,7 +408,8 @@ $(document).ready(function() {
 	test("it should not restore thumbnails that don't match a provided topic", function() {
 		var topic = "sampleTopic",
 			$toOmit = $thumbGal.find('.item').filter(function() {
-				return $(this).find('.topics').text().indexOf(topic)===-1;
+				var topics = $(this).find('.topics').text().split(',');
+				return $.inArray(topic,topics)===-1;
 			});
 		ok($toOmit.length,"there are items that shouldn't be restored");
 		$(document).bind('galRestored', function() {
@@ -478,7 +480,7 @@ $(document).ready(function() {
 	module("minimiseItems", {
 		setup: function() {
 			$thumbGal = $('#thumbnailGallery');
-			createThumbnailGallery();
+			createThumbnailGallery(addThumbnailClick);
 		}
 	});
 	
@@ -488,7 +490,8 @@ $(document).ready(function() {
 		ok($thumbGal.find('.item .topics').length,'there are .topics elements');
 		minimiseItems(topic);
 		$thumbGal.find('.item').filter(function() {
-			return $(this).find('.topics').text().indexOf(topic)===-1;
+			var topics = $(this).find('.topics').text().split(',');
+			return $.inArray(topic,topics)===-1;
 		}).each(function() {
 			ok($(this).css('width')==='0px','shrunk');
 		});
@@ -498,7 +501,8 @@ $(document).ready(function() {
 		var topic = "sampleTopic";
 		minimiseItems(topic);
 		$thumbGal.find('.item').filter(function() {
-			return $(this).find('.topics').text().indexOf(topic)!==-1;
+			var topics = $(this).find('.topics').text().split(',');
+			return $.inArray(topic,topics)!==-1;
 		}).each(function() {
 			ok($(this).css('width')!=='0px','not shrunk');
 		});
@@ -507,13 +511,28 @@ $(document).ready(function() {
 	test("it should restore any matching items that are not at their default width", function() {
 		var topic = "sampleTopic",
 			$items = $thumbGal.find('.item').filter(function() {
-				return $(this).find('.topics').text().indexOf(topic)!==-1;
+				var topics = $(this).find('.topics').text().split(',');
+				return $.inArray(topic,topics)!==-1;
 			});
 		$items.css('width','0px');
 		minimiseItems(topic);
 		$items.each(function() {
 			ok($(this).css('width')!=='0px','not shrunk');
 		});
+	});
+	
+	test("it should open an item if there is only one item left after minimising", function() {
+		var topic = "sampleTopic",
+			$items = $thumbGal.find('.item').filter(function() {
+				var topics = $(this).find('.topics').text().split(',');
+				return $.inArray(topic,topics)!==-1;
+			});
+		expect(2);
+		equals($items.length,1);
+		$items.eq(0).bind('click', function() {
+			ok(1);
+		});
+		minimiseItems(topic);
 	});
 
 	module("restoreItems", {
