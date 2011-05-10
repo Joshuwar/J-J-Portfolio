@@ -407,7 +407,8 @@ $(document).ready(function() {
 	test("it should not restore thumbnails that don't match a provided topic", function() {
 		var topic = "sampleTopic",
 			$toOmit = $thumbGal.find('.item').filter(function() {
-				return $(this).find('.topics').text().indexOf(topic)===-1;
+				var topics = $(this).find('.topics').text().split(',');
+				return $.inArray(topic,topics)===-1;
 			});
 		ok($toOmit.length,"there are items that shouldn't be restored");
 		$(document).bind('galRestored', function() {
@@ -488,7 +489,8 @@ $(document).ready(function() {
 		ok($thumbGal.find('.item .topics').length,'there are .topics elements');
 		minimiseItems(topic);
 		$thumbGal.find('.item').filter(function() {
-			return $(this).find('.topics').text().indexOf(topic)===-1;
+			var topics = $(this).find('.topics').text().split(',');
+			return $.inArray(topic,topics)===-1;
 		}).each(function() {
 			ok($(this).css('width')==='0px','shrunk');
 		});
@@ -498,7 +500,8 @@ $(document).ready(function() {
 		var topic = "sampleTopic";
 		minimiseItems(topic);
 		$thumbGal.find('.item').filter(function() {
-			return $(this).find('.topics').text().indexOf(topic)!==-1;
+			var topics = $(this).find('.topics').text().split(',');
+			return $.inArray(topic,topics)!==-1;
 		}).each(function() {
 			ok($(this).css('width')!=='0px','not shrunk');
 		});
@@ -507,7 +510,8 @@ $(document).ready(function() {
 	test("it should restore any matching items that are not at their default width", function() {
 		var topic = "sampleTopic",
 			$items = $thumbGal.find('.item').filter(function() {
-				return $(this).find('.topics').text().indexOf(topic)!==-1;
+				var topics = $(this).find('.topics').text().split(',');
+				return $.inArray(topic,topics)!==-1;
 			});
 		$items.css('width','0px');
 		minimiseItems(topic);

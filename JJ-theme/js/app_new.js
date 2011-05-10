@@ -1,6 +1,4 @@
 /* BUGS:
-	clicking on a 'backToGrid' too early after load doesn't work - need some way of saying "still loading!"
-	using indexOf to match topics causes "how we work" items to match for "work"
 	fix the image scrolling so it puts the top of the image in the right place
 	make the thumbnail gallery extend vertically whilst it fades
 	make the imageNav not 1px out of vertical-line
@@ -177,7 +175,7 @@ var animationDuration = 500,
 				$img.animate(animateProperties, animationDuration);
 				$itemSiblings.filter(function() {
 					if(topic) {
-						return $(this).find('.topics').text().indexOf(topic)!==-1;
+						return $(this).find('.topics').text()===topic;
 					} else {
 						return true;
 					}
@@ -214,7 +212,8 @@ var animationDuration = 500,
 				}
 			};
 		$toAnimate.each(function() {
-			if(topic && $(this).find('.topics').text().indexOf(topic)===-1) {
+			var topics = $(this).find('.topics').text().split(',');
+			if(topics.length && $.inArray(topic,topics)===-1) {
 				$(this).animate({
 					width: 0
 				}, animationDuration, animationCallback);
