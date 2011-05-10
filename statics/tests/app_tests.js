@@ -480,7 +480,7 @@ $(document).ready(function() {
 	module("minimiseItems", {
 		setup: function() {
 			$thumbGal = $('#thumbnailGallery');
-			createThumbnailGallery();
+			createThumbnailGallery(addThumbnailClick);
 		}
 	});
 	
@@ -519,6 +519,20 @@ $(document).ready(function() {
 		$items.each(function() {
 			ok($(this).css('width')!=='0px','not shrunk');
 		});
+	});
+	
+	test("it should open an item if there is only one item left after minimising", function() {
+		var topic = "sampleTopic",
+			$items = $thumbGal.find('.item').filter(function() {
+				var topics = $(this).find('.topics').text().split(',');
+				return $.inArray(topic,topics)!==-1;
+			});
+		expect(2);
+		equals($items.length,1);
+		$items.eq(0).bind('click', function() {
+			ok(1);
+		});
+		minimiseItems(topic);
 	});
 
 	module("restoreItems", {
