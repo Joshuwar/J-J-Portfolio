@@ -318,13 +318,21 @@ $(document).ready(function() {
 			return false;
 		});
 		$('a').click(function(e) {
-			if($('.portfolioItem:visible').length) {
-				// click on the matching thumbnail
-			} else {
-				// hide the visible portfolio 
+			e.preventDefault();
+			var href = $(this).attr('href');
+			if(!href || href==='#') {
+				return true;
 			}
-			//$(document).trigger('itemSelected',1);
-
+			var $matchingThumbnail = $('.item').eq(1);
+			if($('.portfolioItem:visible').length) {
+				// hide the visible portfolio
+				backToGridClick();
+				$(document).one('galRestored', function() {
+					$matchingThumbnail.click();
+				});
+			} else {
+				$matchingThumbnail.click();
+			}
 		});
 		$(document).bind('galFaded', function(e, data) {
 			var $item = data.$item;
