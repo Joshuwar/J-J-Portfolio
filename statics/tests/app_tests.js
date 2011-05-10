@@ -359,7 +359,7 @@ $(document).ready(function() {
 				.css('width','100%')
 				.addClass('selected')
 				.siblings()
-				.css('width', 0);baseItemWidth
+				.css('width', 0);
 		},
 		teardown: function() {
 			$(document).unbind('itemDeselected');
@@ -399,7 +399,7 @@ $(document).ready(function() {
 	asyncTest("after the height animation, all thumbnails should return to their default width", function() {
 		$(document).bind('galRestored', function() {
 			$thumbGal.find('.item').each(function() {
-				ok($(this).css('width')===baseItemWidth);
+				equals($(this).css('width'),baseItemWidth);
 			});
 			start();
 		});
@@ -416,6 +416,17 @@ $(document).ready(function() {
 			$toOmit.each(function() {
 				equals($(this).css('width'),'0px');
 			});
+		});
+		$(document).trigger('itemDeselected', {
+			topic: topic
+		});
+	});
+	test("it should reduce to zero width a thumbnail that is open (i.e. full width) that doesn't match a provided topic", function() {
+		var topic = "sampleTopic2",
+			$openItem = $thumbGal.find('.item:eq(0)');
+		expect(1);
+		$(document).bind('galRestored', function() {
+			equals($openItem.css('width'),'0px');
 		});
 		$(document).trigger('itemDeselected', {
 			topic: topic

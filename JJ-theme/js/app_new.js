@@ -7,9 +7,9 @@
 	Next button should load next item in chosen category
 	'back to grid' should go back to the filtered grid you were looking at (eg. work / how etc)
 	auto-open the most recent item if nothing happens on landing
+	block hover state - a fast fade to black or dark grey with the excerpt in white?
 	frag-id nav babies
 	make the thumbnail gallery extend vertically whilst it fades?
-	"Re: next bit of JS, perhaps it would be good to sort out the block hover state? A fast fade to black or dark grey with the excerpt in white? 
 
 Or how about the next button? We can squirt the relevant url via wp."
 */
@@ -156,10 +156,6 @@ var animationDuration = 500,
 	itemDeselected = function(e, data) {
 		var $item = $('#thumbnailGallery .item.selected'),
 			$itemSiblings = $item.length ? $item.siblings() : $('#thumbnailGallery .item'),
-			$img,
-			animateProperties,
-			top,
-			left,
 			topic = data ? data.topic : "",
 			secondAnimationCallback = function() {
 				$('#mainTextPane').fadeIn(animationDuration, function() {
@@ -168,14 +164,15 @@ var animationDuration = 500,
 				});
 			},
 			firstAnimationCallback = function() {
+				var animateProperties = {},
+					$img = $item.find('img'),
+					top = $img.data('top'),
+					left = $img.data('left'),
+					itemWidth;
 				$(document).trigger('galShown');
-				animateProperties = {};
-				$img = $item.find('img');
-				top = $img.data('top');
 				if(top) {
 					animateProperties.top = parseInt(top,10);
 				}
-				left = $img.data('left');
 				if(left) {
 					animateProperties.left = parseInt(left,10);
 				}
@@ -190,8 +187,13 @@ var animationDuration = 500,
 					width: baseItemWidth
 				}, animationDuration);
 				if($item.length) {
+					if(!topic || $item.find('.topics').text()===topic) {
+						itemWidth = baseItemWidth;
+					} else {
+						itemWidth = 0;
+					}
 					$item.animate({
-						width: baseItemWidth
+						width: itemWidth
 					}, animationDuration, secondAnimationCallback);
 				} else {
 					window.setTimeout(secondAnimationCallback,animationDuration);
@@ -269,13 +271,16 @@ $(document).ready(function() {
 				left: parseInt($(this).offset().left,10)
 			});
 			$(this).css('color', 'inherit');
-			$(this).closest('li').siblings().children('a').css('color','');
+			$(this).closest('li')
+				.siblings()
+				.children('a')
+				.css('color','');
 			$visiblePortfolio = $('.portfolioItem:visible');
+			topic = $(this).text();
 			if($visiblePortfolio.length) {
-				topic = $visiblePortfolio.find('.topics').text();
 				backToGridClick(topic);
 			} else {
-				minimiseItems($(this).text());
+				minimiseItems(topic);
 			}
 			return false;
 		});
