@@ -23,6 +23,10 @@ var animationDuration = 500,
 	animating = false,
 	portfolioImageOffset,
 	navSpanTopOffset,
+	hasTopic = function(item, topic) {
+		var topics = $(item).find('.topics').text().split(',');
+		return $.inArray(topic, topics)!==-1;
+	},
 	createThumbnailGallery = function(callback) {
 		var $thumbGalList,
 			$portImg,
@@ -184,7 +188,7 @@ var animationDuration = 500,
 				$img.animate(animateProperties, animationDuration);
 				$itemSiblings.filter(function() {
 					if(topic) {
-						return $(this).find('.topics').text()===topic;
+						return hasTopic(this,topic);
 					} else {
 						return true;
 					}
@@ -192,7 +196,7 @@ var animationDuration = 500,
 					width: baseItemWidth
 				}, animationDuration);
 				if($item.length) {
-					if(!topic || $item.find('.topics').text()===topic) {
+					if(!topic || hasTopic($item,topic)) {
 						itemWidth = baseItemWidth;
 					} else {
 						itemWidth = 0;
@@ -234,8 +238,7 @@ var animationDuration = 500,
 				}
 			};
 		$toAnimate.each(function() {
-			var topics = $(this).find('.topics').text().split(',');
-			if(topic && topics.length && $.inArray(topic,topics)===-1) {
+			if(topic && !hasTopic(this,topic)) {
 				$(this).animate({
 					width: 0
 				}, animationDuration, animationCallback);
@@ -313,10 +316,10 @@ $(document).ready(function() {
 			return false;
 		});
 		$(document).bind('galFaded', function(e, data) {
-			var $item = data.$item,
-				topic = $item.find('.topics').text().split(',')[0];
+			var $item = data.$item;
 			$('ul.menu a').each(function() {
-				if($(this).text()===topic) {
+				topic = $(this).text();
+				if(hasTopic($item,topic)) {
 					moveRibbon(this);
 					return false;
 				}
