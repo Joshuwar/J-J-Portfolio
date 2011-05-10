@@ -2,19 +2,18 @@
 	Note: all portfolio items need their first image to have a valid src, otherwise this will cause problems (at least in Chrome and Firefox) - the images won't fire their load event. In Chrome, this is a problem straight away; in Firefox, it happens when you refresh the page.
 	
 	Note: there are effectively two files mixed up here: the library for the portfolio, and the app.js that uses it; they need pulling apart
+	
+	Note: minimiseItems and backToGridClick (itemDeselected) do similar things - they shrink or grow gallery items
 
 	TO-DO:
-	replace the topics mess with a hasTopic function
-	Hire us link should open hire us page (and move ribbon to hire us)
-	header should stop being position:fixed when there is 1px gap between it and the footer
 	Next button should load next item in chosen category (means I need to handle links)
+	Hire us link should open hire us page (and move ribbon to hire us)
 	'back to grid' should go back to the filtered grid you were looking at (eg. work / how etc)
+	header should stop being position:fixed when there is 1px gap between it and the footer
 	block hover state - a fast fade to black or dark grey with the excerpt in white?
 	frag-id nav babies
 	make the thumbnail gallery extend vertically whilst it fades?
 	auto-open the most recent item if nothing happens on landing?
-
-Or how about the next button? We can squirt the relevant url via wp."
 */
 
 var animationDuration = 500,
@@ -292,6 +291,9 @@ $(document).ready(function() {
 			topic = $(this).text();
 			if($visiblePortfolio.length) {
 				backToGridClick(topic);
+				$(document).one('galRestored', function() {
+					minimiseItems(topic);
+				});
 			} else {
 				minimiseItems(topic);
 			}
@@ -314,6 +316,15 @@ $(document).ready(function() {
 				minimiseItems();
 			}
 			return false;
+		});
+		$('a').click(function(e) {
+			if($('.portfolioItem:visible').length) {
+				// click on the matching thumbnail
+			} else {
+				// hide the visible portfolio 
+			}
+			//$(document).trigger('itemSelected',1);
+
 		});
 		$(document).bind('galFaded', function(e, data) {
 			var $item = data.$item;
