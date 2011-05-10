@@ -1,10 +1,18 @@
 /* BUGS:
+	clicking on a 'backToGrid' too early after load doesn't work - need some way of saying "still loading!"
 	using indexOf to match topics causes "how we work" items to match for "work"
 	fix the image scrolling so it puts the top of the image in the right place
 	make the thumbnail gallery extend vertically whilst it fades
 	make the imageNav not 1px out of vertical-line
 
 	TO-DO:
+	page detail views should move the ribbon to the correct position
+	If there is only one item within a category, it should just open it straight away
+	Hire us link should open hire us page (and move ribbon to hire us)
+	Next button should load next item in chosen category
+	'back to grid' should go back to the filtered grid you were looking at (eg. work / how etc)
+	auto-open the most recent item if nothing happens on landing
+	frag-id nav babies
 	"Re: next bit of JS, perhaps it would be good to sort out the block hover state? A fast fade to black or dark grey with the excerpt in white? 
 
 Or how about the next button? We can squirt the relevant url via wp."
@@ -13,6 +21,7 @@ Or how about the next button? We can squirt the relevant url via wp."
 var animationDuration = 500,
 	$thumbGal,
 	baseItemWidth,
+	animating = false,
 	createThumbnailGallery = function(callback) {
 		var $thumbGalList,
 			$portImg,
@@ -53,14 +62,20 @@ var animationDuration = 500,
 	},
 	addThumbnailClick = function() {
 		$('.item').click(function() {
+			if(animating) {
+				return false;
+			}
+			animating = true;
 			var $item = $(this).addClass('selected'),
 				$toAnimate = $item.find('img'),
+				animateLimit,
 				animationCallback = function() {
 					$item.animate({
 						width: '100%'
 					}, animationDuration, function() {
 						$(document).trigger('itemSelected', $('.item').index($item));
 						$thumbGal.fadeOut(animationDuration, function() {
+							animating = false;
 							$(document).trigger('galFaded');
 						});				
 					});
@@ -71,10 +86,16 @@ var animationDuration = 500,
 				left: 0
 			}, animationDuration);
 			$toAnimate = $item.siblings();
+			animateLimit = $toAnimate.length;
 			if($toAnimate.length) {
 				$toAnimate.animate({
 					width: 0
-				}, animationDuration, animationCallback);
+				}, animationDuration, function() {
+					animateLimit--;
+					if(animateLimit===0) {
+						animationCallback();
+					}
+				});
 			} else {
 				animationCallback();
 			}
@@ -109,13 +130,18 @@ var animationDuration = 500,
 	},
 	backToGrid = function() {
 		$('.backToGrid').live('click', function() {
+			if(animating) {
+				return false;
+			}
+			animating = true;
 			$('.portfolioItem:visible').fadeOut(animationDuration);
-			$(document).trigger('itemDeselected');
+			$(document).trigger('itemDeselected'); // I'm beginning to think this event is not useful
 			return false;
 		});
 	},
 	backToGridClick = function(topic) {
 		var eventData = {};
+		animating = true;
 		if(topic) {
 			eventData.topic = topic;
 		}
@@ -131,8 +157,10 @@ var animationDuration = 500,
 			left,
 			topic = data ? data.topic : "",
 			secondAnimationCallback = function() {
-				$('#mainTextPane').fadeIn(animationDuration);
-				$(document).trigger('galRestored');
+				$('#mainTextPane').fadeIn(animationDuration, function() {
+					animating = false;
+					$(document).trigger('galRestored');
+				});
 			},
 			firstAnimationCallback = function() {
 				$(document).trigger('galShown');
@@ -169,7 +197,7 @@ var animationDuration = 500,
 			$item
 				.removeClass('selected')
 				.animate({
-					height: $item.siblings().eq(0).css('height')
+					height: $itemSiblings.eq(0).css('height')
 				}, animationDuration, firstAnimationCallback);
 		} else {
 			window.setTimeout(firstAnimationCallback,animationDuration);
@@ -177,16 +205,26 @@ var animationDuration = 500,
 		
 	},
 	minimiseItems = function(topic) {
-		$('#thumbnailGallery .item').each(function() {
-			if($(this).find('.topics').text().indexOf(topic)===-1) {
+		var $toAnimate = $('#thumbnailGallery .item'),
+			animateLimit = $toAnimate.length,
+			animationCallback = function() {
+				animateLimit--;
+				if(animateLimit===0) {
+					animating = false;
+				}
+			};
+		$toAnimate.each(function() {
+			if(topic && $(this).find('.topics').text().indexOf(topic)===-1) {
 				$(this).animate({
 					width: 0
-				}, animationDuration);
+				}, animationDuration, animationCallback);
 			} else {
 				if($(this).css('width')!==baseItemWidth) {
 					$(this).animate({
 						width: baseItemWidth
-					}, animationDuration);
+					}, animationDuration, animationCallback);
+				} else {
+					animateLimit--;
 				}
 			}
 		});
@@ -209,6 +247,10 @@ $(document).ready(function() {
 			topic;
 		$('ul.menu a').click(function(e) {
 			e.preventDefault();
+			if(animating) {
+				return false;
+			}
+			animating = true;
 			$mockMenu.animate({
 				left: parseInt($(this).offset().left,10)
 			});
@@ -225,11 +267,20 @@ $(document).ready(function() {
 		});
 		$('h1').click(function(e) {
 			e.preventDefault();
+			if(animating) {
+				return false;
+			}
+			animating = true;
 			$mockMenu.animate({
 				left: 0
 			});
 			$(this).siblings('ul').find('a').css('color','');
-			backToGridClick();
+			$visiblePortfolio = $('.portfolioItem:visible');
+			if($visiblePortfolio.length) {
+				backToGridClick();
+			} else {
+				minimiseItems();
+			}
 			return false;
 		});
 	}
@@ -269,7 +320,13 @@ $(document).ready(function() {
 			backToGrid();
 		});
 		createImageNav(function() {
-			$('.imageNav').find('li').live('click', scrollPortfolioItem);
+			$('.imageNav').find('li').live('click', function(e) {
+				if(animating) {
+					return false;
+				}
+				animating = true;
+				scrollPortfolioItem.apply(this,arguments);
+			});
 		});
 		$('img').hide().imagesLoaded(function() {
 			$(this).fadeIn(animationDuration);
