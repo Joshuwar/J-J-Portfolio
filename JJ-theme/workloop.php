@@ -3,7 +3,7 @@
 				<div class="portfolioItem">
 					<span class="topics"><?php the_category(',',''); ?></span>
 					<div class="textPane margintopsmall">	
-						<h2 id="<?php echo $post->post_name; ?>"><?php the_title(); ?></h2>
+						<h2 id="<?php echo $post->post_name; ?>"><a title="<?php the_title(); ?>" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
 						<?php the_content(); ?>
 						

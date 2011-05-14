@@ -350,6 +350,18 @@ if ( !function_exists('get_custom_field') ) {
 add_action( 'save_post', 'sp_save_postdata', 1, 2 );
 
 
+// --------------- END CUSTOM POST CODE
+
+
+// function to get permalinks by name, not id
+
+function get_permalink_by_name($page_name)
+{
+	global $post;
+	global $wpdb;
+	$pageid_name = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE post_name = '".$page_name."'");
+	return get_permalink($pageid_name);
+}
 
 
 
