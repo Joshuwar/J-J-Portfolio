@@ -432,6 +432,8 @@ a .nextItem:hover span.point {
 	color: white;
 	padding-top: 30px;
 	padding-left: 30px;
+	z-index: 0;
+	position: relative;
 }
 
 .footer a {
@@ -530,6 +532,7 @@ a .nextItem:hover span.point {
 .footer #leftColumn ul .alternate img {
 	float: right;
 	margin-left: 20px;
+	margin-right: 0px;
 }
 
 .footer #leftColumn ul .alternate {
@@ -539,6 +542,9 @@ a .nextItem:hover span.point {
 .footer #leftColumn ul li {
 	list-style: none;
 	margin: 0px;
+	clear: both;
+	overflow: hidden;
+	padding-bottom: 20px;
 }
 
 .footer #delicious p a {
@@ -547,6 +553,13 @@ a .nextItem:hover span.point {
 	
 }
 
+.footer a.nobg {
+	background: none;
+	padding: 0px;
+}
+.footer a.nobg:hover {
+	background: none;
+}
 /*-------------------------------- 		<tweet blender overides> */
 
 .footer #middleColumn div.tb_tweet, 

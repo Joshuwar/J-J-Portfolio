@@ -5,23 +5,24 @@
 		<div class="footer">
 			<div id="leftColumn" class="left">
 				<h3>Recent Work</h3>
+				
+				<?php 
+				$count = 0;
+				$work_loop = new WP_query( 'post_type=portfolio_items&category=work&posts_per_page=3' ); 
+				if ( $work_loop->have_posts() ) : ?>
 				<ul>
-					<li>
-						<img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/logo.png">
-						<h4>Jeroboams</h4>
-						<p>J&J made a lovely wine site for Jeroboams En Primeur campaigns. It has been an incredible success.</p>
+				 <?php while ( $work_loop->have_posts() ) : $work_loop->the_post(); ?>
+					<li <?php if ($count % 2) : echo ( "class='alternate'" ); endif; ?> >
+						<a class="nobg" title="<?php the_title(); ?>" href="<?php the_permalink(); ?>">
+							<?php the_post_thumbnail( array(100,100) ); ?>
+						</a>
+						<h4 id="<?php echo $post->post_name; ?>"><a title="<?php the_title(); ?>" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
+						<?php the_excerpt(); ?>
 					</li>
-					<li class="alternate">
-						<img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/logo.png">
-						<h4>Ambit</h4>
-						<p>J&J made a lovely wine site for Jeroboams En Primeur campaigns. It has been an incredible success.</p>
-					</li>
-					<li>
-						<img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/logo.png">
-						<h4>Avox</h4>
-						<p>J&J made a lovely wine site for Jeroboams En Primeur campaigns. It has been an incredible success.</p>
-					</li>
+					<?php $count++;	?>
+					<?php endwhile; ?>
 				</ul>
+				<?php endif; ?>
 			</div>
 			<div id="middleColumn">
 				<div id="top">
@@ -62,10 +63,10 @@
 					<div class="rightCol" id="delicious">
 						<h3><a href="#">J&amp;J Like This</a></h3>
 						
-						<?php
+						<?php /*
 							$view = 0;
 							$thing = RSSImport(
-								$display = 15, 
+								$display = 1, 
 								$feedurl = 'http://friendfeed.com/?auth=lhH22jyOlL6q0sxe&format=atom',
 								$before_desc = '',
 								$displaydescriptions = 1,
@@ -94,7 +95,7 @@
 							);
 							// now, take "You: " off title
 							echo $thing;
-						?>
+						 */ ?>
 						
 					</div>
 				</div>
