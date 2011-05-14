@@ -363,9 +363,34 @@ function get_permalink_by_name($page_name)
 	return get_permalink($pageid_name);
 }
 
+function attachment_offset_edit($form_fields, $post) {
+
+	// get the current value of our custom field
+	$current_value = get_post_meta($post->ID, "_left_offset", true);
+	
+	// build the html for our select box
+	$left_offset_html = "<input name='_left_offset_{$post->ID}' id='_left_offset_{$post->ID}' type='text' value='{$current_value}' />";	
+	$top_offset_html = "<input name='_top_offset_{$post->ID}' id='_top_offset_{$post->ID}' type='text' />";	
+	
+	// add our custom select box to the form_fields
+	$form_fields["mySelectBox"]["label"] = __("Left Offset");
+	$form_fields["mySelectBox"]["input"] = "html";
+	$form_fields["mySelectBox"]["html"] = $left_offset_html;
+
+	return $form_fields;
+	
+}
+add_filter("attachment_fields_to_edit", "attachment_offset_edit", null, 2);
 
 
 
+function attachment_offset_save($post, $attachment) {
+	if( isset($attachment['mySelectBox']) ){
+		update_post_meta($post['ID'], '_left_offset', $attachment['mySelectBox']);
+	}
+	return $post;
+}
+add_filter("attachment_fields_to_save", "attachment_offset_save", null, 2);
 
 
 
