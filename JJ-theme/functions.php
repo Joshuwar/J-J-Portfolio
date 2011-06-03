@@ -18,7 +18,7 @@ if ( function_exists( 'register_nav_menu' ) ) {
 
 // Image Presentation for Portfolio Items
 function attachment_toolbox($size = 'portfolio-image', $emptyMsg = 'EMPTY') {
-
+	
 	$images = get_children(array(
 		'post_parent'    => get_the_ID(),
 		'post_type'      => 'attachment',
@@ -32,6 +32,16 @@ function attachment_toolbox($size = 'portfolio-image', $emptyMsg = 'EMPTY') {
 	$count = 0;
 	$out = '<div class="gallery">';
 	foreach($images as $image) {
+		
+		// split thumbParams
+		$params = get_post_meta($image->ID, '_thumbnailParams', true);
+		$params = explode(',', $params);
+		$leftOffset = $params[0];
+		$topOffset = $params[1];
+		$height = $params[2];
+		$width = $params[3];
+		
+		// Other image meta
 		$attimg  = wp_get_attachment_image_src($image->ID,$size);
 		$attimgurl = $attimg[0];
 		$atturl   = wp_get_attachment_url($image->ID);
@@ -41,7 +51,12 @@ function attachment_toolbox($size = 'portfolio-image', $emptyMsg = 'EMPTY') {
 		$attcontent = $image->post_content;
 		$imglink	= $image->guid;
 		$attimgalt	= get_post_meta($image->ID, '_wp_attachment_image_alt', true);
-		$out .= '<img class="portfolioImage" src="'.$attimgurl.'" alt="'.$attimgalt.'"/>';
+		$out .= '<img ';
+		if ($leftOffset) { 	$out .= "data-leftOffset='$leftOffset' ";} 
+		if ($topOffset) { 	$out .= "data-topOffset='$topOffset' " ;} 
+		if ($height) { 		$out .= "data-height='$height' ";} 
+		if ($width) { 		$out .= "data-width='$width' ";} 
+		$out .= 'class="portfolioImage" src="'.$attimgurl.'" alt="'.$attimgalt.'"/>';
 		$count++;
 		
 	}
@@ -363,19 +378,22 @@ function get_permalink_by_name($page_name)
 	return get_permalink($pageid_name);
 }
 
+
+
+
+
 function attachment_offset_edit($form_fields, $post) {
 
 	// get the current value of our custom field
-	$current_value = get_post_meta($post->ID, "_left_offset", true);
-	
+	$current_value = get_post_meta($post->ID, "_thumbnailParams", true);
+
 	// build the html for our select box
-	$left_offset_html = "<input name='_left_offset_{$post->ID}' id='_left_offset_{$post->ID}' type='text' value='{$current_value}' />";	
-	$top_offset_html = "<input name='_top_offset_{$post->ID}' id='_top_offset_{$post->ID}' type='text' />";	
+	$offset_html = "<input name='attachments[{$post->ID}][thumbnailParams]' id='attachments[{$post->ID}][thumbnailParams]' type='text' value='{$current_value}' />";
 	
 	// add our custom select box to the form_fields
-	$form_fields["mySelectBox"]["label"] = __("Left Offset");
-	$form_fields["mySelectBox"]["input"] = "html";
-	$form_fields["mySelectBox"]["html"] = $left_offset_html;
+	$form_fields["thumbnailParams"]["label"] = __("Thumbnail Params (left offset, top offset, height, width)");
+	$form_fields["thumbnailParams"]["input"] = "html";
+	$form_fields["thumbnailParams"]["html"] = $offset_html;
 
 	return $form_fields;
 	
@@ -385,8 +403,8 @@ add_filter("attachment_fields_to_edit", "attachment_offset_edit", null, 2);
 
 
 function attachment_offset_save($post, $attachment) {
-	if( isset($attachment['mySelectBox']) ){
-		update_post_meta($post['ID'], '_left_offset', $attachment['mySelectBox']);
+	if( isset($attachment['thumbnailParams']) ){
+		update_post_meta($post['ID'], '_thumbnailParams', $attachment['thumbnailParams']);
 	}
 	return $post;
 }

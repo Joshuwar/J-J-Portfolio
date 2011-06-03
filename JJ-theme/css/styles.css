@@ -10,6 +10,7 @@ body {
 }
 
 #wrapper {
+	background-color: #f9f9f9;
 }
 
 p a, h6 a {
@@ -21,7 +22,9 @@ p a, h6 a {
 p a:hover, h6 a:hover {
 	background-color: #ffd464;
 	text-decoration: none;
-	border-bottom: 1px solid #828282;
+	/*border-bottom: 1px solid #828282;
+	border-top: 1px solid #828282; */
+	border-bottom: none;
 }
 
 h1 {
@@ -44,7 +47,11 @@ h1 {
 h2 {
 	font-size: 1.5em;
 }
-
+h2 a {
+	color: #565656;
+	border-bottom: none;
+	text-decoration: none;
+}
 #logoStar {
 	background-image: url(../images/star_logo.png);
 	width: 60px;
@@ -124,6 +131,9 @@ h2 {
 	float: left;
 	height: 100%;
 	padding: 30px;
+	margin-bottom: 60px;
+	/*font-size: 1.05em;
+	line-height: 1.5em;*/
 }
 
 .gallery {
@@ -332,9 +342,12 @@ a .nextItem:hover span.point {
 /* ================== portfolio entry */
 
 .portfolioImage {
-	border: 1px solid #c1c1c1;
-	/*margin-top: 10px;*/
-	margin-bottom: 60px;
+	background-color: white;
+    border: 1px solid #EAEAEA;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 1px 1px 2px #7E7E7E;
+    margin-bottom: 60px;
+    padding: 8px;
 }
 
 .imageNav {

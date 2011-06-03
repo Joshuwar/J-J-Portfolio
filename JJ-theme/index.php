@@ -9,7 +9,7 @@
 						<?php  get_template_part( 'meta' ); ?>
 						
 					</div>
-					<?php attachment_toolbox('portfolio-image', "Bongo bongo bongo"); ?>
+					<?php attachment_toolbox('portfolio-image', "No Images Found"); ?>
 					<div class="imageNav"></div>
 				</div>
 

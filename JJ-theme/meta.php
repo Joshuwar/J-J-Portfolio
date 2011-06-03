@@ -9,7 +9,7 @@
 							<div class="marginleft">
 								<h6>Testimonial</h6>
 
-									<p class="marginleft"><em><?php get_custom_field('_testimonial'); ?></em></p>
+									<p><em><?php get_custom_field('_testimonial'); ?></em></p>
 									<span>- <?php get_custom_field('_testimonial_name'); ?></span>
 
 							</div>
