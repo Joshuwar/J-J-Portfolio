@@ -7,7 +7,9 @@
  				 ?>
 				<?php if ( $work_loop->have_posts() ) : while ( $work_loop->have_posts() ) : $work_loop->the_post(); ?>
 				<div class="portfolioItem">
-					<span class="topics"><?php the_category(',',''); ?></span>
+					<span class="topics"><?php 	foreach((get_the_category()) as $category) { 
+												    echo $category->category_nicename; 
+												} ?></span>
 					<div class="textPane margintopsmall">	
 						<h2 id="<?php echo $post->post_name; ?>"><a title="<?php the_title(); ?>" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 

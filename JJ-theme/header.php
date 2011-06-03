@@ -39,11 +39,14 @@
 	<body>
 		<div id="wrapper">
 			<div id="header">
-				<h1>J&amp;J</h1>
+				<h1><a href="/">J&amp;J</a></h1>
 				<?php wp_nav_menu( array(
 					'container'		 => 'false',
 					'theme_location' => 'top_menu', 
 					)
 				); ?>
+				<ul class="mockMenu">
+					<li><a href="#"></a></li>
+				</ul>
 			</div>
 			<div class="jbasewrap" id="portfolio">
