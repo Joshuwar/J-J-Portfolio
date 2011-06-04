@@ -67,18 +67,17 @@ function moveRibbon(category) {
 	}, ANIMATION_DURATION);
 }
 
-function toggleThumbs(toMatch) {
-	var topics = [],
+function toggleThumbs(toMatch,doNotOpen) {
+	var topics,
 		matchType,
 		$thumbs = $('#thumbnailGallery ul li'),
 		$thumb,
-		width;
+		i = 0,
+		thumbCount = $thumbs.length,
+		width,
+		$visibleThumb;
 	if(toMatch) {
-		$('.topics').each(function() {
-			$.each($(this).text().split(","),function(i, topic) {
-				pushUnique(topic,topics);
-			});
-		});
+		topics = getMenuTopics();
 		if($.inArray(toMatch,topics)!==-1) {
 			matchType = "category";
 		} else {
@@ -107,10 +106,47 @@ function toggleThumbs(toMatch) {
 		} else {
 			width = baseThumbWidth;
 		}
-		$(thumb).animate({
+		$thumb.animate({
 			width: width
-		}, ANIMATION_DURATION);
+		}, ANIMATION_DURATION, function() {
+			i++;
+			if(i===thumbCount) {
+				$visibleThumb = $thumbs.filter(function() {
+					if($(this).css('width')!=='0px') {
+						return true;
+					}
+				});
+				if($visibleThumb.length===1 && !doNotOpen) {
+					$visibleThumb.animate({
+						'width': '100%'
+					}, ANIMATION_DURATION, function() {
+						$(document).trigger("thumbsToggled", [this]);
+						$('#thumbnailGallery').fadeOut(ANIMATION_DURATION);	
+					});
+				}
+			}
+		});
 	});
+}
+
+function toggleTextPane() {
+	$('#mainTextPane').fadeToggle(ANIMATION_DURATION);
+}
+
+function toggleItem(postSlug) {
+	var href;
+	if(postSlug) {
+		$('.portfolioItem').each(function(i, item) {
+			href = $(this).find('h3 a').attr('href');
+			href = getSlug(href);
+			if(href===postSlug) {
+				$(this).fadeIn();
+				return false;
+			}
+		});
+	} else {
+		$('.portfolioItem:visible').fadeOut();
+	}
 }
 
 /* Utility functions */
@@ -119,6 +155,16 @@ function pushUnique(item, arr) {
 	if($.inArray(item,arr)===-1) {
 		return arr.push(item);
 	}
+}
+
+function getMenuTopics() {
+	var topics = [];
+	$('.topics').each(function() {
+		$.each($(this).text().split(","),function(i, topic) {
+			pushUnique(topic,topics);
+		});
+	});
+	return topics;
 }
 
 function getSlug(href) {

@@ -11,7 +11,7 @@
 												    echo $category->category_nicename; 
 												} ?></span>
 					<div class="textPane margintopsmall">	
-						<h2 id="<?php echo $post->post_name; ?>"><a title="<?php the_title(); ?>" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+						<h3 id="<?php echo $post->post_name; ?>"><a title="<?php the_title(); ?>" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
 
 						<?php the_content(); ?>
 						

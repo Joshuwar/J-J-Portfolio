@@ -71,7 +71,7 @@ $(document).ready(function() {
 			$portImg = $portfolioItems.eq(i).find('img').eq(0);
 			equals($thumb.attr('src'),$portImg.attr('src'));
 			equals($thumb.attr('alt'),$portImg.attr('alt'));
-			equals($thumb.attr('title'),$portImg.attr('title'));
+			//equals($thumb.attr('title'),$portImg.attr('title'));
 		});
 	});
 	test("each img that has a top or left css property should have those saved as data attributes", function() {
@@ -129,7 +129,8 @@ $(document).ready(function() {
 			createThumbnailGallery();
 			data.category = "sampleTopic";
 			data.postSlug = "woe-books";
-			data.thumbs = $('#thumbnailGallery ul li');
+			data.thumbGal = $('#thumbnailGallery'),
+			data.thumbs = data.thumbGal.find('ul li');
 		}
 	});
 	
@@ -137,7 +138,7 @@ $(document).ready(function() {
 		var category = data.category,
 			$thumb,
 			topics;
-		toggleThumbs(category);
+		toggleThumbs(category,true);
 		expect(data.thumbs.length);
 		data.thumbs.each(function(i, thumb) {
 			$thumb = $(thumb);
@@ -154,7 +155,7 @@ $(document).ready(function() {
 		var postSlug = data.postSlug,
 			$thumb,
 			href;
-		toggleThumbs(postSlug);
+		toggleThumbs(postSlug,true);
 		expect(data.thumbs.length);
 		data.thumbs.each(function(i, thumb) {
 			$thumb = $(thumb);
@@ -175,15 +176,81 @@ $(document).ready(function() {
 			equals($(thumb).width(),baseThumbWidth);
 		});		
 	});
+
+	test("if only one thumbnail is visible after toggling, increase it's width to 100% and fade it out", function() {
+		var postSlug = data.postSlug,
+			$thumbs = data.thumbs,
+			$openedThumbs,
+			$thumb,
+			width,
+			parentWidth;
+		toggleThumbs(postSlug);
+		$openedThumbs = $thumbs.filter(function() {
+			$thumb = $(this);
+			width = $thumb.css('width'); // what's weird is that here, the parent (ul) has 0 width, whereas in the next test, the parent's width is reported as a px width; also, the thumb width is reported here as 100%, whereas in the following test, it is reported as the same px width as the parent
+			if(width==='100%' && !$thumb.is(":visible")) {
+				return true;
+			}
+		});
+		equals($openedThumbs.length,1);
+	});
+
+	test("it should trigger the thumbsToggled event on the document during the above animation that applies when only one thumb is left visible, at the point where the width is 100%", function() {
+		var postSlug = data.postSlug,
+			$thumbGal = data.thumbGal,
+			parentWidth;
+		$(document).one("thumbsToggled", function(e, thumb) {
+			var $thumb = $(thumb);
+			parentWidth = $thumb.parent().width();
+			console.log($thumb.css('width'));
+			ok($thumbGal.is(":visible"),"thumbnail gallery still visible");
+			equals($(thumb).width(),parentWidth);
+		});
+		expect(2);
+		toggleThumbs(postSlug);
+	});
 	
 	module("togglePane", {
 		setup: function() {
-		
+			data.textPane = $('#mainTextPane');
 		}
 	});
 	
-	test("", function() {
-		
+	test("If the textpane is visible, make it invisible", function() {
+		var $textPane = data.textPane;
+		ok($textPane.is(":visible"),"the textpane starts out visible");
+		toggleTextPane();
+		ok(!$textPane.is(":visible"),"the textpane is no longer visible");
 	});
+	
+	test("If the textpane is invisible, make it visible", function() {
+		var $textPane = data.textPane.hide();
+		ok(!$textPane.is(":visible"),"the textpane starts out invisible");
+		toggleTextPane();
+		ok($textPane.is(":visible"),"the textpane is now visible");
+	});
+	
+	
+	module("toggleItem", {
+		setup: function() {
+			data.portfolioItem = $('.portfolioItem:eq(1)');
+			data.postSlug = "woe-books";
+		}
+	});
+	test("if there is a slug, make the appropriate portfolio item visible", function() {
+		var $portfolioItem = data.portfolioItem,
+			postSlug = data.postSlug;
+		ok(!$portfolioItem.is(":visible"),"the portfolio item starts out invisible");
+		toggleItem(postSlug);
+		ok($portfolioItem.is(":visible"),"the portfolio item is now visible");
+	});
+	
+	test("if there is no slug, make the visible portfolio item invisible", function() {
+		var $portfolioItem = data.portfolioItem.show();
+		ok($portfolioItem.is(":visible"),"the portfolio item starts out visible");
+		toggleItem();
+		ok(!$portfolioItem.is(":visible"),"the portfolio item is now invisible");
+	});
+	
 	
 });
