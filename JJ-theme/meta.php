@@ -27,7 +27,7 @@
 									$next_post = get_next_post();
 									if ($next_post != "") :									
 							 ?>
-							<a class="left marginleft" href="<?php echo $next_post->guid; ?>">
+							<a class="left marginleft" href="<?php echo get_permalink($next_post->ID);?>">
 								<span class="nextItem">Next: 
 									<span><em><?php echo $next_post->post_title; ?></em></span>
 									<span class="point"></span>

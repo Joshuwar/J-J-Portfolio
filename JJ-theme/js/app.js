@@ -1,25 +1,20 @@
-$(document).ready(function() {
-	
-	createThumbnailGallery();
-	
-	$('h1, .menu li').click(function(e) {
-		e.preventDefault();
-		var href = $(this).find('a').attr('href'),
-			category = href.substring(href.lastIndexOf('/')+1);
-		moveRibbon(category);
-		$(document).one("thumbsToggled", function(e, thumb) {
-			var postSlug = getSlug($(thumb).children('a').attr('href'));
-			toggleItem(postSlug);
-		});
-		toggleThumbs(category);
-		return false;
-	});
-	
-	$('#thumbnailGallery ul li').click(function(e) {
-		e.preventDefault();
-		var href = $(this).children('a').attr('href'),
-			postSlug = getSlug(href),
-			topics = $(this).children('.topics').text().split(","),
+/*
+	v4
+*/
+var rootToCategory = function(dest) {
+		var cat = dest.slug;
+		moveRibbon(cat);
+		toggleThumbs(cat);
+	},
+	categoryToCategory = function(dest) {
+		var cat = dest.slug;
+		moveRibbon(cat);
+		toggleThumbs(cat);
+	},
+	categoryToItem = function(dest) {
+		var item = dest.slug;
+		// NOTE: we need to get the topic from the item, perhaps before entering this function
+		/*	topics = $(this).children('.topics').text().split(","),
 			menuTopics = getMenuTopics(),
 			topic;
 		$.each(menuTopics, function(i, menuTopic) {
@@ -27,14 +22,43 @@ $(document).ready(function() {
 				topic = menuTopic;
 				return false;
 			}
-		});
-		moveRibbon(topic);
-		toggleThumbs(postSlug);
+		});*/
+		//moveRibbon(cat);
+		toggleThumbs(item);
+		// NOTE: we need to do toggleItem(id) after toggleThumbs has finished
 		toggleTextPane();
-		$(document).one("thumbsToggled", function() {
-			toggleItem(postSlug);
-		});
-		return false;
+	},
+	transitions = {
+		root: {
+			root: null,
+			category: rootToCategory,
+			item: categoryToItem
+		},
+		category: {
+			root: null,
+			category: categoryToCategory,
+			item: categoryToItem
+		},
+		item: null
+	};
+
+$(document).ready(function() {
+	
+	var location,
+		destination,
+		transition;
+		
+	window.location.hash = "";
+	
+	createThumbnailGallery();
+		
+	$('a').click(function(e) {
+		e.preventDefault(); // NOTE: external links shouldn't do this
+		location = parseUrl(window.location.href);
+		destination = parseUrl($(this).attr('href'));
+		transition = transitions[location.type][destination.type];
+		window.location.hash = destination.path;
+		transition(destination,location);
 	});
 	
 	$('#portfolio').css('min-height',$('#portfolio').height());

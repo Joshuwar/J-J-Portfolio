@@ -76,6 +76,7 @@ function toggleThumbs(toMatch,doNotOpen) {
 		thumbCount = $thumbs.length,
 		width,
 		$visibleThumb;
+	$('#thumbnailGallery').show();
 	if(toMatch) {
 		topics = getMenuTopics();
 		if($.inArray(toMatch,topics)!==-1) {
@@ -116,11 +117,12 @@ function toggleThumbs(toMatch,doNotOpen) {
 						return true;
 					}
 				});
+				$(document).trigger("thumbsToggled");
 				if($visibleThumb.length===1 && !doNotOpen) {
 					$visibleThumb.animate({
 						'width': '100%'
 					}, ANIMATION_DURATION, function() {
-						$(document).trigger("thumbsToggled", [this]);
+						$(document).trigger("thumbOpened", [this]);
 						$('#thumbnailGallery').fadeOut(ANIMATION_DURATION);	
 					});
 				}
@@ -129,8 +131,11 @@ function toggleThumbs(toMatch,doNotOpen) {
 	});
 }
 
-function toggleTextPane() {
-	$('#mainTextPane').fadeToggle(ANIMATION_DURATION);
+function toggleTextPane(doNotFade) {
+	var $textPane = $('#mainTextPane');
+	if(!doNotFade || !$textPane.is(":visible")) {
+		$textPane.fadeToggle(ANIMATION_DURATION);
+	}
 }
 
 function toggleItem(postSlug) {
@@ -140,13 +145,64 @@ function toggleItem(postSlug) {
 			href = $(this).find('h3 a').attr('href');
 			href = getSlug(href);
 			if(href===postSlug) {
-				$(this).fadeIn();
+				$(this).fadeIn(ANIMATION_DURATION, function() {
+					$(document).trigger("itemToggled", [item]);
+				});
 				return false;
 			}
 		});
 	} else {
-		$('.portfolioItem:visible').fadeOut();
+		$('.portfolioItem:visible').fadeOut(ANIMATION_DURATION, function() {
+			$(document).trigger("itemToggled", [postSlug]);
+		});
 	}
+}
+
+function setThumbsToZeroWidth() {
+	$('#thumbnailGallery ul li').width(0);
+}
+
+function parseUrl(url) {
+	var uri,
+		path,
+		i = url.indexOf('#'),
+		slug;
+	if(i!==-1) {
+		url = url.substring(i+1, url.length);
+	} else if(window.hrefBase && url.indexOf(window.hrefBase===0)) {
+		url = url.substring(window.hrefBase.length, url.length);
+	}
+	uri = parseUri(url);
+	path = uri.path;
+	if(path==="" || path==="/") {
+		return {
+			type: 'root',
+			slug: '/',
+			path: '/'
+		};
+	} else {
+		i = path.indexOf("/category/");
+		if(i===0) {
+			return {
+				type: "category",
+				slug: path.substring(i+10,path.length),
+				path: path // 10 being length of "/category/"
+			};
+		} else {
+			i = path.lastIndexOf('/');
+			if(i!==path.length-1) {
+				slug = path.substring(i+1,path.length);
+			} else {
+				i = path.lastIndexOf('/',path.length-1);
+				slug = path.substring(i+1,path.length-1);
+			}
+			return {
+				type: "item",
+				slug: slug,
+				path: path
+			};
+		}
+	}	
 }
 
 /* Utility functions */
@@ -170,3 +226,36 @@ function getMenuTopics() {
 function getSlug(href) {
 	return href.substring(href.lastIndexOf('/')+1);
 }
+
+// parseUri 1.2.2
+// (c) Steven Levithan <stevenlevithan.com>
+// MIT License
+
+function parseUri (str) {
+	var	o   = parseUri.options,
+		m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
+		uri = {},
+		i   = 14;
+
+	while (i--) uri[o.key[i]] = m[i] || "";
+
+	uri[o.q.name] = {};
+	uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
+		if ($1) uri[o.q.name][$1] = $2;
+	});
+
+	return uri;
+};
+
+parseUri.options = {
+	strictMode: false,
+	key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
+	q:   {
+		name:   "queryKey",
+		parser: /(?:^|&)([^&=]*)=?([^&]*)/g
+	},
+	parser: {
+		strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
+		loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
+	}
+};

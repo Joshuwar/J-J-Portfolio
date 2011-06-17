@@ -134,6 +134,12 @@ $(document).ready(function() {
 		}
 	});
 	
+	test("it should show the thumbnail gallery if it is not visible", function() {
+		var $thumbGal = data.thumbGal.hide();
+		toggleThumbs();
+		ok($thumbGal.is(":visible"),"thumbnail gallery is visible");
+	});
+	
 	test("given a category, it should reduce the widths of all the thumbs that are not in that category to zero, and change the widths of all the thumbs that do match the category to the baseThumbWidth", function() {
 		var category = data.category,
 			$thumb,
@@ -195,14 +201,21 @@ $(document).ready(function() {
 		equals($openedThumbs.length,1);
 	});
 
-	test("it should trigger the thumbsToggled event on the document during the above animation that applies when only one thumb is left visible, at the point where the width is 100%", function() {
+	test("it should trigger the thumbsToggled event on the document after the animation to change their widths", function() {
+		$(document).one("thumbsToggled", function(e, thumb) {
+			ok(true,"thumbsToggled event triggered");
+		});
+		expect(1);
+		toggleThumbs();
+	});
+
+	test("it should trigger the thumbOpened event on the document during the above animation that applies when only one thumb is left visible, at the point where the width is 100%", function() {
 		var postSlug = data.postSlug,
 			$thumbGal = data.thumbGal,
 			parentWidth;
-		$(document).one("thumbsToggled", function(e, thumb) {
+		$(document).one("thumbOpened", function(e, thumb) {
 			var $thumb = $(thumb);
 			parentWidth = $thumb.parent().width();
-			console.log($thumb.css('width'));
 			ok($thumbGal.is(":visible"),"thumbnail gallery still visible");
 			equals($(thumb).width(),parentWidth);
 		});
@@ -230,6 +243,13 @@ $(document).ready(function() {
 		ok($textPane.is(":visible"),"the textpane is now visible");
 	});
 	
+	test("If a parameter is provided, never fade the textpane", function() {
+		var $textPane = data.textPane;
+		ok($textPane.is(":visible"),"textpane is visible");
+		toggleTextPane(true);
+		ok($textPane.is(":visible"),"textpane is visible");
+	});
+	
 	
 	module("toggleItem", {
 		setup: function() {
@@ -251,6 +271,130 @@ $(document).ready(function() {
 		toggleItem();
 		ok(!$portfolioItem.is(":visible"),"the portfolio item is now invisible");
 	});
+
+	test("it should trigger the itemToggled event on the document after the item has faded in or out", function() {
+		var postSlug = data.postSlug;
+		$(document).one("itemToggled", function(e, item) {
+			equals($(item).css('opacity'),1);
+		});
+		expect(1);
+		toggleItem(postSlug);
+	});
+
 	
+	module("setThumbsToZeroWidth", {
+		setup: function() {
+			createThumbnailGallery();
+			data.thumbs = $('#thumbnailGallery ul li');
+		}
+	});
 	
+	test("it should make the thumbs zero width", function() {
+		var $thumbs = data.thumbs,
+			$nonZeroWidthThumbs = $thumbs.filter(function() {
+				return $(this).width()!==0;
+			}),
+			$zeroWidthThumbs;
+		ok($nonZeroWidthThumbs.length);
+		setThumbsToZeroWidth();
+		$zeroWidthThumbs = $thumbs.filter(function() {
+			return $(this).width()===0;
+		});
+		equals($zeroWidthThumbs.length, $thumbs.length);
+	});
+	
+	module("parseUrl", function() {
+	
+	});
+	
+	test("given a URL of '/', it should understand this as 'root'", function() {
+		var actual = [
+				parseUrl('/'),
+				parseUrl('http://example.com/'),
+				parseUrl('www.example.com')
+			],
+			expected = {
+				slug: '/',
+				type: 'root',
+				path: '/'
+			};
+		$.each(actual, function(i,a) {
+			deepEqual(a,expected);
+		});
+	});
+	
+	test("given a URL of '/category/<something>', it should understand this as 'category'", function() {
+		var actual = [
+				parseUrl('/category/how-we-work'),
+				parseUrl('http://example.com/category/how-we-work'),
+				parseUrl('www.example.com/category/how-we-work')
+			],
+			expected = {
+				type: 'category',
+				slug: 'how-we-work',
+				path: '/category/how-we-work'
+			};
+		$.each(actual, function(i,a) {
+			deepEqual(a,expected);
+		});
+	});
+	
+	test("given a URL of '/<something-else>/<something>', it should understand this as 'item'", function() {
+		var actual = parseUrl('/portfolio-item/biscuits'),
+			expected = {
+					type: 'item',
+					slug: 'biscuits',
+					path: '/portfolio-item/biscuits'
+				};
+		deepEqual(actual,expected);
+		actual = parseUrl('http://example.com/some-other-post-type/biscuits');
+		expected.path = '/some-other-post-type/biscuits';
+		deepEqual(actual,expected);
+		actual = parseUrl('www.example.com/dogs/biscuits');
+		expected.path = '/dogs/biscuits';
+		deepEqual(actual,expected);
+	});
+	
+	test("given a URL of '/<anything-else>', it should understand this as 'item'", function() {
+		var actual = [
+				parseUrl('/i-broke-the-photo-shoot'),
+				parseUrl('http://example.com/i-broke-the-photo-shoot'),
+				parseUrl('www.example.com/i-broke-the-photo-shoot')
+			],
+			expected = {
+				type: 'item',
+				slug: 'i-broke-the-photo-shoot',
+				path: '/i-broke-the-photo-shoot'
+			};
+		$.each(actual, function(i,a) {
+			deepEqual(a,expected);
+		});
+	});
+	
+	test("given a URL of 'http://localhost/portfolio/category/how-we-work' and a window.hrefBase of 'http://localhost/portfolio', it should understand this as 'category' with slug 'how-we-work'", function() {
+		window.hrefBase = "http://localhost/portfolio";
+		var actual = [
+				parseUrl('http://localhost/portfolio/category/how-we-work')
+			],
+			expected = {
+				type: 'category',
+				slug: 'how-we-work',
+				path: '/category/how-we-work'
+			};
+		$.each(actual, function(i,a) {
+			deepEqual(a,expected);
+		});
+		delete window.hrefBase;
+	});
+	
+	test("given a URL of 'http://localhost/portfolio/#/category/how-we-work, it should understand this as 'category' with slug 'how-we-work'", function() {
+		var actual = parseUrl('http://localhost/portfolio/#/category/how-we-work'),
+			expected = {
+				type: 'category',
+				slug: 'how-we-work',
+				path: '/category/how-we-work'
+			};
+		deepEqual(actual, expected);
+	});
+
 });
