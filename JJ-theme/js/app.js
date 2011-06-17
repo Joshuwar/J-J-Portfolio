@@ -1,32 +1,44 @@
 /*
 	v4
 */
-var rootToCategory = function(dest) {
+var categoryToCategory = function(dest) {
 		var cat = dest.slug;
+		if(cat==="/") {
+			cat = "";
+		}
 		moveRibbon(cat);
 		toggleThumbs(cat);
 	},
-	categoryToCategory = function(dest) {
-		var cat = dest.slug;
-		moveRibbon(cat);
-		toggleThumbs(cat);
-	},
+	rootToCategory = categoryToCategory,
 	categoryToItem = function(dest) {
-		var item = dest.slug;
-		// NOTE: we need to get the topic from the item, perhaps before entering this function
-		/*	topics = $(this).children('.topics').text().split(","),
-			menuTopics = getMenuTopics(),
-			topic;
-		$.each(menuTopics, function(i, menuTopic) {
-			if($.inArray(menuTopic,topics)!==-1) {
-				topic = menuTopic;
-				return false;
-			}
-		});*/
-		//moveRibbon(cat);
-		toggleThumbs(item);
-		// NOTE: we need to do toggleItem(id) after toggleThumbs has finished
-		toggleTextPane();
+		var item = dest.slug,
+			cat = getMenuItemFromSlug(item);
+		moveRibbon(cat);
+		toggleThumbs(item); // toggleItem happens if there is only one item showing after this has completed - see 'thumbOpened' event binding below
+		//toggleTextPane();
+	},
+	categoryToRoot = categoryToCategory,
+	itemToCategory = function(dest) {
+		var cat = dest.slug;
+		if(cat==="/") {
+			cat = "";
+		}
+		$(document).one('itemToggled', function(e) {
+			toggleTextPane();
+			toggleThumbs(cat);
+		});
+		moveRibbon(cat);
+		toggleItem();
+	},
+	itemToRoot = itemToCategory,
+	itemToItem = function(dest) {
+		var item = dest.slug,
+			cat = getMenuItemFromSlug(item);
+		moveRibbon(cat);
+		$(document).one('itemToggled', function(e) {
+			toggleItem(item);		
+		});
+		toggleItem();
 	},
 	transitions = {
 		root: {
@@ -35,11 +47,15 @@ var rootToCategory = function(dest) {
 			item: categoryToItem
 		},
 		category: {
-			root: null,
+			root: categoryToRoot,
 			category: categoryToCategory,
 			item: categoryToItem
 		},
-		item: null
+		item: {
+			root: itemToRoot,
+			category: itemToCategory,
+			item: itemToItem
+		}
 	};
 
 $(document).ready(function() {
@@ -59,7 +75,18 @@ $(document).ready(function() {
 		transition = transitions[location.type][destination.type];
 		window.location.hash = destination.path;
 		transition(destination,location);
+		return false;
+	});
+	
+	$(document).bind('thumbOpened', function(e, thumb) {
+		var href = $(thumb).find('a').attr('href'),
+			slug = getSlug(href),
+			destination = parseUrl(href);
+		window.location.hash = destination.path;
+		toggleTextPane();
+		toggleItem(slug);
 	});
 	
 	$('#portfolio').css('min-height',$('#portfolio').height());
+	$('#mainTextPane').css('position','absolute');
 });

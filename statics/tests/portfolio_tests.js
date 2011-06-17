@@ -6,7 +6,7 @@ $(document).ready(function() {
 
 	module("moveRibbon", {
 		setup: function() {
-			data.testCategory = "sampleTopic2";
+			data.testCategory = "sampleCategory2";
 		}
 	});
 	
@@ -19,8 +19,8 @@ $(document).ready(function() {
 		equals(actual,expected);
 	});
 	
-	test("given no category, it should scroll to sit over the H1", function() {
-		var expected = $('h1').offset().left,
+	test("given no category, it should scroll to sit at the left of the header", function() {
+		var expected = $('#header').offset().left,
 			actual;
 		moveRibbon();
 		actual = $('.mockMenu').offset().left;
@@ -91,19 +91,19 @@ $(document).ready(function() {
 			}
 		});
 	});
-	test("each li should contain any element with class 'topics' that is present in the .portfolioItem", function() {
+	test("each li should contain any element with class 'categories' that is present in the .portfolioItem", function() {
 		var $thumbGal = data.thumbGal,
-			$topics,
+			$categories,
 			i,
 			$items = $thumbGal.find('.item');
 		createThumbnailGallery();
-		$topics = $('.portfolioItem').find('.topics');
-		$topics.each(function() {
-			i = $topics.index(this);
-			ok($items.eq(i).find('.topics'));
+		$categories = $('.portfolioItem').find('.categories');
+		$categories.each(function() {
+			i = $categories.index(this);
+			ok($items.eq(i).find('.categories'));
 		});
 		// check there are the correct number of created elements
-		equals($topics.length,$thumbGal.find('.topics').length);
+		equals($categories.length,$thumbGal.find('.categories').length);
 	});
 	test("each img should be wrapped in an 'a' tag with the href of the item's page", function() {
 		var $thumbGal = data.thumbGal,
@@ -127,7 +127,7 @@ $(document).ready(function() {
 	module("toggleThumbs", {
 		setup: function() {
 			createThumbnailGallery();
-			data.category = "sampleTopic";
+			data.category = "sampleCategory";
 			data.postSlug = "woe-books";
 			data.thumbGal = $('#thumbnailGallery'),
 			data.thumbs = data.thumbGal.find('ul li');
@@ -143,13 +143,13 @@ $(document).ready(function() {
 	test("given a category, it should reduce the widths of all the thumbs that are not in that category to zero, and change the widths of all the thumbs that do match the category to the baseThumbWidth", function() {
 		var category = data.category,
 			$thumb,
-			topics;
+			categories;
 		toggleThumbs(category,true);
 		expect(data.thumbs.length);
 		data.thumbs.each(function(i, thumb) {
 			$thumb = $(thumb);
-			topics = $thumb.find('.topics').text().split(",");
-			if($.inArray(category,topics)!==-1) {
+			categories = $thumb.find('.categories').text().split(",");
+			if($.inArray(category,categories)!==-1) {
 				equals($thumb.width(),baseThumbWidth);
 			} else {
 				equals($thumb.width(),0);
@@ -223,7 +223,7 @@ $(document).ready(function() {
 		toggleThumbs(postSlug);
 	});
 	
-	module("togglePane", {
+	module("toggleTextPane", {
 		setup: function() {
 			data.textPane = $('#mainTextPane');
 		}
@@ -395,6 +395,22 @@ $(document).ready(function() {
 				path: '/category/how-we-work'
 			};
 		deepEqual(actual, expected);
+	});
+
+	module("getCategoriesFromItem");
+	
+	test("given an item's slug, it should return the categories an item is in", function() {
+		var expected = ["sampleCategory2","sampleCategory3"];
+			actual = getCategoriesFromItem('woe-books');
+		deepEqual(actual, expected);
+	});
+
+	module("getMenuItemFromSlug");
+	
+	test("given an item's slug, it should return the first menu category it is in", function() {
+		var expected = "sampleCategory2";
+			actual = getMenuItemFromSlug('woe-books');
+		equals(actual, expected);
 	});
 
 });

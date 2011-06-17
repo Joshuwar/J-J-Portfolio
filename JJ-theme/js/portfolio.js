@@ -8,7 +8,7 @@ function createThumbnailGallery() {
 	var $thumbGalList,
 		href,
 		$portImg,
-		$topics,
+		$categories,
 		top,
 		left;
 	$thumbGal = $('#thumbnailGallery');
@@ -19,11 +19,11 @@ function createThumbnailGallery() {
 	$('.portfolioItem').each(function() {
 		href = $(this).find('h3 a').attr('href');
 		$portImg = $(this).find('img').eq(0);
-		$topics = $(this).find('.topics').clone();
+		$categories = $(this).find('.categories').clone();
 		$('<li></li>')
 			.addClass('item')
 			.appendTo($thumbGalList)
-			.append($topics)
+			.append($categories)
 			.append('<a href="'+href+'"><img src="'+$portImg.attr('src')+'" alt="'+$portImg.attr('alt')+'" title="'+$portImg.attr('title')+'" /></a>')
 			.find('img')
 			.each(function() {
@@ -60,7 +60,7 @@ function moveRibbon(category) {
 		});
 		toLeft = $targetLi.offset().left - startingLeft;
 	} else {
-		toLeft = $('h1').offset().left - startingLeft;
+		toLeft = $('#header').offset().left - startingLeft;
 	}
 	$ribbon.stop().animate({
 		left: '+='+toLeft+'px'
@@ -68,7 +68,7 @@ function moveRibbon(category) {
 }
 
 function toggleThumbs(toMatch,doNotOpen) {
-	var topics,
+	var categories,
 		matchType,
 		$thumbs = $('#thumbnailGallery ul li'),
 		$thumb,
@@ -78,8 +78,8 @@ function toggleThumbs(toMatch,doNotOpen) {
 		$visibleThumb;
 	$('#thumbnailGallery').show();
 	if(toMatch) {
-		topics = getMenuTopics();
-		if($.inArray(toMatch,topics)!==-1) {
+		categories = getMenuCategories();
+		if($.inArray(toMatch,categories)!==-1) {
 			matchType = "category";
 		} else {
 			matchType = "post";
@@ -90,8 +90,8 @@ function toggleThumbs(toMatch,doNotOpen) {
 	$thumbs.each(function(i, thumb) {
 		$thumb = $(thumb);
 		if(matchType==="category") {
-			topics = $thumb.find('.topics').text().split(",");
-			if($.inArray(toMatch,topics)!==-1) {
+			categories = $thumb.find('.categories').text().split(",");
+			if($.inArray(toMatch,categories)!==-1) {
 				width = baseThumbWidth;
 			} else {
 				width = 0;
@@ -107,7 +107,7 @@ function toggleThumbs(toMatch,doNotOpen) {
 		} else {
 			width = baseThumbWidth;
 		}
-		$thumb.animate({
+		$thumb.stop().animate({
 			width: width
 		}, ANIMATION_DURATION, function() {
 			i++;
@@ -119,11 +119,11 @@ function toggleThumbs(toMatch,doNotOpen) {
 				});
 				$(document).trigger("thumbsToggled");
 				if($visibleThumb.length===1 && !doNotOpen) {
-					$visibleThumb.animate({
+					$visibleThumb.stop().animate({
 						'width': '100%'
 					}, ANIMATION_DURATION, function() {
 						$(document).trigger("thumbOpened", [this]);
-						$('#thumbnailGallery').fadeOut(ANIMATION_DURATION);	
+						$('#thumbnailGallery').stop().fadeOut(ANIMATION_DURATION);	
 					});
 				}
 			}
@@ -134,7 +134,7 @@ function toggleThumbs(toMatch,doNotOpen) {
 function toggleTextPane(doNotFade) {
 	var $textPane = $('#mainTextPane');
 	if(!doNotFade || !$textPane.is(":visible")) {
-		$textPane.fadeToggle(ANIMATION_DURATION);
+		$textPane.stop().fadeToggle(ANIMATION_DURATION);
 	}
 }
 
@@ -145,14 +145,14 @@ function toggleItem(postSlug) {
 			href = $(this).find('h3 a').attr('href');
 			href = getSlug(href);
 			if(href===postSlug) {
-				$(this).fadeIn(ANIMATION_DURATION, function() {
+				$(this).stop().fadeIn(ANIMATION_DURATION, function() {
 					$(document).trigger("itemToggled", [item]);
 				});
 				return false;
 			}
 		});
 	} else {
-		$('.portfolioItem:visible').fadeOut(ANIMATION_DURATION, function() {
+		$('.portfolioItem:visible').stop().fadeOut(ANIMATION_DURATION, function() {
 			$(document).trigger("itemToggled", [postSlug]);
 		});
 	}
@@ -213,18 +213,39 @@ function pushUnique(item, arr) {
 	}
 }
 
-function getMenuTopics() {
-	var topics = [];
-	$('.topics').each(function() {
-		$.each($(this).text().split(","),function(i, topic) {
-			pushUnique(topic,topics);
+function getMenuCategories() {
+	var categories = [];
+	$('.categories').each(function() {
+		$.each($(this).text().split(","),function(i, category) {
+			pushUnique(category,categories);
 		});
 	});
-	return topics;
+	return categories;
 }
 
 function getSlug(href) {
 	return href.substring(href.lastIndexOf('/')+1);
+}
+
+function getCategoriesFromItem(itemSlug) {
+	var $item = $('div.portfolioItem').filter(function() {
+			return getSlug($(this).find('h3 a').attr('href'))===itemSlug;
+		}),
+		itemCategories = $item.children('.categories').text().split(",");
+	return itemCategories;
+}
+
+function getMenuItemFromSlug(itemSlug) {
+	var cat,
+		itemCategories = getCategoriesFromItem(itemSlug),
+		menuCategories = getMenuCategories();
+	$.each(menuCategories, function(i, menuCat) {
+		if($.inArray(menuCat,itemCategories)!==-1) {
+			cat = menuCat;
+			return false;
+		}
+	});
+	return cat;
 }
 
 // parseUri 1.2.2

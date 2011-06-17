@@ -39,7 +39,7 @@
 	<body>
 		<div id="wrapper">
 			<div id="header">
-				<h1><a href="/">J&amp;J</a></h1>
+				<a href="/"><img id="logo" src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/star_logo2.png" /></a>
 				<?php wp_nav_menu( array(
 					'container'		 => 'false',
 					'theme_location' => 'top_menu', 

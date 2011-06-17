@@ -31,6 +31,16 @@ p a:hover, h6 a:hover {
 	border-bottom: none;
 }
 
+
+img#logo {
+    left: 35px;
+    position: absolute;
+    top: 15px;
+    z-index: 1;
+}
+
+
+
 h1 {
 	color: white;
 	background-image: url(../images/star_logo2.png);
@@ -179,7 +189,7 @@ h2 a {
 	left: -55px;
 }
 
-.item .topics, .portfolioItem .topics {
+.item .categories, .portfolioItem .categories {
 	display: none;
 }
 
