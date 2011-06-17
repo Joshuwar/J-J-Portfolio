@@ -119,7 +119,7 @@ function toggleThumbs(toMatch,doNotOpen) {
 				});
 				$(document).trigger("thumbsToggled");
 				if($visibleThumb.length===1 && !doNotOpen) {
-					$visibleThumb.stop().animate({
+					$visibleThumb.animate({ // weird bug where having .stop() here means the last thumb in the list doesn't run this animation
 						'width': '100%'
 					}, ANIMATION_DURATION, function() {
 						$(document).trigger("thumbOpened", [this]);
