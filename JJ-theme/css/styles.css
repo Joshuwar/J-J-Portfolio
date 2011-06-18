@@ -40,6 +40,12 @@ img#logo {
 }
 
 
+h1 a {
+	font-size: 1em;
+	color: #545454;
+	text-decoration: none;
+}
+
 
 h1 {
 	font-size: 1.5em;
@@ -114,7 +120,7 @@ h2 a {
 }
 
 #header ul li.active a, ul.mockMenu li a  {
-	background-color: #eee;
+	background-color: #FEE7B1;
 	color: #151515;
 }
 

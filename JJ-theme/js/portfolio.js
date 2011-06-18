@@ -17,7 +17,7 @@ function createThumbnailGallery() {
 	}
 	$thumbGalList = $('<ul></ul>').appendTo($thumbGal);
 	$('.portfolioItem').each(function() {
-		href = $(this).find('h3 a').attr('href');
+		href = $(this).find('h1 a').attr('href');
 		$portImg = $(this).find('img').eq(0);
 		$categories = $(this).find('.categories').clone();
 		$('<li></li>')
@@ -142,7 +142,7 @@ function toggleItem(postSlug) {
 	var href;
 	if(postSlug) {
 		$('.portfolioItem').each(function(i, item) {
-			href = $(this).find('h3 a').attr('href');
+			href = $(this).find('h1 a').attr('href');
 			href = getSlug(href);
 			if(href===postSlug) {
 				$(this).stop().fadeIn(ANIMATION_DURATION, function() {
@@ -229,7 +229,7 @@ function getSlug(href) {
 
 function getCategoriesFromItem(itemSlug) {
 	var $item = $('div.portfolioItem').filter(function() {
-			return getSlug($(this).find('h3 a').attr('href'))===itemSlug;
+			return getSlug($(this).find('h1 a').attr('href'))===itemSlug;
 		}),
 		itemCategories = $item.children('.categories').text().split(",");
 	return itemCategories;
