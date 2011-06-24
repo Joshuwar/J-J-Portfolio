@@ -70,11 +70,13 @@ $(document).ready(function() {
 		
 	$('a').click(function(e) {
 		e.preventDefault(); // NOTE: external links shouldn't do this
+		$.scrollTo(0, ANIMATION_DURATION);
 		location = parseUrl(window.location.href);
 		destination = parseUrl($(this).attr('href'));
 		transition = transitions[location.type][destination.type];
 		window.location.hash = destination.path;
 		transition(destination,location);
+		return false;
 	});
 	
 	$('#thumbnailGallery a').click(function() {
