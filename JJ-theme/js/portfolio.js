@@ -126,7 +126,6 @@ function toggleThumbs(toMatch,doNotOpen) {
 		baseImgLeft = $img.data('left');
 		top = baseImgTop;
 		left = baseImgLeft;
-		/* TO-DO: make category case and 'else' work with offsets */
 		if(matchType==="category") {
 			categories = $thumb.find('.categories').text().split(",");
 			if($.inArray(toMatch,categories)!==-1) {
