@@ -180,7 +180,7 @@ h2 a {
 	list-style: none;
 	float: left;
 	overflow: hidden;
-	/* border: 1px #f9f9f9 solid; */
+	/* border: 1px #f9f9f9 solid; */	
 }
 
 .gallery ul li:hover {
@@ -190,6 +190,8 @@ h2 a {
 .item {
 	width: 250px;
 	height: 120px;
+	background-color: black;
+	color: #f9f9f9;
 	/* border:1px solid white;
 	 border-top: none;
 	border-bottom: 2px solid white; */
