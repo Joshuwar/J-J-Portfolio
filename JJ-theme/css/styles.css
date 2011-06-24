@@ -180,7 +180,7 @@ h2 a {
 	list-style: none;
 	float: left;
 	overflow: hidden;
-	border: 1px #f9f9f9 solid;
+	/* border: 1px #f9f9f9 solid; */
 }
 
 .gallery ul li:hover {
