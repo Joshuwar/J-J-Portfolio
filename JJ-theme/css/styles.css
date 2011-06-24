@@ -194,6 +194,8 @@ h2 a {
 	left: 10px;
 	font-family: 'Oswald', Impact, Sans;
 	text-transform: uppercase;
+	font-size: 0.8em;
+	letter-spacing: 0.1em;
 }
 
 .item {
