@@ -5,7 +5,9 @@ var ANIMATION_DURATION = 500,
 
 function createThumbnailGallery() {
 	var $thumbGalList,
+		$itemHeading,
 		href,
+		itemTitle,
 		$portImg,
 		$categories,
 		top,
@@ -18,7 +20,9 @@ function createThumbnailGallery() {
 	}
 	$thumbGalList = $('<ul></ul>').appendTo($thumbGal);
 	$('.portfolioItem').each(function() {
-		href = $(this).find('h1 a').attr('href');
+		$itemHeading = $(this).find('h1');
+		href = $itemHeading.find('a').attr('href');
+		itemTitle = $itemHeading.text();
 		$portImg = $(this).find('img').eq(0);
 		$categories = $(this).find('.categories').clone();
 		$('<li></li>')
@@ -37,7 +41,7 @@ function createThumbnailGallery() {
 				}
 			}).appendTo($thumbGalList)
 			.append($categories)
-			.append('<a href="'+href+'"><img src="'+$portImg.attr('src')+'" alt="'+$portImg.attr('alt')+'" title="'+$portImg.attr('title')+'" /></a>')
+			.append('<a href="'+href+'"><img src="'+$portImg.attr('src')+'" alt="'+$portImg.attr('alt')+'" title="'+itemTitle+'" /></a>')
 			.find('img')
 			.each(function() {
 				offset = $portImg.data('topoffset');

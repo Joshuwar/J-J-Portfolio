@@ -60,7 +60,7 @@ $(document).ready(function() {
 			equals($(this).find('img').length,1);
 		});
 	});
-	test("each img should get its src, alt and title from the .portfolioItem item's first img", function() {
+	test("each img should get its src and alt from the .portfolioItem item's first img", function() {
 		var $thumbGal = data.thumbGal,
 			$portfolioItems = $('.portfolioItem'),
 			$thumb,
@@ -71,7 +71,18 @@ $(document).ready(function() {
 			$portImg = $portfolioItems.eq(i).find('img').eq(0);
 			equals($thumb.attr('src'),$portImg.attr('src'));
 			equals($thumb.attr('alt'),$portImg.attr('alt'));
-			//equals($thumb.attr('title'),$portImg.attr('title'));
+		});
+	});
+	test("each img should get its title from the .portfolioItem item's h1's text", function() {
+		var $thumbGal = data.thumbGal,
+			$portfolioItems = $('.portfolioItem'),
+			$thumb,
+			$portItem;
+		createThumbnailGallery();
+		$thumbGal.find('li').each(function(i) {
+			$thumb = $(this).find('img');
+			$portItem = $portfolioItems.eq(i);
+			equals($thumb.attr('title'),$portItem.find('h1').text());
 		});
 	});
 	test("each img that has a top or left css property should have those saved as data attributes", function() {

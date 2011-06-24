@@ -56,7 +56,7 @@ function attachment_toolbox($size = 'portfolio-image', $emptyMsg = 'EMPTY') {
 		if ($topOffset) { 	$out .= "data-topOffset='$topOffset' " ;} 
 		if ($height) { 		$out .= "data-height='$height' ";} 
 		if ($width) { 		$out .= "data-width='$width' ";} 
-		$out .= 'class="portfolioImage" src="'.$attimgurl.'" alt="'.$attimgalt.'"/>';
+		$out .= 'class="portfolioImage" src="'.$attimgurl.'" alt="'.$attimgalt.'" title="'.$atttitle.'"/>';
 		$count++;
 		
 	}
