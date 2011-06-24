@@ -187,49 +187,63 @@ $(document).ready(function() {
 		ok($thumbGal.is(":visible"),"thumbnail gallery is visible");
 	});
 	
-	test("given a category, it should reduce the widths of all the thumbs that are not in that category to zero, and change the widths of all the thumbs that do match the category to their width data attribute", function() {
+	test("given a category, it should reduce the widths of all the thumbs that are not in that category to zero, and change the widths of all the thumbs that do match the category to their width data attribute; all images should have offsets set to their top and left data attributes", function() {
 		var category = data.category,
 			$thumb,
+			$img,
 			categories;
 		toggleThumbs(category,true);
-		expect(data.thumbs.length);
+		expect(data.thumbs.length*3);
 		data.thumbs.each(function(i, thumb) {
 			$thumb = $(thumb);
+			$img = $thumb.find('img');
 			categories = $thumb.find('.categories').text().split(",");
 			if($.inArray(category,categories)!==-1) {
 				equals($thumb.width()+'px',$thumb.data('width'));
 			} else {
 				equals($thumb.width(),0);
 			}
+			equals($img.css('top'),$img.data('top'));
+			equals($img.css('left'),$img.data('left'));
 		});
 	});
 	
-	test("given a post slug, it should reduce the widths of all but the matching thumb to zero, and change the matching thumb to their width data attribute", function() {
+	test("given a post slug, it should reduce the widths of all but the matching thumb to zero and their image offsets to their top and left data attributes, and change the matching thumb's width to its width data attribute and its image offset to 0,0", function() {
 		var postSlug = data.postSlug,
 			$thumb,
+			$img,
 			href;
 		toggleThumbs(postSlug,true);
-		expect(data.thumbs.length);
+		expect(data.thumbs.length*3);
 		data.thumbs.each(function(i, thumb) {
 			$thumb = $(thumb);
+			$img = $thumb.find('img');
 			href = $thumb.find('a').attr('href');
 			href = href.substring(href.lastIndexOf('/')+1);
 			if(href===postSlug) {
 				equals($thumb.width()+'px',$thumb.data('width'));
+				equals($img.css('top'),'0px');
+				equals($img.css('left'),'0px');
 			} else {
 				equals($thumb.width(),0);
+				equals($img.css('top'),$img.data('top'));
+				equals($img.css('left'),$img.data('left'));
 			}
 		});
 	});
 	
-	test("given no parameter, it should change the width of all the thumbs to their width data attribute", function() {
-		var $thumb;
+	test("given no parameter, it should change the width of all the thumbs to their width data attribute and set their left and top offsets to match their respective data attributes", function() {
+		var $thumb,
+			$img;
 		toggleThumbs();
-		expect(data.thumbs.length);
+		expect(data.thumbs.length*3);
 		data.thumbs.each(function(i, thumb) {
 			$thumb = $(thumb);
+			$img = $thumb.find('img');
 			equals($thumb.width()+'px',$thumb.data('width'));
-		});		
+			equals($img.css('top'),$img.data('top'));
+			equals($img.css('left'),$img.data('left'));
+		});
 	});
 
 	test("if only one thumbnail is visible after toggling, increase it's width to 100% and fade it out", function() {

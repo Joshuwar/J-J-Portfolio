@@ -94,9 +94,10 @@ function toggleThumbs(toMatch,doNotOpen) {
 		$thumb,
 		i = 0,
 		thumbCount = $thumbs.length,
-		width,
 		$visibleThumb,
-		baseThumbWidth;
+		baseThumbWidth,
+		baseThumbTop,
+		baseThumbLeft;
 	$('#thumbnailGallery').show();
 	if(toMatch) {
 		categories = getMenuCategories();
@@ -109,8 +110,18 @@ function toggleThumbs(toMatch,doNotOpen) {
 		matchType = "all";
 	}
 	$thumbs.each(function(i, thumb) {
+		var $img,
+			width,
+			top,
+			left;
 		$thumb = $(thumb);
+		$img = $thumb.find('img');
 		baseThumbWidth = $thumb.data('width');
+		baseImgTop = $img.data('top');
+		baseImgLeft = $img.data('left');
+		top = baseImgTop;
+		left = baseImgLeft;
+		/* TO-DO: make category case and 'else' work with offsets */
 		if(matchType==="category") {
 			categories = $thumb.find('.categories').text().split(",");
 			if($.inArray(toMatch,categories)!==-1) {
@@ -123,12 +134,18 @@ function toggleThumbs(toMatch,doNotOpen) {
 			href = getSlug(href);
 			if(toMatch===href) {
 				width = baseThumbWidth;
+				top = 0;
+				left = 0;
 			} else {
 				width = 0;
 			}
 		} else {
 			width = baseThumbWidth;
 		}
+		$img.stop().animate({
+			top: top,
+			left: left
+		}, ANIMATION_DURATION);
 		$thumb.stop().animate({
 			width: width
 		}, ANIMATION_DURATION, function() {
