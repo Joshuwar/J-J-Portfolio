@@ -1,5 +1,4 @@
 var ANIMATION_DURATION = 500,
-	baseThumbWidth,
 	portfolioImageOffset;
 
 /* Set up functions */
@@ -10,7 +9,9 @@ function createThumbnailGallery() {
 		$portImg,
 		$categories,
 		top,
-		left;
+		left,
+		width,
+		offset;
 	$thumbGal = $('#thumbnailGallery');
 	if(!$thumbGal.length) {
 		return;
@@ -26,19 +27,26 @@ function createThumbnailGallery() {
 				/*if($portImg.data('height')) {
 					$(this).css('height',$portImg.data('height'));
 				}*/
-				if($portImg.data('width')) {
-					$(this).css('width',$portImg.data('width'));
+				width = $portImg.data('width');
+				if(width) {
+					$(this).css('width',width);
+				}
+				width = $(this).css('width');
+				if(width!=='auto') {
+					$(this).data('width',width);
 				}
 			}).appendTo($thumbGalList)
 			.append($categories)
 			.append('<a href="'+href+'"><img src="'+$portImg.attr('src')+'" alt="'+$portImg.attr('alt')+'" title="'+$portImg.attr('title')+'" /></a>')
 			.find('img')
 			.each(function() {
-				if($portImg.data('topoffset')) {
-					$(this).css('top',$portImg.data('topoffset'));
+				offset = $portImg.data('topoffset');
+				if(offset) {
+					$(this).css('top',offset);
 				}
-				if($portImg.data('leftoffset')) {
-					$(this).css('left',$portImg.data('leftoffset'));
+				offset = $portImg.data('leftoffset');
+				if(offset) {
+					$(this).css('left',offset);
 				}
 				top = $(this).css('top');
 				if(top!=='auto') {
@@ -50,7 +58,6 @@ function createThumbnailGallery() {
 				}
 			});
 	});
-	baseThumbWidth = parseInt($thumbGalList.find('li').eq(0).css('width'),10);
 	portfolioImageOffset = $thumbGal.offset().top;
 }
 
@@ -88,7 +95,8 @@ function toggleThumbs(toMatch,doNotOpen) {
 		i = 0,
 		thumbCount = $thumbs.length,
 		width,
-		$visibleThumb;
+		$visibleThumb,
+		baseThumbWidth;
 	$('#thumbnailGallery').show();
 	if(toMatch) {
 		categories = getMenuCategories();
@@ -102,6 +110,7 @@ function toggleThumbs(toMatch,doNotOpen) {
 	}
 	$thumbs.each(function(i, thumb) {
 		$thumb = $(thumb);
+		baseThumbWidth = $thumb.data('width');
 		if(matchType==="category") {
 			categories = $thumb.find('.categories').text().split(",");
 			if($.inArray(toMatch,categories)!==-1) {

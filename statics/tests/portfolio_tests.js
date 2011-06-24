@@ -95,16 +95,17 @@ $(document).ready(function() {
 		// NOTE: not testing the default case yet
 		var $thumbGal = data.thumbGal,
 			$portfolioItems = $('.portfolioItem'),
-			$thumb,
-			$portImg;
+			$portImg,
+			width;
 		createThumbnailGallery();
 		$thumbGal.find('li').each(function(i) {
 			$portImg = $portfolioItems.eq(i).find('img').eq(0);
 			/*if($portImg.data('height')) {
 				equals($(this).css('height'),$portImg.data('height')+'px');
 			}*/
-			if($portImg.data('width')) {
-				equals($(this).css('width'),$portImg.data('width')+'px');
+			width = $portImg.data('width');
+			if(width) {
+				equals($(this).css('width'),width+'px');
 			}
 		});
 	});
@@ -113,17 +114,28 @@ $(document).ready(function() {
 		var $thumbGal = data.thumbGal,
 			$portfolioItems = $('.portfolioItem'),
 			$thumb,
-			$portImg;
+			$portImg,
+			offset;
 		createThumbnailGallery();
 		$thumbGal.find('li').each(function(i) {
 			$thumb = $(this).find('img');
 			$portImg = $portfolioItems.eq(i).find('img').eq(0);
-			if($portImg.data('topoffset')) {
-				equals($thumb.css('top'),$portImg.data('topoffset')+'px');
+			offset = $portImg.data('topoffset');
+			if(offset) {
+				equals($thumb.css('top'),offset+'px');
 			}
-			if($portImg.data('leftoffset')) {
-				equals($thumb.css('left'),$portImg.data('leftoffset')+'px');
+			offset = $portImg.data('leftoffset');
+			if(offset) {
+				equals($thumb.css('left'),offset+'px');
 			}
+		});
+	});
+	test("each li should save its starting width as a data attribute", function() {
+		var $thumbGal = data.thumbGal,
+			$portfolioItems = $('.portfolioItem');
+		createThumbnailGallery();
+		$thumbGal.find('li').each(function(i) {
+			equals($(this).css('width'),$(this).data('width'));
 		});
 	});
 	test("each li should contain any element with class 'categories' that is present in the .portfolioItem", function() {
@@ -175,7 +187,7 @@ $(document).ready(function() {
 		ok($thumbGal.is(":visible"),"thumbnail gallery is visible");
 	});
 	
-	test("given a category, it should reduce the widths of all the thumbs that are not in that category to zero, and change the widths of all the thumbs that do match the category to the baseThumbWidth", function() {
+	test("given a category, it should reduce the widths of all the thumbs that are not in that category to zero, and change the widths of all the thumbs that do match the category to their width data attribute", function() {
 		var category = data.category,
 			$thumb,
 			categories;
@@ -185,14 +197,14 @@ $(document).ready(function() {
 			$thumb = $(thumb);
 			categories = $thumb.find('.categories').text().split(",");
 			if($.inArray(category,categories)!==-1) {
-				equals($thumb.width(),baseThumbWidth);
+				equals($thumb.width()+'px',$thumb.data('width'));
 			} else {
 				equals($thumb.width(),0);
 			}
 		});
 	});
 	
-	test("given a post slug, it should reduce the widths of all but the matching thumb to zero, and change the matching thumb to the baseThumbWidth", function() {
+	test("given a post slug, it should reduce the widths of all but the matching thumb to zero, and change the matching thumb to their width data attribute", function() {
 		var postSlug = data.postSlug,
 			$thumb,
 			href;
@@ -203,18 +215,20 @@ $(document).ready(function() {
 			href = $thumb.find('a').attr('href');
 			href = href.substring(href.lastIndexOf('/')+1);
 			if(href===postSlug) {
-				equals($thumb.width(),baseThumbWidth);
+				equals($thumb.width()+'px',$thumb.data('width'));
 			} else {
 				equals($thumb.width(),0);
 			}
 		});
 	});
 	
-	test("given no parameter, it should change the width of all the thumbs to the baseThumbWidth", function() {
+	test("given no parameter, it should change the width of all the thumbs to their width data attribute", function() {
+		var $thumb;
 		toggleThumbs();
 		expect(data.thumbs.length);
 		data.thumbs.each(function(i, thumb) {
-			equals($(thumb).width(),baseThumbWidth);
+			$thumb = $(thumb);
+			equals($thumb.width()+'px',$thumb.data('width'));
 		});		
 	});
 
