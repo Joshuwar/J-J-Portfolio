@@ -192,6 +192,8 @@ h2 a {
 	position: absolute;
 	top: 90px;
 	left: 10px;
+	font-family: 'Oswald', Impact, Sans;
+	text-transform: uppercase;
 }
 
 .item {
