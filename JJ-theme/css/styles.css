@@ -48,7 +48,8 @@ h1 a {
 
 
 h1 {
-	font-size: 1.5em;
+	font-family: 'Crimson Text', serif;
+	font-size: 2em;
 	/* color: white;
 	background-image: url(../images/star_logo2.png);
 	text-indent: -9999px;
@@ -66,7 +67,8 @@ h1 {
 }
 
 h2 {
-	font-size: 1.5em;
+	font-family: 'Crimson Text', serif;
+	font-size: 2em;
 }
 h2 a {
 	color: #565656;
@@ -153,6 +155,8 @@ h2 a {
 	height: 100%;
 	padding: 30px;
 	margin-bottom: 60px;
+	font-family: 'Droid Sans', 'helvetica neue', helvetica, arial;
+	font-size: 0.9em;
 	/*font-size: 1.05em;
 	line-height: 1.5em;*/
 }
@@ -176,6 +180,7 @@ h2 a {
 	list-style: none;
 	float: left;
 	overflow: hidden;
+	border: 1px #f9f9f9 solid;
 }
 
 .gallery ul li:hover {
