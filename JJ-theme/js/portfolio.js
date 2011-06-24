@@ -1,5 +1,4 @@
 var ANIMATION_DURATION = 500,
-	baseThumbWidth,
 	portfolioImageOffset;
 
 /* Set up functions */
@@ -10,7 +9,9 @@ function createThumbnailGallery() {
 		$portImg,
 		$categories,
 		top,
-		left;
+		left,
+		width,
+		offset;
 	$thumbGal = $('#thumbnailGallery');
 	if(!$thumbGal.length) {
 		return;
@@ -26,19 +27,26 @@ function createThumbnailGallery() {
 				/*if($portImg.data('height')) {
 					$(this).css('height',$portImg.data('height'));
 				}*/
-				if($portImg.data('width')) {
-					$(this).css('width',$portImg.data('width'));
+				width = $portImg.data('width');
+				if(width) {
+					$(this).css('width',width);
+				}
+				width = $(this).css('width');
+				if(width!=='auto') {
+					$(this).data('width',width);
 				}
 			}).appendTo($thumbGalList)
 			.append($categories)
 			.append('<a href="'+href+'"><img src="'+$portImg.attr('src')+'" alt="'+$portImg.attr('alt')+'" title="'+$portImg.attr('title')+'" /></a>')
 			.find('img')
 			.each(function() {
-				if($portImg.data('topoffset')) {
-					$(this).css('top',$portImg.data('topoffset'));
+				offset = $portImg.data('topoffset');
+				if(offset) {
+					$(this).css('top',offset);
 				}
-				if($portImg.data('leftoffset')) {
-					$(this).css('left',$portImg.data('leftoffset'));
+				offset = $portImg.data('leftoffset');
+				if(offset) {
+					$(this).css('left',offset);
 				}
 				top = $(this).css('top');
 				if(top!=='auto') {
@@ -50,7 +58,6 @@ function createThumbnailGallery() {
 				}
 			});
 	});
-	baseThumbWidth = parseInt($thumbGalList.find('li').eq(0).css('width'),10);
 	portfolioImageOffset = $thumbGal.offset().top;
 }
 
@@ -87,8 +94,10 @@ function toggleThumbs(toMatch,doNotOpen) {
 		$thumb,
 		i = 0,
 		thumbCount = $thumbs.length,
-		width,
-		$visibleThumb;
+		$visibleThumb,
+		baseThumbWidth,
+		baseThumbTop,
+		baseThumbLeft;
 	$('#thumbnailGallery').show();
 	if(toMatch) {
 		categories = getMenuCategories();
@@ -101,7 +110,18 @@ function toggleThumbs(toMatch,doNotOpen) {
 		matchType = "all";
 	}
 	$thumbs.each(function(i, thumb) {
+		var $img,
+			width,
+			top,
+			left;
 		$thumb = $(thumb);
+		$img = $thumb.find('img');
+		baseThumbWidth = $thumb.data('width');
+		baseImgTop = $img.data('top');
+		baseImgLeft = $img.data('left');
+		top = baseImgTop;
+		left = baseImgLeft;
+		/* TO-DO: make category case and 'else' work with offsets */
 		if(matchType==="category") {
 			categories = $thumb.find('.categories').text().split(",");
 			if($.inArray(toMatch,categories)!==-1) {
@@ -114,12 +134,18 @@ function toggleThumbs(toMatch,doNotOpen) {
 			href = getSlug(href);
 			if(toMatch===href) {
 				width = baseThumbWidth;
+				top = 0;
+				left = 0;
 			} else {
 				width = 0;
 			}
 		} else {
 			width = baseThumbWidth;
 		}
+		$img.stop().animate({
+			top: top,
+			left: left
+		}, ANIMATION_DURATION);
 		$thumb.stop().animate({
 			width: width
 		}, ANIMATION_DURATION, function() {
