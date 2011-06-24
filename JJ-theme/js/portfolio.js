@@ -22,11 +22,24 @@ function createThumbnailGallery() {
 		$categories = $(this).find('.categories').clone();
 		$('<li></li>')
 			.addClass('item')
-			.appendTo($thumbGalList)
+			.each(function() {
+				/*if($portImg.data('height')) {
+					$(this).css('height',$portImg.data('height'));
+				}*/
+				if($portImg.data('width')) {
+					$(this).css('width',$portImg.data('width'));
+				}
+			}).appendTo($thumbGalList)
 			.append($categories)
 			.append('<a href="'+href+'"><img src="'+$portImg.attr('src')+'" alt="'+$portImg.attr('alt')+'" title="'+$portImg.attr('title')+'" /></a>')
 			.find('img')
 			.each(function() {
+				if($portImg.data('topoffset')) {
+					$(this).css('top',$portImg.data('topoffset'));
+				}
+				if($portImg.data('leftoffset')) {
+					$(this).css('left',$portImg.data('leftoffset'));
+				}
 				top = $(this).css('top');
 				if(top!=='auto') {
 					$(this).data('top',top);

@@ -91,6 +91,41 @@ $(document).ready(function() {
 			}
 		});
 	});
+	test("each li should get its width (not height) properties from the respective data attributes on the .portfolioItem item's first img; for missing data attributes, don't set an inline style", function() {
+		// NOTE: not testing the default case yet
+		var $thumbGal = data.thumbGal,
+			$portfolioItems = $('.portfolioItem'),
+			$thumb,
+			$portImg;
+		createThumbnailGallery();
+		$thumbGal.find('li').each(function(i) {
+			$portImg = $portfolioItems.eq(i).find('img').eq(0);
+			/*if($portImg.data('height')) {
+				equals($(this).css('height'),$portImg.data('height')+'px');
+			}*/
+			if($portImg.data('width')) {
+				equals($(this).css('width'),$portImg.data('width')+'px');
+			}
+		});
+	});
+	test("each img should get its top and left properties from the respective data attributes on the .portfolioItem item's first img; for missing data attributes, don't set an inline style", function() {
+		// NOTE: not testing the default case yet
+		var $thumbGal = data.thumbGal,
+			$portfolioItems = $('.portfolioItem'),
+			$thumb,
+			$portImg;
+		createThumbnailGallery();
+		$thumbGal.find('li').each(function(i) {
+			$thumb = $(this).find('img');
+			$portImg = $portfolioItems.eq(i).find('img').eq(0);
+			if($portImg.data('topoffset')) {
+				equals($thumb.css('top'),$portImg.data('topoffset')+'px');
+			}
+			if($portImg.data('leftoffset')) {
+				equals($thumb.css('left'),$portImg.data('leftoffset')+'px');
+			}
+		});
+	});
 	test("each li should contain any element with class 'categories' that is present in the .portfolioItem", function() {
 		var $thumbGal = data.thumbGal,
 			$categories,
