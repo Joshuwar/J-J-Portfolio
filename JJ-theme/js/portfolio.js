@@ -40,6 +40,7 @@ function createThumbnailGallery() {
 					$(this).data('width',width);
 				}
 			}).appendTo($thumbGalList)
+			.append('<div class="itemTitle">'+itemTitle+'</div>')
 			.append($categories)
 			.append('<a href="'+href+'"><img src="'+$portImg.attr('src')+'" alt="'+$portImg.attr('alt')+'" title="'+itemTitle+'" /></a>')
 			.find('img')

@@ -180,11 +180,18 @@ h2 a {
 	list-style: none;
 	float: left;
 	overflow: hidden;
+	position: relative;
 	/* border: 1px #f9f9f9 solid; */	
 }
 
 .gallery ul li:hover {
 	cursor: pointer;
+}
+
+.gallery ul li .itemTitle {
+	position: absolute;
+	top: 90px;
+	left: 10px;
 }
 
 .item {

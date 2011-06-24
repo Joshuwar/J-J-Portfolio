@@ -60,6 +60,14 @@ $(document).ready(function() {
 			equals($(this).find('img').length,1);
 		});
 	});
+	test("each li should contain a div with the text of the portfolio item title as the first element", function() {
+		var $thumbGal = data.thumbGal,
+			$portfolioItems = $('.portfolioItem');
+		createThumbnailGallery();
+		$thumbGal.find('li').each(function(i) {
+			equals($(this).children().eq(0).filter('div').text(),$portfolioItems.eq(i).find('h1').text());
+		});		
+	});
 	test("each img should get its src and alt from the .portfolioItem item's first img", function() {
 		var $thumbGal = data.thumbGal,
 			$portfolioItems = $('.portfolioItem'),

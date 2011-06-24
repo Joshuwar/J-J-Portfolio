@@ -78,6 +78,22 @@ $(document).ready(function() {
 		return false;
 	});
 	
+	$('#thumbnailGallery ul li').hover(function() {
+		$(this)
+			.find('img')
+			.stop()
+			.animate({
+				opacity: 0
+			}, 0);
+	}, function() {
+		$(this)
+			.find('img')
+			.stop()
+			.animate({
+				opacity: 1
+			}, ANIMATION_DURATION);
+	});
+	
 	$(document).bind('thumbOpened', function(e, thumb) {
 		var href = $(thumb).find('a').attr('href'),
 			slug = getSlug(href),
