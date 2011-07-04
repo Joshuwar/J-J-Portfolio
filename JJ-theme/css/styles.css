@@ -199,7 +199,7 @@ h2 a {
 	width: 350px;
 	float: left;
 	height: 100%;
-	padding: 30px;
+	padding: 0 30px;
 	margin-bottom: 60px;
 	font-family: 'Droid Sans', 'helvetica neue', helvetica, arial;
 	font-size: 0.9em;
@@ -236,7 +236,7 @@ h2 a {
 
 .gallery ul li .itemTitle {
 	position: absolute;
-	top: 90px;
+	top: 45px;
 	left: 10px;
 	font-family: 'Oswald', Impact, Sans;
 	text-transform: uppercase;
