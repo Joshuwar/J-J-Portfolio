@@ -39,14 +39,26 @@
 	<body>
 		<div id="wrapper">
 			<div id="header">
-				<a href="/"><img id="logo" src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/star_logo2.png" /></a>
-				<?php wp_nav_menu( array(
-					'container'		 => 'false',
-					'theme_location' => 'top_menu', 
-					)
-				); ?>
-				<ul class="mockMenu">
-					<li><a href="#"></a></li>
-				</ul>
+				<div id="logo" class="left">
+					<a href="/"><img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/large-logo.gif" /></a>
+				</div>
+				<h1 id="standfirst" class="left marginleft">
+					J&J makes online products. <br/>
+					J&J earns you £$¥. <br/>
+					J&J cares.<br/>
+					You can work withJ&J.<br/>
+				</h1>
+				<div id="menu" class="left">
+					<span>Filter:</span>
+					<?php wp_nav_menu( array(
+						'container'		 => 'false',
+						'theme_location' => 'top_menu', 
+						)
+					); ?>
+				
+					<ul class="mockMenu">
+						<li><a href="#"></a></li>
+					</ul>
+				</div>
 			</div>
 			<div class="jbasewrap" id="portfolio">
