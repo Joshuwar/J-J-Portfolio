@@ -2,11 +2,11 @@
 
 @font-face {
     font-family: 'nevisBold';
-    src: url('nevis-webfont.eot');
-    src: url('nevis-webfont.eot?#iefix') format('embedded-opentype'),
-         url('nevis-webfont.woff') format('woff'),
-         url('nevis-webfont.ttf') format('truetype'),
-         url('nevis-webfont.svg#nevisBold') format('svg');
+    src: url('../fonts/nevis-webfont.eot');
+    src: url('../fonts/nevis-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/nevis-webfont.woff') format('woff'),
+         url('../fonts/nevis-webfont.ttf') format('truetype'),
+         url('../fonts/nevis-webfont.svg#nevisBold') format('svg');
     font-weight: normal;
     font-style: normal;
 }
