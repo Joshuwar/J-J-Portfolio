@@ -78,7 +78,9 @@ $(document).ready(function() {
 		if(transition) {
 			window.location.hash = destination.path;
 			$(e.target).addClass('active')
+				.closest('li')
 				.siblings()
+				.children('a')
 				.removeClass('active');
 			transition(destination,location);
 		}		
