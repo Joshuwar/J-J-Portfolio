@@ -75,8 +75,10 @@ $(document).ready(function() {
 		location = parseUrl(window.location.href);
 		destination = parseUrl(href);
 		transition = transitions[location.type][destination.type];
-		window.location.hash = destination.path;
-		transition(destination,location);
+		if(transition) {
+			window.location.hash = destination.path;
+			transition(destination,location);
+		}		
 		return false;
 	});
 	
