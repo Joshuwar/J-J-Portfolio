@@ -69,10 +69,12 @@ $(document).ready(function() {
 	createThumbnailGallery();
 		
 	$('a').click(function(e) {
+		var href = $(this).href;
+		if(href)
 		e.preventDefault(); // NOTE: external links shouldn't do this
 		$.scrollTo(0, ANIMATION_DURATION);
 		location = parseUrl(window.location.href);
-		destination = parseUrl($(this).attr('href'));
+		destination = parseUrl(href);
 		transition = transitions[location.type][destination.type];
 		window.location.hash = destination.path;
 		transition(destination,location);

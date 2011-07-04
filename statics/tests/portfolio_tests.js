@@ -149,9 +149,34 @@ $(document).ready(function() {
 			}
 		});
 	});
-	test("each li should save its starting width as a data attribute", function() {
+	test("each li should get its background colour from the 'colour' data attribute on the .portfolioItem item's first img; for missing data attributes, don't set an inline style", function() {
+		// NOTE: not testing the default case yet
 		var $thumbGal = data.thumbGal,
-			$portfolioItems = $('.portfolioItem');
+			$portfolioItems = $('.portfolioItem'),
+			$portImg,
+			colour;
+		createThumbnailGallery();
+		$thumbGal.find('li').each(function(i) {
+			$portImg = $portfolioItems.eq(i).find('img').eq(0);
+			colour = $portImg.data('colour');
+			if(colour) {
+				if(colour.length===4) { // e.g. #F00
+					colour = colour.charAt(0)+colour.charAt(1)+colour.charAt(1)+colour.charAt(2)+colour.charAt(2)+colour.charAt(3)+colour.charAt(3);
+				}
+				colour = colour.toLowerCase();
+				equals(rgb2hex($(this).css('backgroundColor')),colour);
+			}
+		});
+	});
+	test("each img should start off with opacity 0", function() {
+		var $thumbGal = data.thumbGal;
+		createThumbnailGallery();
+		$thumbGal.find('li').each(function(i) {
+			equals($(this).find('img').css('opacity'),0);
+		});
+	});
+	test("each li should save its starting width as a data attribute", function() {
+		var $thumbGal = data.thumbGal;
 		createThumbnailGallery();
 		$thumbGal.find('li').each(function(i) {
 			equals($(this).css('width'),$(this).data('width'));
@@ -401,7 +426,9 @@ $(document).ready(function() {
 				path: '/'
 			};
 		$.each(actual, function(i,a) {
-			deepEqual(a,expected);
+			equals(a.type,expected.type);
+			equals(a.slug,expected.slug);
+			equals(a.path,expected.path);
 		});
 	});
 	
@@ -417,7 +444,9 @@ $(document).ready(function() {
 				path: '/category/how-we-work'
 			};
 		$.each(actual, function(i,a) {
-			deepEqual(a,expected);
+			equals(a.type,expected.type);
+			equals(a.slug,expected.slug);
+			equals(a.path,expected.path);
 		});
 	});
 	
@@ -426,13 +455,16 @@ $(document).ready(function() {
 			expected = {
 					type: 'item',
 					slug: 'biscuits',
-					path: '/portfolio-item/biscuits'
+					path: '/portfolio-item/biscuits',
+					host: ''
 				};
 		deepEqual(actual,expected);
 		actual = parseUrl('http://example.com/some-other-post-type/biscuits');
 		expected.path = '/some-other-post-type/biscuits';
+		expected.host = "example.com";
 		deepEqual(actual,expected);
 		actual = parseUrl('www.example.com/dogs/biscuits');
+		expected.host = "www.example.com";
 		expected.path = '/dogs/biscuits';
 		deepEqual(actual,expected);
 	});
@@ -449,7 +481,9 @@ $(document).ready(function() {
 				path: '/i-broke-the-photo-shoot'
 			};
 		$.each(actual, function(i,a) {
-			deepEqual(a,expected);
+			equals(a.type,expected.type);
+			equals(a.slug,expected.slug);
+			equals(a.path,expected.path);
 		});
 	});
 	
@@ -461,7 +495,8 @@ $(document).ready(function() {
 			expected = {
 				type: 'category',
 				slug: 'how-we-work',
-				path: '/category/how-we-work'
+				path: '/category/how-we-work',
+				host: ''
 			};
 		$.each(actual, function(i,a) {
 			deepEqual(a,expected);
@@ -469,13 +504,20 @@ $(document).ready(function() {
 		delete window.hrefBase;
 	});
 	
-	test("given a URL of 'http://localhost/portfolio/#/category/how-we-work, it should understand this as 'category' with slug 'how-we-work'", function() {
+	test("given a URL of 'http://localhost/portfolio/#/category/how-we-work', it should understand this as 'category' with slug 'how-we-work'", function() {
 		var actual = parseUrl('http://localhost/portfolio/#/category/how-we-work'),
 			expected = {
 				type: 'category',
 				slug: 'how-we-work',
-				path: '/category/how-we-work'
+				path: '/category/how-we-work',
+				host: 'localhost'
 			};
+		deepEqual(actual, expected);
+	});
+	
+	test("given a URL of 'http://google.com', the returned object should include a host property of 'google.com'", function() {
+		var actual = parseUrl('http://google.com').host,
+			expected = 'google.com';
 		deepEqual(actual, expected);
 	});
 
@@ -496,3 +538,13 @@ $(document).ready(function() {
 	});
 
 });
+
+//Function to convert hex format to a rgb color
+//http://wowmotty.blogspot.com/2009/06/convert-jquery-rgb-output-to-hex-color.html
+function rgb2hex(rgb){
+ rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+ return "#" +
+  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
+}
