@@ -135,7 +135,7 @@ h2 a {
 }
 
 #header {
-	height: 270px;
+	height: 250px;
 	position: relative;
 }
 
@@ -246,7 +246,7 @@ h2 a {
 
 .item {
 	width: 250px;
-	height: 120px;
+	height: 70px;
 	background-color: #ff0000;
 	background-image: url(../images/paper.png);
 	color: #f9f9f9;
@@ -524,7 +524,7 @@ a .nextItem:hover span.point {
 
 
 .jbasewrap {
-	padding-top: 90px;
+
 }
 
 /*-------------------------------- <footer> */
