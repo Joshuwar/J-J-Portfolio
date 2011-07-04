@@ -13,7 +13,8 @@ function createThumbnailGallery() {
 		top,
 		left,
 		width,
-		offset;
+		offset,
+		colour;
 	$thumbGal = $('#thumbnailGallery');
 	if(!$thumbGal.length) {
 		return;
@@ -31,6 +32,10 @@ function createThumbnailGallery() {
 				/*if($portImg.data('height')) {
 					$(this).css('height',$portImg.data('height'));
 				}*/
+				colour = $portImg.data('colour');
+				if(colour) {
+					$(this).css('backgroundColor',colour);
+				}
 				width = $portImg.data('width');
 				if(width) {
 					$(this).css('width',width);
@@ -45,6 +50,7 @@ function createThumbnailGallery() {
 			.append('<a href="'+href+'"><img src="'+$portImg.attr('src')+'" alt="'+$portImg.attr('alt')+'" title="'+itemTitle+'" /></a>')
 			.find('img')
 			.each(function() {
+				$(this).css('opacity',0);
 				offset = $portImg.data('topoffset');
 				if(offset) {
 					$(this).css('top',offset);
@@ -126,7 +132,6 @@ function toggleThumbs(toMatch,doNotOpen) {
 		baseImgLeft = $img.data('left');
 		top = baseImgTop;
 		left = baseImgLeft;
-		/* TO-DO: make category case and 'else' work with offsets */
 		if(matchType==="category") {
 			categories = $thumb.find('.categories').text().split(",");
 			if($.inArray(toMatch,categories)!==-1) {
@@ -209,28 +214,32 @@ function setThumbsToZeroWidth() {
 function parseUrl(url) {
 	var uri,
 		path,
+		host,
 		i = url.indexOf('#'),
 		slug;
-	if(i!==-1) {
+	if(i!==-1) { /* TO-DO: this is throwing away hosts that might be external, that needs to not happen */
 		url = url.substring(i+1, url.length);
 	} else if(window.hrefBase && url.indexOf(window.hrefBase===0)) {
 		url = url.substring(window.hrefBase.length, url.length);
 	}
 	uri = parseUri(url);
 	path = uri.path;
+	host = uri.host;
 	if(path==="" || path==="/") {
 		return {
 			type: 'root',
 			slug: '/',
-			path: '/'
+			path: '/',
+			host: host
 		};
 	} else {
 		i = path.indexOf("/category/");
 		if(i===0) {
 			return {
 				type: "category",
-				slug: path.substring(i+10,path.length),
-				path: path // 10 being length of "/category/"
+				slug: path.substring(i+10,path.length), // 10 being length of "/category/"
+				path: path,
+				host: host
 			};
 		} else {
 			i = path.lastIndexOf('/');
@@ -243,7 +252,8 @@ function parseUrl(url) {
 			return {
 				type: "item",
 				slug: slug,
-				path: path
+				path: path,
+				host: host
 			};
 		}
 	}	

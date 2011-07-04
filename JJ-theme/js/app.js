@@ -69,26 +69,37 @@ $(document).ready(function() {
 	createThumbnailGallery();
 		
 	$('a').click(function(e) {
+		var href = $(this).href;
+		if(href)
 		e.preventDefault(); // NOTE: external links shouldn't do this
+		$.scrollTo(0, ANIMATION_DURATION);
 		location = parseUrl(window.location.href);
-		destination = parseUrl($(this).attr('href'));
+		destination = parseUrl(href);
 		transition = transitions[location.type][destination.type];
 		window.location.hash = destination.path;
 		transition(destination,location);
 		return false;
 	});
 	
+	$('#thumbnailGallery a').click(function() {
+		$(this).find('img').css({
+			opacity: 1
+		});
+	});
+	
 	$('#thumbnailGallery ul li').hover(function() {
+		if($(this).is(":animated")) {
+			return false;
+		}
 		$(this)
 			.find('img')
-			.stop()
+			.stop(false, true)
 			.animate({
 				opacity: 0
 			}, 0);
 	}, function() {
 		$(this)
 			.find('img')
-			.stop()
 			.animate({
 				opacity: 1
 			}, ANIMATION_DURATION);

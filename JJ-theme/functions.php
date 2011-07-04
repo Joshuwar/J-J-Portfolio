@@ -38,10 +38,10 @@ function attachment_toolbox($size = 'portfolio-image', $emptyMsg = 'EMPTY') {
 		$params = explode(',', $params);
 		$leftOffset = $params[0];
 		$topOffset = $params[1];
-		$height = $params[2];
-		$width = $params[3];
+		$width = $params[2];
 		
 		// Other image meta
+		$colour = get_post_meta($image->ID, '_thumbnailColour', true);
 		$attimg  = wp_get_attachment_image_src($image->ID,$size);
 		$attimgurl = $attimg[0];
 		$atturl   = wp_get_attachment_url($image->ID);
@@ -55,7 +55,8 @@ function attachment_toolbox($size = 'portfolio-image', $emptyMsg = 'EMPTY') {
 		if ($leftOffset) { 	$out .= "data-leftOffset='$leftOffset' ";} 
 		if ($topOffset) { 	$out .= "data-topOffset='$topOffset' " ;} 
 		if ($height) { 		$out .= "data-height='$height' ";} 
-		if ($width) { 		$out .= "data-width='$width' ";} 
+		if ($width) { 		$out .= "data-width='$width' ";}
+		if ($colour) {		$out .= "data-colour='$colour'"; }
 		$out .= 'class="portfolioImage" src="'.$attimgurl.'" alt="'.$attimgalt.'" title="'.$atttitle.'"/>';
 		$count++;
 		
@@ -379,28 +380,18 @@ function get_permalink_by_name($page_name)
 }
 
 
-
-
-
 function attachment_offset_edit($form_fields, $post) {
-
 	// get the current value of our custom field
 	$current_value = get_post_meta($post->ID, "_thumbnailParams", true);
-
 	// build the html for our select box
 	$offset_html = "<input name='attachments[{$post->ID}][thumbnailParams]' id='attachments[{$post->ID}][thumbnailParams]' type='text' value='{$current_value}' />";
-	
 	// add our custom select box to the form_fields
-	$form_fields["thumbnailParams"]["label"] = __("Thumbnail Params (left offset, top offset, height, width)");
+	$form_fields["thumbnailParams"]["label"] = __("Thumbnail Params (left offset, top offset, width)");
 	$form_fields["thumbnailParams"]["input"] = "html";
 	$form_fields["thumbnailParams"]["html"] = $offset_html;
-
 	return $form_fields;
-	
 }
 add_filter("attachment_fields_to_edit", "attachment_offset_edit", null, 2);
-
-
 
 function attachment_offset_save($post, $attachment) {
 	if( isset($attachment['thumbnailParams']) ){
@@ -411,6 +402,26 @@ function attachment_offset_save($post, $attachment) {
 add_filter("attachment_fields_to_save", "attachment_offset_save", null, 2);
 
 
+function attachment_colour_edit($form_fields, $post) {
+	// get the current value of our custom field
+	$current_value = get_post_meta($post->ID, "_thumbnailColour", true);
+	// build the html for our select box
+	$colour_html = "<input name='attachments[{$post->ID}][thumbnailColour]' id='attachments[{$post->ID}][thumbnailColour]' type='text' value='{$current_value}' />";
+	// add our custom select box to the form_fields
+	$form_fields["thumbnailColour"]["label"] = __("Thumbnail Colour (use hex)");
+	$form_fields["thumbnailColour"]["input"] = "html";
+	$form_fields["thumbnailColour"]["html"] = $colour_html;
+	return $form_fields;	
+}
+add_filter("attachment_fields_to_edit", "attachment_colour_edit", null, 2);
+
+function attachment_colour_save($post, $attachment) {
+	if( isset($attachment['thumbnailColour']) ){
+		update_post_meta($post['ID'], '_thumbnailColour', $attachment['thumbnailColour']);
+	}
+	return $post;
+}
+add_filter("attachment_fields_to_save", "attachment_colour_save", null, 2);
 
 
 
