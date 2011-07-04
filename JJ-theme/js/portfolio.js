@@ -81,6 +81,9 @@ function moveRibbon(category) {
 		toLeft,
 		href,
 		cat;
+	if(!moveRibbon.home) {
+		moveRibbon.home = $('#menu ul li').eq(0).offset().left;
+	}
 	if(category) {
 		$targetLi = $('.menu li').filter(function() {
 			href = $(this).find('a').attr('href');
@@ -91,7 +94,7 @@ function moveRibbon(category) {
 		});
 		toLeft = $targetLi.offset().left - startingLeft;
 	} else {
-		toLeft = $('#header').offset().left - startingLeft;
+		toLeft = moveRibbon.home - startingLeft;
 	}
 	$ribbon.stop().animate({
 		left: '+='+toLeft+'px'

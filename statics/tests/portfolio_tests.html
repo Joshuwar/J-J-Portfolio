@@ -20,14 +20,25 @@
 	<ol id="qunit-tests"></ol>
 	<div id="qunit-fixture">
 		<div id="header">
-			<span id="logo">J&amp;J</span>
-			<ul class="menu left">
-				<li><a href="/sampleCategory">sampleCategory</a></li>
-				<li><a href="/sampleCategory2">sampleCategory2</a></li>
-			</ul>
-			<ul class="mockMenu">
-				<li><a href="#"></a></li>
-			</ul>
+			<div id="logo" class="left">
+				<a href="/"><img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/large-logo.gif" /></a>
+			</div>
+			<h1 id="standfirst" class="left marginleft">
+				J&J makes online products. <br/>
+				J&J earns you £$´. <br/>
+				J&J cares.<br/>
+				You can work withJ&J.<br/>
+			</h1>
+			<div id="menu" class="left">
+				<span>Filter:</span>
+				<ul class="menu left">
+					<li><a href="/sampleCategory">sampleCategory</a></li>
+					<li><a href="/sampleCategory2">sampleCategory2</a></li>
+				</ul>			
+				<ul class="mockMenu">
+					<li><a href="#"></a></li>
+				</ul>
+			</div>
 		</div>
 		<div id="thumbnailGallery" class="gallery"></div>
 		<div id="mainTextPane">hello</div>

@@ -19,8 +19,8 @@ $(document).ready(function() {
 		equals(actual,expected);
 	});
 	
-	test("given no category, it should scroll to sit at the left of the header", function() {
-		var expected = $('#header').offset().left,
+	test("given no category, it should scroll to sit at the left of the first li of the menu", function() {
+		var expected = $('#menu ul li').eq(0).offset().left,
 			actual;
 		moveRibbon();
 		actual = $('.mockMenu').offset().left;
