@@ -66,6 +66,8 @@ $(document).ready(function() {
 		
 	window.location.hash = "";
 	
+	$('#menu li').eq(0).children('a').addClass('active');
+	
 	createThumbnailGallery();
 		
 	$('a').click(function(e) {
