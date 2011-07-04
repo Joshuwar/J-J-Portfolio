@@ -69,8 +69,7 @@ $(document).ready(function() {
 	createThumbnailGallery();
 		
 	$('a').click(function(e) {
-		var href = $(this).href;
-		if(href)
+		var href = $(this).attr('href');
 		e.preventDefault(); // NOTE: external links shouldn't do this
 		$.scrollTo(0, ANIMATION_DURATION);
 		location = parseUrl(window.location.href);
