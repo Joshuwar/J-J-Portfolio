@@ -43,10 +43,13 @@
 					<a href="/"><img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/large-logo.gif" /></a>
 				</div>
 				<h1 id="standfirst" class="left marginleft">
-					J&J makes online products. <br/>
-					J&J earns you £$¥. <br/>
-					J&J cares.<br/>
-					You can work withJ&J.<br/>
+					<?php global $post;
+						$query = new WP_Query( 'pagename=standfirst' );
+						if ($query->have_posts() ) : $query->the_post();
+							the_content();
+						endif;
+						wp_reset_query();
+						?>
 				</h1>
 				<div id="menu" class="left">
 					<span>Filter:</span>
