@@ -155,9 +155,9 @@ h2 a {
 #header ul li a, ul.mockMenu li a { 
 	color: #222;
 	text-decoration: none;
-	width: 100px;
+	width: 60px;
 	display: block;
-	padding: 50px 10px 0px 10px;
+	padding: 10px 10px 0px 10px;
 	height: 30px;
 	font-size: 1.1em;
 	font-family: 'Oswald', arial, serif;	
@@ -166,8 +166,8 @@ h2 a {
 }
 
 #header ul li.active a, ul.mockMenu li a  {
-	background-color: #FEE7B1;
-	color: #151515;
+	background-color: #222;
+	color: #fff;
 }
 
 #header ul li a:hover {
@@ -175,8 +175,8 @@ h2 a {
 }
 
 #header ul li.active, ul.mockMenu li {
-	background-image: url(../images/arrow.png);
-	background-position: 0px 80px;
+	background-image: url(../images/arrow.gif);
+	background-position: 0px 40px;
 	background-repeat: no-repeat;
 }
 
@@ -516,22 +516,6 @@ a .nextItem:hover span.point {
 .js #firstItem {
 	display: block;
 }
-
-
-
-/*-------------------------------- <fixed header> */
-
-#header {
-
-	width: 100%;
-	
-	-moz-box-shadow: 0px 0px 4px #333; 
-	-webkit-box-shadow: 0px 0px 4px #333; 
-	box-shadow: 0px 0px 4px #333; 
-	z-index: 1;
-}
-
-/*-------------------------------- </fixed header> */
 
 .hireUs {
 	z-index: 0;
