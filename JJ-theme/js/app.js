@@ -66,6 +66,8 @@ $(document).ready(function() {
 		
 	window.location.hash = "";
 	
+	$('#menu li').eq(0).children('a').addClass('active');
+	
 	createThumbnailGallery();
 		
 	$('a').click(function(e) {
@@ -78,7 +80,9 @@ $(document).ready(function() {
 		if(transition) {
 			window.location.hash = destination.path;
 			$(e.target).addClass('active')
+				.closest('li')
 				.siblings()
+				.children('a')
 				.removeClass('active');
 			transition(destination,location);
 		}		

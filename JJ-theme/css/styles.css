@@ -183,9 +183,12 @@ h2 a {
 	letter-spacing: 0.15em;
 }
 
-#header ul li.active a, ul.mockMenu li a  {
-	background-color: #222;
+#header ul li a.active {
 	color: #fff;
+}
+
+ul.mockMenu li a  {
+	background-color: #222;
 }
 
 #header ul li a:hover {
