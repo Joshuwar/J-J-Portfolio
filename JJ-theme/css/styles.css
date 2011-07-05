@@ -577,6 +577,7 @@ a .nextItem:hover span.point {
 	top: 0px;
 	left: 0px;
 	background-color: transparent;
+	z-index: -1;
 }
 
 .footer a {
