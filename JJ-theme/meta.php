@@ -15,14 +15,9 @@
 							</div>
 						</div>
 						<a href="<?php echo get_permalink_by_name('super-contact'); ?>">
-							<div class="hireUs">
-								<p><?php get_custom_field('_hireus'); ?></p>
-								<span></span>
-							</div>
 						</a>
 						<?php endif; ?>
 						<div class="margintop itemNav">
-							<a class="left" href="#"><span class="backToGrid">Back to Grid</span></a>
 							<?php 	
 									$next_post = get_next_post();
 									if ($next_post != "") :									
