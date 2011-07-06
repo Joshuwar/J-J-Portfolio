@@ -18,13 +18,26 @@ $(document).ready(function() {
 		actual = $('.mockMenu').offset().left;
 		equals(actual,expected);
 	});
-	
 	test("given no category, it should scroll to sit at the left of the first li of the menu", function() {
 		var expected = $('#menu ul li').eq(0).offset().left,
 			actual;
 		moveRibbon();
 		actual = $('.mockMenu').offset().left;
 		equals(actual,expected);
+	});
+	test("it should make the link in only the selected category have the class 'active'", function() {
+		var category = data.testCategory,
+			$lis = $('.menu li'),
+			expected = $lis.filter(function() {
+				return $(this).text()===category;
+			}).index(),
+			actual;
+		moveRibbon(category);
+		actual = $lis.filter(function() {
+			return $(this).find('a').hasClass('active');
+		}).index();
+		equals(actual,expected);
+		equals($lis.find('a.active').length,1);
 	});
 	
 	module("createThumbnailGallery", {
@@ -214,6 +227,44 @@ $(document).ready(function() {
 		createThumbnailGallery(callback);
 		ok(called);
 	});*/
+	
+	module("addImageNav", {
+		setup: function() {
+			this.spacingParameter = 10;
+			addImageNav(this.spacingParameter);
+			this.$imageNav = $('.portfolioItem:eq(0)').show().find('.imageNav');
+		},
+		teardown: function() {
+			$.scrollTo(0);
+		}
+	});
+	
+	test("it should scroll the document to the position of the visible portfolio item's image that corresponds to the clicked link (minus any provided spacing parameter)", function() {
+		var clickIndex = 1,
+			$toClick = this.$imageNav.find('li a:eq('+clickIndex+')'),
+			$matchingImg = $('.portfolioItem:eq(0)').find('img').eq(clickIndex),
+			toScrollTo = $matchingImg.offset().top-this.spacingParameter;
+		$toClick.click();
+		equals($(window).scrollTop(),Math.round(toScrollTo));
+	});
+	
+	test("it should scroll the document to 0 if it is the first link that is selected", function() {
+		var clickIndex = 0,
+			$toClick = this.$imageNav.find('li a:eq('+clickIndex+')'),
+			$matchingImg = $('.portfolioItem:eq(0)').find('img').eq(clickIndex),
+			toScrollTo = 0;
+		$toClick.click();
+		equals($(window).scrollTop(),Math.round(toScrollTo));
+	});
+	
+	test("it should scroll the visible nav menu's arrow to the clicked link (taking into account any top offset the arrow already has)", function() {
+		var clickIndex = 1,
+			$toClick = this.$imageNav.find('li a:eq('+clickIndex+')'),
+			$matchingSpan = this.$imageNav.find('span'),
+			originalTopOffset = parseInt($matchingSpan.css('top'),10);
+		$toClick.click();
+		equals($matchingSpan.offset().top, $toClick.offset().top+originalTopOffset);
+	});
 	
 	module("toggleThumbs", {
 		setup: function() {

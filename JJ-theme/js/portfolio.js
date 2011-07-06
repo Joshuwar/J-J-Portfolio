@@ -1,5 +1,6 @@
 var ANIMATION_DURATION = 500,
-	portfolioImageOffset;
+	portfolioImageOffset,
+	navSpanTopOffset;
 
 /* Set up functions */
 
@@ -72,6 +73,31 @@ function createThumbnailGallery() {
 	portfolioImageOffset = $thumbGal.offset().top;
 }
 
+function addImageNav(spacingParameter) {
+	$('.portfolioItem .imageNav a').click(function(e) {
+		var $imageNav = $(this).closest('.imageNav'),
+			$portfolioItem = $(this).closest('.portfolioItem'),
+			$navSpan = $imageNav.find('span'),
+			index = $imageNav.find('a').index(e.target),
+			$targetImg = $portfolioItem.find('img').eq(index),
+			toScrollTo = $targetImg.offset().top;
+			if(index===0) {
+				toScrollTo = 0;
+			} else if(spacingParameter) {
+				toScrollTo -= spacingParameter;
+			}
+		$.scrollTo(toScrollTo, ANIMATION_DURATION);
+		
+		// move the imageNav arrow to the selected link
+		if(!navSpanTopOffset) {
+			navSpanTopOffset = parseInt($navSpan.css('top'),10);
+		}
+		$navSpan.animate({
+			top: $(e.target).position().top+navSpanTopOffset
+		}, ANIMATION_DURATION);
+	});
+}
+
 /* Behaviour functions */
 
 function moveRibbon(category) {
@@ -94,11 +120,15 @@ function moveRibbon(category) {
 		});
 		toLeft = $targetLi.offset().left - startingLeft;
 	} else {
+		$targetLi = $('.menu li:eq(0)');
 		toLeft = moveRibbon.home - startingLeft;
 	}
 	$ribbon.stop().animate({
 		left: '+='+toLeft+'px'
-	}, ANIMATION_DURATION);
+	}, ANIMATION_DURATION, function() {
+		$targetLi.find('a').addClass('active');
+	});
+	$targetLi.siblings().children('a').removeClass('active');
 }
 
 function toggleThumbs(toMatch,doNotOpen) {

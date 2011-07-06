@@ -1,5 +1,7 @@
 /*
 	v4
+	
+	NB: the stuff that sets the active class when you click on menu link - that needs to happen during moveRibbon, as it should apply even when you haven't clicked on that link
 */
 var categoryToCategory = function(dest) {
 		var cat = dest.slug;
@@ -69,9 +71,15 @@ $(document).ready(function() {
 	$('#menu li').eq(0).children('a').addClass('active');
 	
 	createThumbnailGallery();
-		
+	addImageNav(10);
+
 	$('a').click(function(e) {
-		var href = $(this).attr('href');
+		var rel = $(this).attr('rel'),
+			href = $(this).attr('href');
+		if(rel && rel==="self") {
+			e.preventDefault();
+			return true;
+		}
 		e.preventDefault(); // NOTE: external links shouldn't do this
 		$.scrollTo(0, ANIMATION_DURATION);
 		location = parseUrl(window.location.href);
@@ -79,11 +87,6 @@ $(document).ready(function() {
 		transition = transitions[location.type][destination.type];
 		if(transition) {
 			window.location.hash = destination.path;
-			$(e.target).addClass('active')
-				.closest('li')
-				.siblings()
-				.children('a')
-				.removeClass('active');
 			transition(destination,location);
 		}		
 		return false;
