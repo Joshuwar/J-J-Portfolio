@@ -569,13 +569,14 @@ a .nextItem:hover span.point {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3d3d3d', endColorstr='#222222',GradientType=0 ); /* IE6-9 */
 	background: linear-gradient(top, rgba(61,61,61,1) 0%,rgba(34,34,34,1) 100%); /* W3C */
 
-	font-size: 1.4em;
+	font-size: 1.2em;
 	line-height: 1.514em;
 	color: white;
 	padding-top: 30px;
 	padding-left: 30px;
 	z-index: 0;
 	position: relative;
+	font-family: 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .footer:after {
@@ -590,134 +591,54 @@ a .nextItem:hover span.point {
 	z-index: -1;
 }
 
-.footer a {
-	border-bottom: none;
-	text-decoration: none;
-	color: white;
-	padding: 0px 3px;
-	background-color: #333;
-/*	-moz-border-radius: 4px; /* FF1+ */
-	-webkit-border-radius: 4px; /* Saf3+, Chrome */
-	border-radius: 4px; /* Opera 10.5, IE 9 */	
+.footer .column {
+	width: 200px;
 }
 
-.footer a:hover {
-	border-bottom: none;
-	text-decoration: none;
-	background-color: #fee7b1;
-	color: #151515;
-	
-}
 
-.footer h3, .footer h4, .footer h3 a, .footer h4 a {
+.footer h3, .footer h4, #copyright {
 	font-family: 'nevisBold', 'Gotham HTF', 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	color: #fee7b1;
 	text-transform: uppercase;
-	letter-spacing: 0.08em;
-	text-decoration: none;
-	border-bottom: none;
-	background-color: transparent;
-}
-
-.footer h3 {
 	font-size: 0.85em;
+	letter-spacing: 0.1em;
+	color: #fff3a1;
+	border-bottom: 1px dotted #fff3a1;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	text-decoration: none;
 }
 
-.footer h4 {
-	font-size: 0.75em;
+.footer h4 a, .footer h4 {
+	color: white;
+	border-bottom: none;
+	margin-bottom: 5px;
+	padding-bottom: 0px;
+	text-decoration: none;
 }
 
-.footer #leftColumn, .footer #middleColumn, .footer #rightColumn {
-	float: left;
-}
-
-.footer #leftColumn {
-	width: 300px;
-	margin-right: 20px;
-}
-
-.footer #middleColumn {
-	width: 410px;
-	padding: 0px 10px;
-	border: 1px #2b2b2b solid;
-	border-width: 0px 1px;
-	margin-right: 20px;
-}
-
-.footer #middleColumn #bottom {
-	border-top: 1px #2b2b2b solid;
-	padding-top: 1.4em;
-	clear: both;	
-}
-
-.footer #middleColumn #bottom div, .footer #middleColumn #top div {
-	width: 190px;
-	float: left;
-}
-
-.footer #middleColumn .rightCol {
-	padding-left: 30px;
-}
-
-.footer #rightColumn {
-	width: 200px
-}
-
-.footer #copyright {
-	clear: both;
-	width: 1000px;
-	padding-top: 20px;
-	border-top: 1px #2b2b2b solid;
-	float: left;
-}
-
-.footer #leftColumn ul {
-	list-style: none;
+.footer ul {
 	margin: 0px;
 }
 
-.footer #leftColumn ul img {
-	width: 90px;
-	height: 80px;
-	background-color: #333;
-	float: left;
-	margin-right: 20px;
-}
-.footer #leftColumn ul .alternate img {
-	float: right;
-	margin-left: 20px;
-	margin-right: 0px;
-}
-
-.footer #leftColumn ul .alternate {
-	text-align: right;
-}
-
-.footer #leftColumn ul li {
+.footer ul li {
 	list-style: none;
-	margin: 0px;
+}
+
+#copyright {
 	clear: both;
-	overflow: hidden;
-	padding-bottom: 20px;
+	border-bottom: none;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
 }
 
-.footer #delicious p a {
-	font-variant: small-caps;
-	letter-spacing: 0.08em;
-	
+#copyright a {
+	text-decoration: none;
 }
 
-.footer a.nobg {
-	background: none;
-	padding: 0px;
-}
-.footer a.nobg:hover {
-	background: none;
-}
 /*-------------------------------- 		<tweet blender overides> */
 
-.footer #middleColumn div.tb_tweet, 
-.footer #middleColumn div.tb_tweetlist { border: none;}
+.footer div.tb_tweet, 
+.footer div.tb_tweetlist { border: none;}
 
 div.tb_msg { display: none; }
 
