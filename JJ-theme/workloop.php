@@ -61,10 +61,11 @@
 							foreach($images as $image) {
 								$attimgalt = get_post_meta($image->ID, '_wp_attachment_image_alt', true);
 								
-								if $attimgalt=='' {
+								if ($attimgalt=='') {
 									echo "<li><a rel='self' href='#".$image->ID."'>Image</a></li>";
 								} else {
 									echo "<li><a rel='self' href='#".$image->ID."'>$attimgalt</a></li>";
+								}
 							}
 						?></ul>
 					</div>
