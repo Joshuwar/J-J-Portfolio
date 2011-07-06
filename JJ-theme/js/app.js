@@ -64,31 +64,36 @@ $(document).ready(function() {
 	
 	var location,
 		destination,
-		transition;
-		
-	window.location.hash = "";
+		transition,
+		getFragID = function getFragID() {
+			return window.location.hash.replace(/^#/,"");
+		};
 	
 	$('#menu li').eq(0).children('a').addClass('active');
 	
 	createThumbnailGallery();
 	addImageNav(10);
+	
+	startWatchingHash(function(currentHash, newHash) {
+		var location = parseUrl(currentHash),
+			destination = parseUrl(newHash),
+			transition = transitions[location.type][destination.type];
+		if(transition) {
+			$.scrollTo(0, ANIMATION_DURATION);
+			console.log('transitioning from/to',location,destination);
+			transition(destination,location);
+		}
+	});
 
 	$('a').click(function(e) {
 		var rel = $(this).attr('rel'),
-			href = $(this).attr('href');
-		if(rel && rel==="self") {
-			e.preventDefault();
+			href = $(this).attr('href'),
+			parsed = parseUrl(href);
+		e.preventDefault(); // NOTE: external links shouldn't do this
+		if(rel && rel==="self") { // accommodate imageNav links
 			return true;
 		}
-		e.preventDefault(); // NOTE: external links shouldn't do this
-		$.scrollTo(0, ANIMATION_DURATION);
-		location = parseUrl(window.location.href);
-		destination = parseUrl(href);
-		transition = transitions[location.type][destination.type];
-		if(transition) {
-			window.location.hash = destination.path;
-			transition(destination,location);
-		}		
+		setFragID(parsed.path);
 		return false;
 	});
 	

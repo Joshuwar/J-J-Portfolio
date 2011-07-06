@@ -1,8 +1,20 @@
-function setFragID(url) {
+/* bind navigation to frag ID changes
+
+	example:
+	
+	$(document).ready(function() {
+		startWatchingHash(function(currentHash, newHash) {
+			loadNewPage(newHash);
+		});
+	});
+*/
+function setFragID(url,trim) {
 	url = url || "";
-	if(url.lastIndexOf('/')!==-1) {
-		url = url.substring(url.lastIndexOf('/')+1);
-	}
+	if(trim) {
+		if(url.lastIndexOf('/')!==-1) {
+			url = url.substring(url.lastIndexOf('/')+1);
+		}
+	}	
 	window.location.hash = url;
 }
 
@@ -10,23 +22,20 @@ function getFragID() {
 	return window.location.hash.replace(/^#/,"");
 }
 
-function startWatchingHash() {
-	(function() {
-		if(window.location.hash!==arguments.callee.hash) {
-			$(document).trigger('hashChange');
+function startWatchingHash(callback) {
+	$(document).bind("hashChange", function(e, currentHash, newHash) {
+		// do something
+		if(callback) {
+			callback(currentHash,newHash);
 		}
-		arguments.callee.hash = window.location.hash;
+	});
+	(function() {
+		var currentHash = arguments.callee.hash || "#",
+			newHash = window.location.hash;
+		if(newHash!==currentHash) {
+			$(document).trigger('hashChange', [currentHash,newHash]);
+			arguments.callee.hash = newHash;
+		}
 		window.setTimeout(arguments.callee,200);
 	})();
 }
-
-// bind navigation to frag ID changes
-$(document).ready(function() {
-	$(document).bind('hashChange', function() {
-		var hash = getFragID();
-		if(hash) {
-			// do something
-		}
-	});
-	startWatchingHash();
-});

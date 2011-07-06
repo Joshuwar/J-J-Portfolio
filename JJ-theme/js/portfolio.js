@@ -214,6 +214,7 @@ function toggleThumbs(toMatch,doNotOpen) {
 }
 
 function toggleTextPane(doNotFade) {
+	console.log('tTP');
 	var $textPane = $('#mainTextPane');
 	if(!doNotFade || !$textPane.is(":visible")) {
 		$textPane.stop().fadeToggle(ANIMATION_DURATION);
