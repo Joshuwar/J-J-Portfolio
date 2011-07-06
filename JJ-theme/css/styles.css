@@ -579,6 +579,18 @@ a .nextItem:hover span.point {
 	font-family: 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.footer:before {
+	height: 10px;
+	content: '';
+	background-image: url(../images/footer-triangle.png);
+	width: 100%;
+	display: block;
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 1;
+}
+
 .footer:after {
 	position: absolute;
 	content: '';
