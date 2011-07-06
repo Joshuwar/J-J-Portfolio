@@ -16,8 +16,7 @@ var categoryToCategory = function(dest) {
 		var item = dest.slug,
 			cat = getMenuItemFromSlug(item);
 		moveRibbon(cat);
-		toggleThumbs(item); // toggleItem happens if there is only one item showing after this has completed - see 'thumbOpened' event binding below
-		//toggleTextPane();
+		toggleThumbs(item,openThumb);
 	},
 	categoryToRoot = categoryToCategory,
 	itemToCategory = function(dest) {
@@ -80,7 +79,6 @@ $(document).ready(function() {
 			transition = transitions[location.type][destination.type];
 		if(transition) {
 			$.scrollTo(0, ANIMATION_DURATION);
-			console.log('transitioning from/to',location,destination);
 			transition(destination,location);
 		}
 	});
@@ -122,9 +120,12 @@ $(document).ready(function() {
 	});
 	
 	$(document).bind("thumbsToggled", function(e, $thumbs) {
-		console.log('thumbsToggled');
+		var href,
+			parsed;
 		if($thumbs.length===1) {
-			openThumb($thumbs);
+			href = $thumbs.find('a').attr('href');
+			parsed = parseUrl(href);
+			setFragID(parsed.path);
 		}
 	});
 	

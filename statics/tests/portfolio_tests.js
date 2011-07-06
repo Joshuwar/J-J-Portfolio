@@ -287,7 +287,7 @@ $(document).ready(function() {
 			$thumb,
 			$img,
 			categories;
-		toggleThumbs(category,true);
+		toggleThumbs(category);
 		expect(data.thumbs.length*3);
 		data.thumbs.each(function(i, thumb) {
 			$thumb = $(thumb);
@@ -308,7 +308,7 @@ $(document).ready(function() {
 			$thumb,
 			$img,
 			href;
-		toggleThumbs(postSlug,true);
+		toggleThumbs(postSlug);
 		expect(data.thumbs.length*3);
 		data.thumbs.each(function(i, thumb) {
 			$thumb = $(thumb);
@@ -382,6 +382,17 @@ $(document).ready(function() {
 		toggleThumbs(postSlug);
 	});*/
 
+	test("it should call a provided callback with the visible thumbs, and not trigger the thumbsToggled event in that case", function() {
+		var callback = function($thumbs) {
+			equals($thumbs.length,2);
+		};
+		$(document).one("thumbsToggled", function() {
+			ok(1);
+		});
+		expect(1);
+		toggleThumbs("sampleCategory2",callback);
+		$(document).unbind("thumbsToggled");
+	});
 	
 	module("openThumb", {
 		setup: function() {

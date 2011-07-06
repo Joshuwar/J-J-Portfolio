@@ -131,7 +131,7 @@ function moveRibbon(category) {
 	$targetLi.siblings().children('a').removeClass('active');
 }
 
-function toggleThumbs(toMatch,doNotOpen) {
+function toggleThumbs(toMatch,callback) {
 	var categories,
 		matchType,
 		$thumbs = $('#thumbnailGallery ul li'),
@@ -199,7 +199,11 @@ function toggleThumbs(toMatch,doNotOpen) {
 						return true;
 					}
 				});
-				$(document).trigger("thumbsToggled", [$visibleThumbs]);
+				if(callback) {
+					callback($visibleThumbs);
+				} else {
+					$(document).trigger("thumbsToggled", [$visibleThumbs]);
+				}
 			}
 		});
 	});
@@ -219,7 +223,6 @@ function openThumb($visibleThumb) {
 }
 
 function toggleTextPane(doNotFade) {
-	console.log('tTP');
 	var $textPane = $('#mainTextPane');
 	if(!doNotFade || !$textPane.is(":visible")) {
 		$textPane.stop().fadeToggle(ANIMATION_DURATION);
