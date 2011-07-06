@@ -94,6 +94,8 @@ h1#standfirst {
 h1 {
 	font-family: 'nevisBold', 'Gotham HTF', 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-size: 2em;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
 	/* color: white;
 	background-image: url(../images/star_logo2.png);
 	text-indent: -9999px;
@@ -113,6 +115,8 @@ h1 {
 h2 {
 	font-size: 2em;
 	font-family: 'nevisBold', 'Gotham HTF', 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
 }
 h2 a {
 	color: #565656;
