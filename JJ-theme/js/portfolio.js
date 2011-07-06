@@ -138,7 +138,7 @@ function toggleThumbs(toMatch,doNotOpen) {
 		$thumb,
 		i = 0,
 		thumbCount = $thumbs.length,
-		$visibleThumb,
+		$visibleThumbs,
 		baseThumbWidth,
 		baseThumbTop,
 		baseThumbLeft;
@@ -194,22 +194,27 @@ function toggleThumbs(toMatch,doNotOpen) {
 		}, ANIMATION_DURATION, function() {
 			i++;
 			if(i===thumbCount) {
-				$visibleThumb = $thumbs.filter(function() {
+				$visibleThumbs = $thumbs.filter(function() {
 					if($(this).css('width')!=='0px') {
 						return true;
 					}
 				});
-				$(document).trigger("thumbsToggled");
-				if($visibleThumb.length===1 && !doNotOpen) {
-					$visibleThumb.animate({ // weird bug where having .stop() here means the last thumb in the list doesn't run this animation
-						'width': '100%'
-					}, ANIMATION_DURATION, function() {
-						$(document).trigger("thumbOpened", [this]);
-						$('#thumbnailGallery').stop().fadeOut(ANIMATION_DURATION);	
-					});
-				}
+				$(document).trigger("thumbsToggled", [$visibleThumbs]);
 			}
 		});
+	});
+}
+
+function openThumb($visibleThumb) {
+	var $thumbGal = $('#thumbnailGallery'),
+		slug;
+	$visibleThumb.animate({ // weird bug where having .stop() here means the last thumb in the list doesn't run this animation
+		'width': '100%'
+	}, ANIMATION_DURATION, function() {
+		$thumbGal.stop().fadeOut(ANIMATION_DURATION);
+		slug = getSlug($visibleThumb.find('a').attr('href'));
+		toggleTextPane();
+		toggleItem(slug);
 	});
 }
 

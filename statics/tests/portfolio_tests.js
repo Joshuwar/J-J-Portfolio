@@ -341,7 +341,7 @@ $(document).ready(function() {
 		});
 	});
 
-	test("if only one thumbnail is visible after toggling, increase it's width to 100% and fade it out", function() {
+	/*test("if only one thumbnail is visible after toggling, increase it's width to 100% and fade it out", function() {
 		var postSlug = data.postSlug,
 			$thumbs = data.thumbs,
 			$openedThumbs,
@@ -357,17 +357,18 @@ $(document).ready(function() {
 			}
 		});
 		equals($openedThumbs.length,1);
-	});
+	});*/
 
-	test("it should trigger the thumbsToggled event on the document after the animation to change their widths", function() {
-		$(document).one("thumbsToggled", function(e, thumb) {
+	test("it should trigger the thumbsToggled event on the document after the animation to change their widths, with the visible thumbs jQuery object as the parameter to the event handler", function() {
+		$(document).one("thumbsToggled", function(e, $thumbs) {
 			ok(true,"thumbsToggled event triggered");
+			equals($thumbs.length,2);
 		});
-		expect(1);
-		toggleThumbs();
+		expect(2);
+		toggleThumbs("sampleCategory2");
 	});
 
-	test("it should trigger the thumbOpened event on the document during the above animation that applies when only one thumb is left visible, at the point where the width is 100%", function() {
+	/*test("it should trigger the thumbOpened event on the document during the above animation that applies when only one thumb is left visible, at the point where the width is 100%", function() {
 		var postSlug = data.postSlug,
 			$thumbGal = data.thumbGal,
 			parentWidth;
@@ -379,6 +380,46 @@ $(document).ready(function() {
 		});
 		expect(2);
 		toggleThumbs(postSlug);
+	});*/
+
+	
+	module("openThumb", {
+		setup: function() {
+			createThumbnailGallery();
+			data.category = "sampleCategory";
+			data.postSlug = "woe-books";
+			data.thumbGal = $('#thumbnailGallery'),
+			data.thumbs = data.thumbGal.find('ul li');
+		}
+	});
+	
+	test("it should stretch the given thumb to 100% width, fade out the thumbGal, toggle the textpane and call toggleItem with the slug for the thumb's item", function() {
+		var postSlug = data.postSlug,
+			$thumbGal = data.thumbGal,
+			$thumbs = data.thumbs,
+			$targetThumb,
+			tmpToggleTextPane = toggleTextPane,
+			tmpToggleItem = toggleItem;
+		toggleTextPane = function() {
+			ok(1,"toggleTextPane called");
+			toggleTextPane = tmpToggleTextPane;
+		};
+		toggleItem = function() {
+			ok(1, "toggleItem called");
+			toggleItem = tmpToggleItem;
+		};
+		expect(5);
+		$targetThumb = $thumbs.filter(function() {
+			if($(this).find('a').attr('href').indexOf('woe-books')===-1) {
+				$(this).hide();
+			} else {
+				return true;
+			}
+		});
+		equals($targetThumb.length, 1);
+		openThumb($targetThumb);
+		equals($targetThumb.css('width'),'100%');
+		equals($thumbGal.is(":visible"), false);
 	});
 	
 	module("toggleTextPane", {

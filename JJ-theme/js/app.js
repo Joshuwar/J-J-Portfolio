@@ -121,13 +121,11 @@ $(document).ready(function() {
 			}, ANIMATION_DURATION);
 	});
 	
-	$(document).bind('thumbOpened', function(e, thumb) {
-		var href = $(thumb).find('a').attr('href'),
-			slug = getSlug(href),
-			destination = parseUrl(href);
-		window.location.hash = destination.path;
-		toggleTextPane();
-		toggleItem(slug);
+	$(document).bind("thumbsToggled", function(e, $thumbs) {
+		console.log('thumbsToggled');
+		if($thumbs.length===1) {
+			openThumb($thumbs);
+		}
 	});
 	
 	$('#portfolio').css('min-height',$('#portfolio').height());
