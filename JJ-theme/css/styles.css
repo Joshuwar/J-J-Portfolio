@@ -495,12 +495,19 @@ a .nextItem:hover span.point {
 }
 
 .imageNav {
-	font-style: italic;
 	line-height: 1.6em;
-	color: #888;
 	position: fixed;
 	left: 1060px;
 	top: 260px;
+}
+
+.imageNav ul li a {
+	font-family: 'nevisBold', 'Gotham HTF', 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: #222;
+	text-transform: uppercase;
+	text-decoration: none;
+	font-size: 11px;
+	letter-spacing: 0.08em;
 }
 
 .imageNav ul {
