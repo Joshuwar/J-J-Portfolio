@@ -87,11 +87,6 @@ $(document).ready(function() {
 		transition = transitions[location.type][destination.type];
 		if(transition) {
 			window.location.hash = destination.path;
-			$(e.target).addClass('active')
-				.closest('li')
-				.siblings()
-				.children('a')
-				.removeClass('active');
 			transition(destination,location);
 		}		
 		return false;

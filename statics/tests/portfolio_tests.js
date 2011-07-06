@@ -18,13 +18,26 @@ $(document).ready(function() {
 		actual = $('.mockMenu').offset().left;
 		equals(actual,expected);
 	});
-	
 	test("given no category, it should scroll to sit at the left of the first li of the menu", function() {
 		var expected = $('#menu ul li').eq(0).offset().left,
 			actual;
 		moveRibbon();
 		actual = $('.mockMenu').offset().left;
 		equals(actual,expected);
+	});
+	test("it should make the link in only the selected category have the class 'active'", function() {
+		var category = data.testCategory,
+			$lis = $('.menu li'),
+			expected = $lis.filter(function() {
+				return $(this).text()===category;
+			}).index(),
+			actual;
+		moveRibbon(category);
+		actual = $lis.filter(function() {
+			return $(this).find('a').hasClass('active');
+		}).index();
+		equals(actual,expected);
+		equals($lis.find('a.active').length,1);
 	});
 	
 	module("createThumbnailGallery", {

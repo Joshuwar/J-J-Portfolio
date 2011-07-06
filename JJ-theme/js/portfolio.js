@@ -120,11 +120,15 @@ function moveRibbon(category) {
 		});
 		toLeft = $targetLi.offset().left - startingLeft;
 	} else {
+		$targetLi = $('.menu li:eq(0)');
 		toLeft = moveRibbon.home - startingLeft;
 	}
 	$ribbon.stop().animate({
 		left: '+='+toLeft+'px'
-	}, ANIMATION_DURATION);
+	}, ANIMATION_DURATION, function() {
+		$targetLi.find('a').addClass('active');
+	});
+	$targetLi.siblings().children('a').removeClass('active');
 }
 
 function toggleThumbs(toMatch,doNotOpen) {
