@@ -8,6 +8,10 @@ To do
 
  */
 
+::selection			{ background:#ff5656; color:#fff; }
+::-moz-selection	{ background:#ff5656; color:#fff; }
+
+
 @font-face {
     font-family: 'nevisBold';
     src: url('../fonts/nevis-webfont.eot');
