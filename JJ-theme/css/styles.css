@@ -77,9 +77,10 @@ img#logo {
 
 
 h1 a {
-	font-size: 1em;
-	color: #545454;
-	text-decoration: none;
+	color: #222222;
+    font-size: 0.5em;
+    letter-spacing: 0.08em;
+    text-decoration: none;
 }
 
 h1#standfirst {
@@ -93,9 +94,7 @@ h1#standfirst {
 
 h1 {
 	font-family: 'nevisBold', 'Gotham HTF', 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	font-size: 2em;
 	text-transform: uppercase;
-	letter-spacing: 0.1em;
 	/* color: white;
 	background-image: url(../images/star_logo2.png);
 	text-indent: -9999px;
