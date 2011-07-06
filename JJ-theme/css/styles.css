@@ -92,7 +92,7 @@ h1#standfirst {
 }
 
 h1 {
-	font-family: 'Crimson Text', serif;
+	font-family: 'nevisBold', 'Gotham HTF', 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-size: 2em;
 	/* color: white;
 	background-image: url(../images/star_logo2.png);
@@ -111,8 +111,8 @@ h1 {
 }
 
 h2 {
-	font-family: 'Crimson Text', serif;
 	font-size: 2em;
+	font-family: 'nevisBold', 'Gotham HTF', 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 h2 a {
 	color: #565656;
@@ -236,7 +236,7 @@ ul.mockMenu li a  {
 	padding: 0 30px;
 	margin-bottom: 60px;
 	font-family: 'helvetica neue', helvetica, arial;
-	font-size: 0.9em;
+	font-size: 1.05em;
 	/*font-size: 1.05em;
 	line-height: 1.5em;*/
 }
