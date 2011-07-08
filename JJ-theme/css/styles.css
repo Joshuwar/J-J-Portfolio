@@ -712,6 +712,8 @@ div#friendfeed.widget td {
 
 .js .categoryContent {	
 	display: none;
+	position: absolute;
+	top: 0px;
 }
 
 
