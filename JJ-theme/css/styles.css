@@ -244,10 +244,6 @@ ul.mockMenu li a  {
 	line-height: 1.5em;*/
 }
 
-.js .categoryContent {
-	display: none;
-}
-
 #thumbnailGallery {
 	position: absolute;
 }
@@ -714,12 +710,8 @@ div#friendfeed.widget td {
 
 /*-------------------------------- <category content> */
 
-.categoryContent {	
+.js .categoryContent {	
 	display: none;
-}
-
-#root {
-	display: block;
 }
 
 

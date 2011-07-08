@@ -52,6 +52,7 @@
 						?>
 				</h1>
 				<div id="menu" class="left">
+					<span></span>
 					<?php wp_nav_menu( array(
 						'container'		 => 'false',
 						'theme_location' => 'top_menu', 
