@@ -244,7 +244,6 @@ ul.mockMenu li a  {
 	line-height: 1.5em;*/
 }
 
-
 #thumbnailGallery {
 	position: absolute;
 }
@@ -310,8 +309,6 @@ ul.mockMenu li a  {
 
 .item img {
 	position: relative;
-	top: -55px; /* JRL: these two lines for testing */
-	left: -55px;
 }
 
 .item .categories, .portfolioItem .categories {
@@ -713,12 +710,8 @@ div#friendfeed.widget td {
 
 /*-------------------------------- <category content> */
 
-.categoryContent {	
+.js .categoryContent {	
 	display: none;
-}
-
-#root {
-	display: block;
 }
 
 

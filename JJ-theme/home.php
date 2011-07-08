@@ -8,7 +8,7 @@
 				<div class="gallery" id="thumbnailGallery"></div>
 				
 				<div class="textPane margintopsmall" id="mainTextPane">	
-					<div id="root" class="categoryContent">
+					<div id="root">
 						<?php the_content(); ?>
 					</div>
 					 <?php 
