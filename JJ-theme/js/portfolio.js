@@ -134,6 +134,7 @@ function moveRibbon(category) {
 function toggleThumbs(toMatch,callback) {
 	var categories,
 		matchType,
+		$textPane = $('#mainTextPane'),
 		$thumbs = $('#thumbnailGallery ul li'),
 		$thumb,
 		i = 0,
@@ -152,6 +153,10 @@ function toggleThumbs(toMatch,callback) {
 		}
 	} else {
 		matchType = "all";
+	}
+	if(matchType!=="post") {
+		$textPane.children('div').stop().fadeOut(ANIMATION_DURATION);
+		$textPane.children(toMatch ? '#'+toMatch : 'div:eq(0)').fadeIn(ANIMATION_DURATION);
 	}
 	$thumbs.each(function(i, thumb) {
 		var $img,

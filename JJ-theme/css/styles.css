@@ -244,6 +244,9 @@ ul.mockMenu li a  {
 	line-height: 1.5em;*/
 }
 
+.js .categoryContent {
+	display: none;
+}
 
 #thumbnailGallery {
 	position: absolute;
@@ -310,8 +313,6 @@ ul.mockMenu li a  {
 
 .item img {
 	position: relative;
-	top: -55px; /* JRL: these two lines for testing */
-	left: -55px;
 }
 
 .item .categories, .portfolioItem .categories {

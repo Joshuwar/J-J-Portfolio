@@ -303,6 +303,15 @@ $(document).ready(function() {
 		});
 	});
 	
+	test("given a category, it should fade out the visible mainTextPane content and show the content for the category selected", function() {
+		var category = data.category,
+			$textPane = $('#mainTextPane');
+		equals($textPane.find(".categoryContent:visible").length,0);
+		toggleThumbs(category);
+		equals($textPane.find(".categoryContent:visible").text(),$('#'+category).text());
+		ok(!$textPane.find("div:eq(0)").is(":visible"),"root content is invisible");
+	});
+	
 	test("given a post slug, it should reduce the widths of all but the matching thumb to zero and their image offsets to their top and left data attributes, and change the matching thumb's width to its width data attribute and its image offset to 0,0", function() {
 		var postSlug = data.postSlug,
 			$thumb,
@@ -339,6 +348,17 @@ $(document).ready(function() {
 			equals($img.css('top'),$img.data('top'));
 			equals($img.css('left'),$img.data('left'));
 		});
+	});
+
+	test("given no parameter, it should fade out the visible mainTextPane content and show the original content", function() {
+		var $textPane = $('#mainTextPane');
+		$textPane.children('div')
+			.hide()
+			.eq(1)
+			.show();
+		equals($textPane.find(".categoryContent:visible").length,1);
+		toggleThumbs();
+		equals($textPane.children("div:visible").text(),$textPane.children().eq(0).text());
 	});
 
 	/*test("if only one thumbnail is visible after toggling, increase it's width to 100% and fade it out", function() {
