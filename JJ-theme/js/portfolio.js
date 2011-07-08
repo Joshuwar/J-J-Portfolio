@@ -257,16 +257,27 @@ function parseUrl(url) {
 	var uri,
 		path,
 		host,
-		i = url.indexOf('#'),
+		i,
 		slug;
-	if(i!==-1) { /* TO-DO: this is throwing away hosts that might be external, that needs to not happen */
-		url = url.substring(i+1, url.length);
-	} else if(window.hrefBase && url.indexOf(window.hrefBase===0)) {
+	if(window.hrefBase && url.indexOf(window.hrefBase)===0) {
 		url = url.substring(window.hrefBase.length, url.length);
 	}
 	uri = parseUri(url);
 	path = uri.path;
 	host = uri.host;
+	if(host && host!==window.location.host) {
+		return {
+			external: true,
+			host: host
+		};
+	}
+	i = url.indexOf('#');
+	if(i!==-1) {
+		url = url.substring(i+1, url.length);
+		uri = parseUri(url);
+		path = uri.path;
+		host = uri.host;
+	}
 	if(path==="" || path==="/") {
 		return {
 			type: 'root',

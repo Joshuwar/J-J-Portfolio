@@ -517,11 +517,19 @@ $(document).ready(function() {
 	
 	});
 	
+	test("given an external URL, it should understand this as external", function() {
+		var actual = parseUrl('http://blahblah.com'),
+			expected = {
+				host: 'blahblah.com',
+				external: true
+			};
+		equals(actual.host,expected.host);
+		equals(actual.external,expected.external);
+	});
+	
 	test("given a URL of '/', it should understand this as 'root'", function() {
 		var actual = [
-				parseUrl('/'),
-				parseUrl('http://example.com/'),
-				parseUrl('www.example.com')
+				parseUrl('/')
 			],
 			expected = {
 				slug: '/',
@@ -536,10 +544,10 @@ $(document).ready(function() {
 	});
 	
 	test("given a URL of '/category/<something>', it should understand this as 'category'", function() {
+		window.hrefBase = "http://example.com";
 		var actual = [
 				parseUrl('/category/how-we-work'),
-				parseUrl('http://example.com/category/how-we-work'),
-				parseUrl('www.example.com/category/how-we-work')
+				parseUrl('http://example.com/category/how-we-work')
 			],
 			expected = {
 				type: 'category',
@@ -551,6 +559,7 @@ $(document).ready(function() {
 			equals(a.slug,expected.slug);
 			equals(a.path,expected.path);
 		});
+		delete window.hrefBase;
 	});
 	
 	test("given a URL of '/<something-else>/<something>', it should understand this as 'item'", function() {
@@ -562,21 +571,19 @@ $(document).ready(function() {
 					host: ''
 				};
 		deepEqual(actual,expected);
+		window.hrefBase = "http://example.com";
 		actual = parseUrl('http://example.com/some-other-post-type/biscuits');
 		expected.path = '/some-other-post-type/biscuits';
-		expected.host = "example.com";
+		expected.host = "";
 		deepEqual(actual,expected);
-		actual = parseUrl('www.example.com/dogs/biscuits');
-		expected.host = "www.example.com";
-		expected.path = '/dogs/biscuits';
-		deepEqual(actual,expected);
+		delete window.hrefBase;
 	});
 	
 	test("given a URL of '/<anything-else>', it should understand this as 'item'", function() {
+		window.hrefBase = "http://example.com";
 		var actual = [
 				parseUrl('/i-broke-the-photo-shoot'),
-				parseUrl('http://example.com/i-broke-the-photo-shoot'),
-				parseUrl('www.example.com/i-broke-the-photo-shoot')
+				parseUrl('http://example.com/i-broke-the-photo-shoot')
 			],
 			expected = {
 				type: 'item',
@@ -588,6 +595,7 @@ $(document).ready(function() {
 			equals(a.slug,expected.slug);
 			equals(a.path,expected.path);
 		});
+		delete window.hrefBase;
 	});
 	
 	test("given a URL of 'http://localhost/portfolio/category/how-we-work' and a window.hrefBase of 'http://localhost/portfolio', it should understand this as 'category' with slug 'how-we-work'", function() {
@@ -608,14 +616,16 @@ $(document).ready(function() {
 	});
 	
 	test("given a URL of 'http://localhost/portfolio/#/category/how-we-work', it should understand this as 'category' with slug 'how-we-work'", function() {
+		window.hrefBase = "http://localhost/portfolio";
 		var actual = parseUrl('http://localhost/portfolio/#/category/how-we-work'),
 			expected = {
 				type: 'category',
 				slug: 'how-we-work',
 				path: '/category/how-we-work',
-				host: 'localhost'
+				host: ''
 			};
 		deepEqual(actual, expected);
+		delete window.hrefBase;
 	});
 	
 	test("given a URL of 'http://google.com', the returned object should include a host property of 'google.com'", function() {

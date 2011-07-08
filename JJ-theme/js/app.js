@@ -87,7 +87,10 @@ $(document).ready(function() {
 		var rel = $(this).attr('rel'),
 			href = $(this).attr('href'),
 			parsed = parseUrl(href);
-		e.preventDefault(); // NOTE: external links shouldn't do this
+		if(parsed.external) {
+			return true;
+		}
+		e.preventDefault();
 		if(rel && rel==="self") { // accommodate imageNav links
 			return true;
 		}
