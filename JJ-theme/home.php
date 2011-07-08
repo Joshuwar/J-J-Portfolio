@@ -8,7 +8,21 @@
 				<div class="gallery" id="thumbnailGallery"></div>
 				
 				<div class="textPane margintopsmall" id="mainTextPane">	
-					<?php the_content(); ?>
+					<div id="root" class="categoryContent">
+						<?php the_content(); ?>
+					</div>
+					 <?php 
+					 	$categories = get_categories(); 
+					 	foreach ($categories as $category) {
+					 	 	$cat_slug = $category->slug;
+					 	 	$cat_desc = $category->category_description; 
+					 	 	if ($cat_desc != '') { ?>
+					 	 		<div id="<?php echo($cat_slug); ?>" class="categoryContent">
+					 	 			<?php echo($cat_desc); ?>
+					 	 		</div>
+					 	 		<?php
+					 	 	}
+					 	} ?>
 				</div>
 				
 				<?php 

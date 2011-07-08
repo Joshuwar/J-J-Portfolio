@@ -712,9 +712,14 @@ div#friendfeed.widget td {
 
 
 
+/*-------------------------------- <category content> */
 
+.categoryContent {	
+	display: none;
+}
 
-
-
+#root {
+	display: block;
+}
 
 
