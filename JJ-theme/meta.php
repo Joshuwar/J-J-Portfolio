@@ -17,18 +17,5 @@
 						<a href="<?php echo get_permalink_by_name('super-contact'); ?>">
 						</a>
 						<?php endif; ?>
-						<div class="margintop itemNav">
-							<?php 	
-									$next_post = get_next_post();
-									if ($next_post != "") :									
-							 ?>
-							<a class="left marginleft" href="<?php echo get_permalink($next_post->ID);?>">
-								<span class="nextItem">Next: 
-									<span><em><?php echo $next_post->post_title; ?></em></span>
-									<span class="point"></span>
-								</span>
-							</a>
-							<?php endif; ?>
-						</div>
 							
 						

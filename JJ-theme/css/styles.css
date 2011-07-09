@@ -420,6 +420,21 @@ a .hireUs:hover span {
 	text-decoration: none;
 }
 
+.nextTab a {
+	position: fixed;
+	top: 190px;
+	right: 0px;
+	background-color: #222;
+	color: white;
+	padding: 10px 10px 10px 15px;
+	border-radius: 20px 0px 0px 20px;
+	font-family: 'nevisBold', 'Gotham HTF', 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	font-size: 0.7em;
+	text-decoration: none;
+}
+
 a .backToGrid, a .nextItem {
 	width: 110px;
 	height: 45px;
