@@ -9,8 +9,12 @@ html, body {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	margin: 0 auto -280px;
+	margin: 0 auto -315px;
 }
-.footer, .push {
+.footer {
 	height: 285px;
+}
+
+.push {
+	height: 315px;
 }
