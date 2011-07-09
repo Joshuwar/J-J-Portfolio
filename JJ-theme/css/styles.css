@@ -8,8 +8,8 @@ To do
 
  */
 
-::selection			{ background:#ff5656; color:#fff; }
-::-moz-selection	{ background:#ff5656; color:#fff; }
+::selection			{ background:#ff5656; color:#fff; opacity: 0.7; }
+::-moz-selection	{ background:#ff5656; color:#fff; opacity: 0.7; }
 
 
 @font-face {
@@ -714,6 +714,7 @@ div#friendfeed.widget td {
 	display: none;
 	position: absolute;
 	top: 0px;
+	width: 350px;
 }
 
 
