@@ -50,6 +50,7 @@ body {
 }
 
 #portfolio {
+	margin-top: 10px;
 /*	min-height: 600px; */
 }
 
@@ -253,7 +254,6 @@ ul.mockMenu li a  {
 .gallery {
 	/*height: ;*/
 	margin-left: 410px;
-	margin-top: 10px;
 }
 
 .gallery ul {
@@ -485,12 +485,12 @@ a .nextItem:hover span.point {
 /* ================== portfolio entry */
 
 .portfolioImage {
-	background-color: white;
+ 	background-color: white;
     border: 1px solid #EAEAEA;
     border-radius: 5px 5px 5px 5px;
     box-shadow: 1px 1px 2px #7E7E7E;
+    padding: 8px; 
     margin-bottom: 60px;
-    padding: 8px;
 }
 
 .imageNav {
