@@ -113,7 +113,7 @@ $(document).ready(function() {
 			.stop(false, true)
 			.animate({
 				opacity: 1 // opacity of image on mouseover
-			}, 0);
+			}, 100);
 	}, function() {
 		$(this)
 			.find('img')
