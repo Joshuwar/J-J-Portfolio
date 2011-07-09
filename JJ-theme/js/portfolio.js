@@ -93,7 +93,7 @@ function addImageNav(spacingParameter) {
 			navSpanTopOffset = parseInt($navSpan.css('top'),10);
 		}
 		$navSpan.animate({
-			top: $(e.target).position().top+navSpanTopOffset
+			top: $(e.target).position().top+navSpanTopOffset -5 // JB DEBUG - put the -5 on so that the arrow animates to the right place
 		}, ANIMATION_DURATION);
 	});
 }
