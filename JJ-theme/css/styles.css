@@ -75,10 +75,12 @@ img#logo {
     z-index: 1;
 }
 
+.textPane h1 {
+		font-size: 1em;
+}
 
 h1 a {
 	color: #222222;
-    font-size: 0.5em;
     letter-spacing: 0.08em;
     text-decoration: none;
 }
