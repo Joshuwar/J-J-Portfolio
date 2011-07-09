@@ -112,13 +112,13 @@ $(document).ready(function() {
 			.find('img')
 			.stop(false, true)
 			.animate({
-				opacity: 0
+				opacity: 1 // opacity of image on mouseover
 			}, 0);
 	}, function() {
 		$(this)
 			.find('img')
 			.animate({
-				opacity: 1
+				opacity: 0 // opacity of image on mouseout
 			}, ANIMATION_DURATION);
 	});
 	
