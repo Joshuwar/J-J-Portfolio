@@ -12,6 +12,12 @@
 												} ?></span>
 					<div class="textPane">	
 						<h1 id="<?php echo $post->post_name; ?>"><a title="<?php the_title(); ?>" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
+						<?php $current_title = get_the_title(); 
+								echo 'current title 1:';
+								echo $current_title;
+						
+						?>
+
 
 						<?php the_content(); ?>
 						
@@ -74,6 +80,40 @@
 						echo "No Images Found";
 					endif;
 					?>
+					<div class="nextTab">
+						<?php
+								$next_post = get_next_post(true);
+								if ($next_post == "") {
+									$cat = get_the_category();
+									$catID = $cat[0]->cat_ID;
+									$firstpost = new WP_query( 
+				 						array(
+											'post_type' => array('post', 'portfolio_items'),
+											'cat' => $catID,
+											'order' => 'ASC',
+											'posts_per_page' => 1
+										)
+				 					); 
+									if ( $firstpost->have_posts() ) : while ( $firstpost->have_posts() ) : $firstpost->the_post();
+										$newtitle = get_the_title();
+										if ($current_title == $newtitle) {
+											// do nothing
+											} else { ?>
+											<a href="<?php the_permalink(); ?>" rel="bookmark">Next: <em><?php echo the_title(); ?></em></a>	
+											<?php 
+											}
+										endwhile;
+										endif;
+								} else { ?>
+									<a class="left marginleft" href="<?php echo get_permalink($next_post->ID);?>">
+							Next: 
+								<span><em><?php echo $next_post->post_title; ?></em></span>
+						</a> 
+							<?php
+								}
+							?>
+					</div>
+					
 				</div>
 				<?php 
 				endwhile;

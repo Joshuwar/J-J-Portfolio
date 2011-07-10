@@ -8,8 +8,8 @@ To do
 
  */
 
-::selection			{ background:#ff5656; color:#fff; }
-::-moz-selection	{ background:#ff5656; color:#fff; }
+::selection			{ background:#ff5656; color:#fff; opacity: 0.7; }
+::-moz-selection	{ background:#ff5656; color:#fff; opacity: 0.7; }
 
 
 @font-face {
@@ -37,19 +37,20 @@ body {
 }
 
 #wrapper { /* Does this perform as well as an image? Remove if not */
-	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 44%, rgba(255,255,255,0) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(44%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 44%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 44%,rgba(255,255,255,0) 100%); /* Opera11.10+ */
-	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 44%,rgba(255,255,255,0) 100%); /* IE10+ */
+	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%, rgba(255,255,255,0) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%,rgba(255,255,255,0) 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%,rgba(255,255,255,0) 100%); /* IE10+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
-	background: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 44%,rgba(255,255,255,0) 100%); /* W3C */
+	background: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%,rgba(255,255,255,0) 100%); /* W3C */
 
 );
 
 }
 
 #portfolio {
+	margin-top: 10px;
 /*	min-height: 600px; */
 }
 
@@ -75,10 +76,12 @@ img#logo {
     z-index: 1;
 }
 
+.textPane h1 {
+		font-size: 1em;
+}
 
 h1 a {
 	color: #222222;
-    font-size: 0.5em;
     letter-spacing: 0.08em;
     text-decoration: none;
 }
@@ -251,7 +254,6 @@ ul.mockMenu li a  {
 .gallery {
 	/*height: ;*/
 	margin-left: 410px;
-	margin-top: 10px;
 }
 
 .gallery ul {
@@ -418,6 +420,21 @@ a .hireUs:hover span {
 	text-decoration: none;
 }
 
+.nextTab a {
+	position: fixed;
+	top: 190px;
+	right: 0px;
+	background-color: #222;
+	color: white;
+	padding: 10px 10px 10px 15px;
+	border-radius: 20px 0px 0px 20px;
+	font-family: 'nevisBold', 'Gotham HTF', 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	font-size: 0.7em;
+	text-decoration: none;
+}
+
 a .backToGrid, a .nextItem {
 	width: 110px;
 	height: 45px;
@@ -483,12 +500,12 @@ a .nextItem:hover span.point {
 /* ================== portfolio entry */
 
 .portfolioImage {
-	background-color: white;
+ 	background-color: white;
     border: 1px solid #EAEAEA;
     border-radius: 5px 5px 5px 5px;
     box-shadow: 1px 1px 2px #7E7E7E;
+    padding: 8px; 
     margin-bottom: 60px;
-    padding: 8px;
 }
 
 .imageNav {
@@ -712,6 +729,9 @@ div#friendfeed.widget td {
 
 .js .categoryContent {	
 	display: none;
+	position: absolute;
+	top: 0px;
+	width: 350px;
 }
 
 

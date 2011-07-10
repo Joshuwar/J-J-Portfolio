@@ -7,7 +7,7 @@
 				
 				<div class="gallery" id="thumbnailGallery"></div>
 				
-				<div class="textPane margintopsmall" id="mainTextPane">	
+				<div class="textPane" id="mainTextPane">	
 					<div id="root">
 						<?php the_content(); ?>
 					</div>
