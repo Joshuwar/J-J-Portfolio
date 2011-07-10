@@ -129,6 +129,6 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#portfolio').css('min-height',$('#portfolio').height());
+	//$('#portfolio').css('min-height',$('#portfolio').height()); // JRL: setting this in CSS for now
 	$('#mainTextPane').css('position','absolute');
 });
