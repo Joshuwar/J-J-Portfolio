@@ -148,15 +148,14 @@ function toggleThumbs(toMatch,callback) {
 		categories = getMenuCategories();
 		if($.inArray(toMatch,categories)!==-1) {
 			matchType = "category";
+			toggleTextPane(toMatch);
 		} else {
 			matchType = "post";
+			toggleTextPane();
 		}
 	} else {
 		matchType = "all";
-	}
-	if(matchType!=="post") {
-		$textPane.children('div').stop().fadeOut(ANIMATION_DURATION);
-		$textPane.children(toMatch ? '#'+toMatch : 'div:eq(0)').fadeIn(ANIMATION_DURATION);
+		toggleTextPane("root");
 	}
 	$thumbs.each(function(i, thumb) {
 		var $img,
@@ -227,10 +226,10 @@ function openThumb($visibleThumb) {
 	});
 }
 
-function toggleTextPane(doNotFade) {
-	var $textPane = $('#mainTextPane');
-	if(!doNotFade || !$textPane.is(":visible")) {
-		$textPane.stop().fadeToggle(ANIMATION_DURATION);
+function toggleTextPane(id) {
+	$('#mainTextPane').children('div').stop().fadeOut(ANIMATION_DURATION);
+	if(id) {
+		$('#'+id).fadeIn(ANIMATION_DURATION);
 	}
 }
 

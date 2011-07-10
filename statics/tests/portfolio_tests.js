@@ -453,12 +453,43 @@ $(document).ready(function() {
 		equals($thumbGal.is(":visible"), false);
 	});
 	
+	test("it should fade out all the mainTextPane content divs", function() {
+		var $thumbs = data.thumbs,
+			$targetThumb = $thumbs.filter(function() {
+				if($(this).find('a').attr('href').indexOf('woe-books')===-1) {
+					$(this).hide();
+				} else {
+					return true;
+				}
+			});
+		openThumb($targetThumb);
+		equals($('#mainTextPane').children("div:visible").length,0);
+	});
+	
 	module("toggleTextPane", {
 		setup: function() {
 			data.textPane = $('#mainTextPane');
 		}
 	});
 	
+	test("given an ID parameter, it should hide all children div's in the mainTextPane and then show the matching div", function() {
+		var $textPane = data.textPane,
+			id = "sampleCategory",
+			$rootPane = $textPane.children('div').eq(0);
+		ok($rootPane.is(':visible'),"the root div starts out visible");
+		toggleTextPane(id);
+		ok(!$rootPane.is(':visible'),"the root div is invisible");
+		ok($('#'+id).is(':visible'),"the matching div is visible");
+		equals($('#'+id).css('opacity'),1);
+	});
+	
+	test("given no parameter, it should hide all children div's in the mainTextPane", function() {
+		var $textPane = data.textPane;
+		toggleTextPane();
+		equals($textPane.children('div:visible').length,0);
+	});
+
+	/*
 	test("If the textpane is visible, make it invisible", function() {
 		var $textPane = data.textPane;
 		ok($textPane.is(":visible"),"the textpane starts out visible");
@@ -479,7 +510,7 @@ $(document).ready(function() {
 		toggleTextPane(true);
 		ok($textPane.is(":visible"),"textpane is visible");
 	});
-	
+	*/
 	
 	module("toggleItem", {
 		setup: function() {
