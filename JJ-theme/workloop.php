@@ -14,7 +14,7 @@
 						<h1 id="<?php echo $post->post_name; ?>"><a title="<?php the_title(); ?>" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
 						<?php $current_title = get_the_title(); 
 								//echo 'current title 1:';
-								echo $current_title;
+								//echo $current_title;
 						
 						?>
 
