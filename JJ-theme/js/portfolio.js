@@ -189,11 +189,11 @@ function toggleThumbs(toMatch,callback) {
 		} else {
 			width = baseThumbWidth;
 		}
-		$img.stop().animate({
+		$img.stop(false,true).animate({
 			top: top,
 			left: left
 		}, ANIMATION_DURATION);
-		$thumb.stop().animate({
+		$thumb.stop(false,true).animate({
 			width: width
 		}, ANIMATION_DURATION, function() {
 			i++;
@@ -219,7 +219,7 @@ function openThumb($visibleThumb) {
 	$visibleThumb.animate({ // weird bug where having .stop() here means the last thumb in the list doesn't run this animation
 		'width': '100%'
 	}, ANIMATION_DURATION, function() {
-		$thumbGal.stop().fadeOut(ANIMATION_DURATION);
+		$thumbGal.stop(false,true).fadeOut(ANIMATION_DURATION);
 		slug = getSlug($visibleThumb.find('a').attr('href'));
 		toggleTextPane();
 		toggleItem(slug);
@@ -227,7 +227,7 @@ function openThumb($visibleThumb) {
 }
 
 function toggleTextPane(id) {
-	$('#mainTextPane').children('div').stop().fadeOut(ANIMATION_DURATION);
+	$('#mainTextPane').children('div').stop(false,true).fadeOut(ANIMATION_DURATION);
 	if(id) {
 		$('#'+id).fadeIn(ANIMATION_DURATION);
 	}
@@ -240,14 +240,14 @@ function toggleItem(postSlug) {
 			href = $(this).find('h1 a').attr('href');
 			href = getSlug(href);
 			if(href===postSlug) {
-				$(this).stop().fadeIn(ANIMATION_DURATION, function() {
+				$(this).stop(false,true).fadeIn(ANIMATION_DURATION, function() {
 					$(document).trigger("itemToggled", [item]);
 				});
 				return false;
 			}
 		});
 	} else {
-		$('.portfolioItem:visible').stop().fadeOut(ANIMATION_DURATION, function() {
+		$('.portfolioItem:visible').stop(false,true).fadeOut(ANIMATION_DURATION, function() {
 			$(document).trigger("itemToggled", [postSlug]);
 		});
 	}
