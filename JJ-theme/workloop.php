@@ -99,7 +99,9 @@
 										if ($current_title == $newtitle) {
 											// do nothing
 											} else { ?>
-											<a href="<?php the_permalink(); ?>" rel="bookmark">Next: <em><?php echo the_title(); ?></em></a>	
+											<a href="<?php the_permalink(); ?>" rel="bookmark">
+												Next: <em><?php echo the_title(); ?></em>
+											</a>	
 											<?php 
 											}
 										endwhile;
