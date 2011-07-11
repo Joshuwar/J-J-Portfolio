@@ -51,6 +51,7 @@ body {
 
 #portfolio {
 	margin-top: 10px;
+	min-height: 360px;
 /*	min-height: 600px; */
 }
 
@@ -570,6 +571,7 @@ a .nextItem:hover span.point {
 
 .js .portfolioItem {
 	display: none;
+	position: relative;
 }
 
 .js #firstItem {

@@ -1,7 +1,5 @@
 /*
 	v4
-	
-	NB: the stuff that sets the active class when you click on menu link - that needs to happen during moveRibbon, as it should apply even when you haven't clicked on that link
 */
 var categoryToCategory = function(dest) {
 		var cat = dest.slug;
@@ -25,7 +23,6 @@ var categoryToCategory = function(dest) {
 			cat = "";
 		}
 		$(document).one('itemToggled', function(e) {
-			toggleTextPane();
 			toggleThumbs(cat);
 		});
 		moveRibbon(cat);
@@ -132,6 +129,6 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#portfolio').css('min-height',$('#portfolio').height());
+	//$('#portfolio').css('min-height',$('#portfolio').height()); // JRL: setting this in CSS for now
 	$('#mainTextPane').css('position','absolute');
 });
