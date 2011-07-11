@@ -21,8 +21,8 @@
 								<?php endif; ?>
 							</div>
 						</div>
-						<a href="<?php echo get_permalink_by_name('super-contact'); ?>">
-						</a>
+						<!--<a href="<?php echo get_permalink_by_name('super-contact'); ?>">
+						</a>-->
 						<?php endif; ?>
 							
 						

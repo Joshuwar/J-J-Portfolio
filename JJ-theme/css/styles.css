@@ -571,6 +571,7 @@ a .nextItem:hover span.point {
 
 .js .portfolioItem {
 	display: none;
+	position: relative;
 }
 
 .js #firstItem {
