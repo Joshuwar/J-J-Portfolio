@@ -50,7 +50,7 @@
 			
         </div>
         <script type="text/javascript">
-        	window.hrefBase = "<?php bloginfo('wpurl'); ?>";
+        	window.hrefBase = "<?php bloginfo('url'); ?>";
         </script>
 		<script type="text/javascript" src="<?php bloginfo('stylesheet_directory'); ?>/js/jquery-1.6.1.js"></script>
 		<script type="text/javascript" src="<?php bloginfo('stylesheet_directory'); ?>/js/jquery.scrollTo.js"></script>
