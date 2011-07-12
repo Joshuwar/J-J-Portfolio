@@ -32,14 +32,14 @@
 			</div>
 			<div class="column left marginleft">
 				<h3>On Twitter</h3>
-				<?php /*
+				<?php 
 				tweet_blender_widget(array(
 				    'unique_div_id' => 'tweets',
 				    'sources' => '@jayfresh,@josh_u_war',
 				    'refresh_rate' => 60,
 				    'tweets_num' => 1,
 				    'view_more_url' => 'http://twitter.com/'
-				)); */
+				)); 
 				?>					
 			</div>
 			<div id="copyright">

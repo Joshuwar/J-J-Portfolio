@@ -6,7 +6,7 @@
 								$testimonial_name = get_post_meta($post->ID,'_testimonial_name',true);
 							?>
 							<div>
-								<h6><a href="http://<?php get_custom_field('_url'); ?>">Launch Site</a></h6>
+								<h6><a target="_blank" href="http://<?php get_custom_field('_url'); ?>">Launch Site</a></h6>
 								<br/>
 								<?php if($collaborators) :?>
 								<h6>J&amp;J worked with:</h6>

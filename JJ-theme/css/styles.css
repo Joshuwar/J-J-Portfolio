@@ -34,6 +34,7 @@ body {
 .jbasewrap {
 	width: auto;
 	line-height: 1.514em;
+	margin-bottom: 40px;
 }
 
 #wrapper { /* Does this perform as well as an image? Remove if not */
