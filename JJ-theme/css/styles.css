@@ -254,6 +254,10 @@ ul.mockMenu li a  {
 	position: absolute;
 }
 
+.portfolioItem .gallery {
+	width: 700px;
+}
+
 .gallery {
 	/*height: ;*/
 	margin-left: 410px;
